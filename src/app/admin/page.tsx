@@ -28,7 +28,7 @@ type User = {
 
 type Tab = "pending" | "all" | "users";
 
-const STATUS_OPTIONS = ["PENDING", "ACTIVE", "CLOSED", "RESOLVED"] as const;
+const STATUS_OPTIONS = ["PENDING", "ACTIVE", "CLOSED", "RESOLVED", "ARCHIVED"] as const;
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -285,6 +285,7 @@ function QuestionRow({
     ACTIVE: "badge--blue",
     CLOSED: "badge--muted",
     RESOLVED: "badge--teal",
+    ARCHIVED: "badge--muted",
   };
   return (
     <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", padding: "0.875rem 1.25rem" }}>

@@ -27,8 +27,8 @@ export default function QuestionCard({
 
   const total = question._count.predictions;
   const isResolved = question.status === "RESOLVED";
-  const isClosed = question.closeAt ? new Date(question.closeAt) < new Date() : false;
-  const canPredict = isLoggedIn && !isResolved && !isClosed;
+  const isClosed = question.status === "CLOSED";
+  const canPredict = isLoggedIn && question.status === "ACTIVE";
 
   async function predict(optionId: string) {
     if (!canPredict || loading) return;

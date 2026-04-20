@@ -57,8 +57,7 @@ export default function AboutPage() {
           that&apos;s a pretty good match for a site about a city the size of Lansing. Local
           infrastructure for local civic life.
         </p>
-        <div className="card" style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "0.875rem 1.25rem", marginTop: "1rem" }}>
-          <span style={{ fontSize: "1.75rem" }}>🍓</span>
+        <div className="card" style={{ padding: "0.875rem 1.25rem", marginTop: "1rem" }}>
           <span style={{ fontSize: "0.875rem", color: "var(--color-text-muted)" }}>
             Hosted on a Raspberry Pi at The Fledge — 1300 Eureka St, Lansing, MI 48912
           </span>

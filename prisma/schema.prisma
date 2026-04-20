@@ -17,6 +17,7 @@ enum QuestionStatus {
   ACTIVE
   CLOSED
   RESOLVED
+  ARCHIVED
 }
 
 model User {

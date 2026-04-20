@@ -2,14 +2,14 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
-import QuestionCard from "@/components/QuestionCard";
+import QuestionFeed from "@/components/QuestionFeed";
 import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
 
   const questions = await prisma.question.findMany({
-    where: { status: { in: ["ACTIVE", "RESOLVED"] } },
+    where: { status: { in: ["ACTIVE", "CLOSED", "RESOLVED"] } },
     include: {
       options: {
         include: { _count: { select: { predictions: true } } },
@@ -31,11 +31,13 @@ export default async function Home() {
     userPredictions.map((p: { questionId: string; optionId: string }) => [p.questionId, p.optionId])
   );
 
-  const open = questions.filter((q) => q.status === "ACTIVE");
-  const closed = questions.filter((q) => q.status !== "ACTIVE");
-
   return (
     <div>
+      <img
+        src="/lansing-love-banner.svg"
+        alt="Lansing Love"
+        style={{ width: "100%", display: "block", marginBottom: "2rem" }}
+      />
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem", marginBottom: "2rem" }}>
         <div>
           <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)", marginBottom: "0.25rem" }}>Lansing Predictions</h1>
@@ -54,34 +56,7 @@ export default async function Home() {
         )}
       </div>
 
-      {open.length === 0 && closed.length === 0 ? (
-        <p style={{ textAlign: "center", padding: "4rem 0", color: "var(--color-text-muted)" }}>
-          No active predictions yet.
-        </p>
-      ) : (
-        <>
-          {open.length > 0 && (
-            <section style={{ marginBottom: "2.5rem" }}>
-              <span className="eyebrow">Open for voting</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                {open.map((q) => (
-                  <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={!!session} />
-                ))}
-              </div>
-            </section>
-          )}
-          {closed.length > 0 && (
-            <section>
-              <span className="eyebrow">Closed</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                {closed.map((q) => (
-                  <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={!!session} />
-                ))}
-              </div>
-            </section>
-          )}
-        </>
-      )}
+      <QuestionFeed questions={questions} predictionMap={predictionMap} isLoggedIn={!!session} />
     </div>
   );
 }

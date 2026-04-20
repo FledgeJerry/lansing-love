@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 /* ============================================================
    lansing.love — Design System
    Steel City Civic palette · IBM Plex Sans + Merriweather
@@ -37,9 +35,12 @@
 }
 
 /* Base */
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { -webkit-font-smoothing: antialiased; }
+html {
+  -webkit-font-smoothing: antialiased;
+  background-color: #1C2B3A;
+}
 
 body {
   font-family: var(--font-sans);

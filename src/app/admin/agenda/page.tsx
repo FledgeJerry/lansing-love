@@ -118,6 +118,13 @@ export default function AgendaPage() {
   }
 
   const enabledCount = questions.filter((q) => q.enabled).length;
+  const categories = questions.length > 0
+    ? ["All", ...Array.from(new Set(questions.map((q) => q.category || "Uncategorized"))).sort()]
+    : [];
+  const [activeTab, setActiveTab] = useState("All");
+  const visibleQuestions = activeTab === "All"
+    ? questions.map((q, i) => ({ q, i }))
+    : questions.map((q, i) => ({ q, i })).filter(({ q }) => (q.category || "Uncategorized") === activeTab);
 
   return (
     <div className="max-w-3xl">
@@ -186,14 +193,33 @@ export default function AgendaPage() {
               {enabledCount} selected for import
             </p>
             <button
-              onClick={() => { setQuestions([]); setFile(null); setText(""); setError(""); }}
+              onClick={() => { setQuestions([]); setFile(null); setText(""); setError(""); setActiveTab("All"); }}
               className="text-xs text-gray-400 hover:text-gray-600"
             >
               Start over
             </button>
           </div>
 
-          {questions.map((q, i) => (
+          <div className="flex flex-wrap gap-1 border-b border-gray-200 pb-2">
+            {categories.map((cat) => {
+              const count = cat === "All" ? questions.length : questions.filter((q) => (q.category || "Uncategorized") === cat).length;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveTab(cat)}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                    activeTab === cat
+                      ? "bg-rose-600 text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  {cat} <span className="opacity-70">({count})</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {visibleQuestions.map(({ q, i }) => (
             <div
               key={i}
               className={`bg-white border rounded-lg p-5 shadow-sm transition-opacity ${

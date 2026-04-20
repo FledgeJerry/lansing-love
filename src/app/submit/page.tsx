@@ -30,14 +30,19 @@ export default function SubmitPage() {
         title: fd.get("title"),
         description: fd.get("description"),
         category: fd.get("category"),
+        sourceUrl: fd.get("sourceUrl") || null,
         closeAt: fd.get("closeAt") || null,
         options: options.filter((o) => o.trim()),
       }),
     });
     setLoading(false);
     if (!res.ok) {
-      const data = await res.json();
-      setError(data.error ?? "Submission failed");
+      try {
+        const data = await res.json();
+        setError(data.error ?? "Submission failed");
+      } catch {
+        setError(`Submission failed (${res.status})`);
+      }
     } else {
       router.push("/");
     }
@@ -59,6 +64,11 @@ export default function SubmitPage() {
         <div className="form-group" style={{ margin: 0 }}>
           <label htmlFor="description">Context</label>
           <textarea id="description" name="description" placeholder="Add background, source links, relevant details…" />
+        </div>
+
+        <div className="form-group" style={{ margin: 0 }}>
+          <label htmlFor="sourceUrl">Source URL</label>
+          <input id="sourceUrl" name="sourceUrl" type="url" placeholder="https://… (optional link for more info)" />
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>

@@ -11,6 +11,7 @@ type Question = {
   title: string;
   description: string | null;
   category: string | null;
+  sourceUrl: string | null;
   status: string;
   closeAt: string | null;
   createdAt: string;
@@ -85,6 +86,7 @@ export default function AdminPage() {
       title: q.title,
       description: q.description ?? "",
       category: q.category ?? "",
+      sourceUrl: q.sourceUrl ?? "",
       status: q.status,
       closeAt: q.closeAt ? q.closeAt.split("T")[0] : "",
       optionLabels: q.options.map((o) => o.label),
@@ -100,6 +102,7 @@ export default function AdminPage() {
         title: editDraft.title,
         description: editDraft.description || null,
         category: editDraft.category || null,
+        sourceUrl: editDraft.sourceUrl || null,
         status: editDraft.status,
         closeAt: editDraft.closeAt || null,
         options: editDraft.optionLabels?.filter((l) => l.trim()),
@@ -326,6 +329,10 @@ function EditCard({
       <div className="form-group" style={{ margin: 0 }}>
         <label>Description</label>
         <textarea value={draft.description ?? ""} onChange={(e) => onChange({ ...draft, description: e.target.value })} rows={2} style={{ minHeight: "unset" }} />
+      </div>
+      <div className="form-group" style={{ margin: 0 }}>
+        <label>Source URL</label>
+        <input value={(draft as EditDraft & { sourceUrl?: string }).sourceUrl ?? ""} onChange={(e) => onChange({ ...draft, sourceUrl: e.target.value } as EditDraft)} placeholder="https://… (optional)" />
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr auto auto", gap: "1rem" }}>
         <div className="form-group" style={{ margin: 0 }}>

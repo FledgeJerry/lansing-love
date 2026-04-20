@@ -35,13 +35,14 @@ export async function PATCH(
   }
 
   if (action === "edit") {
-    const { title, description, category, closeAt, status, options } = body;
+    const { title, description, category, sourceUrl, closeAt, status, options } = body;
     const question = await prisma.question.update({
       where: { id },
       data: {
         ...(title !== undefined && { title }),
         ...(description !== undefined && { description }),
         ...(category !== undefined && { category }),
+        ...(sourceUrl !== undefined && { sourceUrl: sourceUrl || null }),
         ...(status !== undefined && { status }),
         ...(closeAt !== undefined && { closeAt: closeAt ? new Date(closeAt) : null }),
       },

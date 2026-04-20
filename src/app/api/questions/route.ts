@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { title, description, category, closeAt, options } = await req.json();
+  const { title, description, category, sourceUrl, closeAt, options } = await req.json();
 
   if (!title || !options || options.length < 2) {
     return NextResponse.json(
@@ -41,6 +41,7 @@ export async function POST(req: Request) {
       title,
       description,
       category,
+      sourceUrl: sourceUrl || null,
       closeAt: closeAt ? new Date(closeAt) : null,
       submittedById: session.user.id,
       options: {

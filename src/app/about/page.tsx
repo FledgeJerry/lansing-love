@@ -92,7 +92,7 @@ export default function AboutPage() {
         Built with care in Lansing, Michigan ·{" "}
         <a href="https://thefledge.com" target="_blank" rel="noopener noreferrer">The Fledge</a>
         {" · "}
-        <a href="https://rhinonews.org" target="_blank" rel="noopener noreferrer">Rhino News</a>
+        <a href="https://rhinocerii.github.io/blahrgg/" target="_blank" rel="noopener noreferrer">Rhino News</a>
       </p>
     </div>
   );

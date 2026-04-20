@@ -127,43 +127,30 @@ export default function AdminPage() {
 
   if (status === "loading") return <p className="text-gray-400">Loading…</p>;
 
-  const tabClass = (t: Tab) =>
-    `px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-      tab === t
-        ? "border-rose-600 text-rose-600"
-        : "border-transparent text-gray-500 hover:text-gray-800"
-    }`;
-
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Admin</h1>
-        <Link href="/admin/agenda" className="bg-rose-600 text-white text-sm px-3 py-1.5 rounded hover:bg-rose-700">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+        <h1 style={{ margin: 0 }}>Admin</h1>
+        <Link href="/admin/agenda" className="btn btn--primary btn--sm">
           Import from agenda
         </Link>
       </div>
 
-      <div className="flex border-b border-gray-200 mb-6">
-        <button className={tabClass("pending")} onClick={() => setTab("pending")}>
-          Pending
-        </button>
-        <button className={tabClass("all")} onClick={() => setTab("all")}>
-          All Questions
-        </button>
-        <button className={tabClass("users")} onClick={() => setTab("users")}>
-          Users
-        </button>
+      <div className="tabs">
+        <button className={`tab-btn${tab === "pending" ? " active" : ""}`} onClick={() => setTab("pending")}>Pending</button>
+        <button className={`tab-btn${tab === "all" ? " active" : ""}`} onClick={() => setTab("all")}>All Questions</button>
+        <button className={`tab-btn${tab === "users" ? " active" : ""}`} onClick={() => setTab("users")}>Users</button>
       </div>
 
-      {loading && <p className="text-gray-400">Loading…</p>}
+      {loading && <p style={{ color: "var(--color-text-muted)" }}>Loading…</p>}
 
       {/* PENDING TAB */}
       {!loading && tab === "pending" && (
         <>
           {questions.length === 0 ? (
-            <p className="text-gray-400">No pending questions.</p>
+            <p style={{ color: "var(--color-text-muted)" }}>No pending questions.</p>
           ) : (
-            <div className="space-y-4">
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {questions.map((q) => (
                 <PendingCard
                   key={q.id}
@@ -181,9 +168,9 @@ export default function AdminPage() {
       {!loading && tab === "all" && (
         <>
           {questions.length === 0 ? (
-            <p className="text-gray-400">No questions yet.</p>
+            <p style={{ color: "var(--color-text-muted)" }}>No questions yet.</p>
           ) : (
-            <div className="space-y-3">
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {questions.map((q) =>
                 editing === q.id ? (
                   <EditCard
@@ -209,36 +196,34 @@ export default function AdminPage() {
 
       {/* USERS TAB */}
       {!loading && tab === "users" && (
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+        <div className="card" style={{ padding: 0, overflow: "hidden" }}>
+          <table className="ll-table">
+            <thead>
               <tr>
-                <th className="px-4 py-3 text-left">Name</th>
-                <th className="px-4 py-3 text-left">Email</th>
-                <th className="px-4 py-3 text-left">Role</th>
-                <th className="px-4 py-3 text-left">Joined</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Joined</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody>
               {users.map((u) => (
                 <tr key={u.id}>
-                  <td className="px-4 py-3">{u.name ?? "—"}</td>
-                  <td className="px-4 py-3 text-gray-500">{u.email}</td>
-                  <td className="px-4 py-3">
+                  <td style={{ color: "var(--color-limestone)" }}>{u.name ?? "—"}</td>
+                  <td>{u.email}</td>
+                  <td>
                     <select
                       value={u.role}
                       onChange={(e) => setUserRole(u.id, e.target.value)}
                       disabled={u.id === session?.user.id}
-                      className="text-xs border rounded px-2 py-1 disabled:opacity-50"
+                      style={{ width: "auto" }}
                     >
                       <option value="USER">User</option>
                       <option value="RESOLVER">Resolver</option>
                       <option value="ADMIN">Admin</option>
                     </select>
                   </td>
-                  <td className="px-4 py-3 text-gray-400 text-xs">
-                    {new Date(u.createdAt).toLocaleDateString()}
-                  </td>
+                  <td style={{ fontSize: "0.8rem" }}>{new Date(u.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>
@@ -262,43 +247,25 @@ function PendingCard({
 }) {
   const [closeAt, setCloseAt] = useState("");
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
-      <p className="font-semibold">{q.title}</p>
-      {q.description && <p className="text-sm text-gray-500 mt-1">{q.description}</p>}
-      {q.category && <p className="text-xs text-gray-400 mt-1">{q.category}</p>}
-      <p className="text-xs text-gray-400 mt-1">
-        Submitted by {q.submittedBy.name ?? q.submittedBy.email} ·{" "}
-        {new Date(q.createdAt).toLocaleDateString()}
+    <div className="card">
+      {q.category && <span className="eyebrow">{q.category}</span>}
+      <p style={{ fontFamily: "var(--font-serif)", color: "var(--color-limestone)", marginBottom: "0.4rem" }}>{q.title}</p>
+      {q.description && <p style={{ fontSize: "0.875rem", marginBottom: "0.4rem" }}>{q.description}</p>}
+      <p style={{ fontSize: "0.8rem", color: "var(--color-text-muted)", marginBottom: "0.75rem" }}>
+        Submitted by {q.submittedBy.name ?? q.submittedBy.email} · {new Date(q.createdAt).toLocaleDateString()}
       </p>
-      <div className="flex flex-wrap gap-2 mt-2">
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "1rem" }}>
         {q.options.map((o) => (
-          <span key={o.id} className="text-xs bg-gray-100 px-2 py-0.5 rounded">
-            {o.label}
-          </span>
+          <span key={o.id} className="badge badge--muted">{o.label}</span>
         ))}
       </div>
-      <div className="flex items-center gap-3 mt-4">
-        <div>
-          <label className="text-xs text-gray-500 mr-1">Close date:</label>
-          <input
-            type="date"
-            value={closeAt}
-            onChange={(e) => setCloseAt(e.target.value)}
-            className="text-xs border rounded px-2 py-1"
-          />
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <label style={{ margin: 0, whiteSpace: "nowrap" }}>Close date:</label>
+          <input type="date" value={closeAt} onChange={(e) => setCloseAt(e.target.value)} style={{ width: "auto" }} />
         </div>
-        <button
-          onClick={() => onApprove(q.id, closeAt)}
-          className="bg-green-600 text-white text-sm px-3 py-1 rounded hover:bg-green-700"
-        >
-          Approve
-        </button>
-        <button
-          onClick={() => onReject(q.id)}
-          className="bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded hover:bg-red-100 hover:text-red-700"
-        >
-          Reject
-        </button>
+        <button onClick={() => onApprove(q.id, closeAt)} className="btn btn--primary btn--sm">Approve</button>
+        <button onClick={() => onReject(q.id)} className="btn btn--danger btn--sm">Reject</button>
       </div>
     </div>
   );
@@ -313,37 +280,24 @@ function QuestionRow({
   onEdit: () => void;
   onReject: (id: string) => void;
 }) {
-  const statusColors: Record<string, string> = {
-    PENDING: "bg-yellow-100 text-yellow-700",
-    ACTIVE: "bg-rose-100 text-rose-700",
-    CLOSED: "bg-gray-100 text-gray-600",
-    RESOLVED: "bg-green-100 text-green-700",
+  const badgeClass: Record<string, string> = {
+    PENDING: "badge--gold",
+    ACTIVE: "badge--blue",
+    CLOSED: "badge--muted",
+    RESOLVED: "badge--teal",
   };
   return (
-    <div className="bg-white border border-gray-200 rounded-lg px-4 py-3 flex items-center justify-between gap-4 shadow-sm">
-      <div className="flex-1 min-w-0">
-        <p className="font-medium text-sm truncate">{q.title}</p>
-        <p className="text-xs text-gray-400 mt-0.5">
-          {q._count?.predictions ?? 0} predictions ·{" "}
-          {new Date(q.createdAt).toLocaleDateString()}
+    <div className="card" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", padding: "0.875rem 1.25rem" }}>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{ color: "var(--color-limestone)", fontWeight: 500, fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", margin: 0 }}>{q.title}</p>
+        <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", margin: 0 }}>
+          {q._count?.predictions ?? 0} predictions · {new Date(q.createdAt).toLocaleDateString()}
         </p>
       </div>
-      <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${statusColors[q.status]}`}>
-        {q.status}
-      </span>
-      <div className="flex gap-2 shrink-0">
-        <button
-          onClick={onEdit}
-          className="text-xs border border-gray-300 px-2 py-1 rounded hover:bg-gray-50"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => onReject(q.id)}
-          className="text-xs border border-gray-300 px-2 py-1 rounded hover:bg-red-50 hover:text-red-600 hover:border-red-300"
-        >
-          Delete
-        </button>
+      <span className={`badge ${badgeClass[q.status] ?? "badge--muted"}`}>{q.status}</span>
+      <div style={{ display: "flex", gap: "0.5rem", flexShrink: 0 }}>
+        <button onClick={onEdit} className="btn btn--ghost btn--sm">Edit</button>
+        <button onClick={() => onReject(q.id)} className="btn btn--danger btn--sm">Delete</button>
       </div>
     </div>
   );
@@ -363,105 +317,52 @@ function EditCard({
   onCancel: () => void;
 }) {
   return (
-    <div className="bg-white border-2 border-rose-300 rounded-lg p-5 shadow-sm space-y-3">
-      <div>
-        <label className="text-xs font-medium text-gray-600">Title</label>
-        <input
-          value={draft.title ?? ""}
-          onChange={(e) => onChange({ ...draft, title: e.target.value })}
-          className="w-full border rounded px-3 py-1.5 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-rose-400"
-        />
+    <div className="card--raised" style={{ borderColor: "var(--color-river-blue)", display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div className="form-group" style={{ margin: 0 }}>
+        <label>Title</label>
+        <input value={draft.title ?? ""} onChange={(e) => onChange({ ...draft, title: e.target.value })} />
       </div>
-      <div>
-        <label className="text-xs font-medium text-gray-600">Description</label>
-        <textarea
-          value={draft.description ?? ""}
-          onChange={(e) => onChange({ ...draft, description: e.target.value })}
-          rows={2}
-          className="w-full border rounded px-3 py-1.5 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-rose-400"
-        />
+      <div className="form-group" style={{ margin: 0 }}>
+        <label>Description</label>
+        <textarea value={draft.description ?? ""} onChange={(e) => onChange({ ...draft, description: e.target.value })} rows={2} style={{ minHeight: "unset" }} />
       </div>
-      <div className="flex gap-4">
-        <div className="flex-1">
-          <label className="text-xs font-medium text-gray-600">Category</label>
-          <input
-            value={draft.category ?? ""}
-            onChange={(e) => onChange({ ...draft, category: e.target.value })}
-            className="w-full border rounded px-3 py-1.5 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-rose-400"
-          />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr auto auto", gap: "1rem" }}>
+        <div className="form-group" style={{ margin: 0 }}>
+          <label>Category</label>
+          <input value={draft.category ?? ""} onChange={(e) => onChange({ ...draft, category: e.target.value })} />
         </div>
-        <div>
-          <label className="text-xs font-medium text-gray-600">Status</label>
-          <select
-            value={draft.status ?? "ACTIVE"}
-            onChange={(e) => onChange({ ...draft, status: e.target.value })}
-            className="block border rounded px-3 py-1.5 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-rose-400"
-          >
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
+        <div className="form-group" style={{ margin: 0 }}>
+          <label>Status</label>
+          <select value={draft.status ?? "ACTIVE"} onChange={(e) => onChange({ ...draft, status: e.target.value })} style={{ width: "auto" }}>
+            {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
-        <div>
-          <label className="text-xs font-medium text-gray-600">Close date</label>
-          <input
-            type="date"
-            value={draft.closeAt ?? ""}
-            onChange={(e) => onChange({ ...draft, closeAt: e.target.value })}
-            className="block border rounded px-3 py-1.5 text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-rose-400"
-          />
+        <div className="form-group" style={{ margin: 0 }}>
+          <label>Close date</label>
+          <input type="date" value={draft.closeAt ?? ""} onChange={(e) => onChange({ ...draft, closeAt: e.target.value })} style={{ width: "auto" }} />
         </div>
       </div>
       <div>
-        <label className="text-xs font-medium text-gray-600">Options</label>
-        <div className="space-y-1 mt-1">
-          {(draft.optionLabels ?? []).map((label, i) => (
-            <div key={i} className="flex gap-2">
-              <input
-                value={label}
-                onChange={(e) => {
-                  const updated = [...(draft.optionLabels ?? [])];
-                  updated[i] = e.target.value;
-                  onChange({ ...draft, optionLabels: updated });
-                }}
-                className="flex-1 border rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400"
-              />
+        <label>Options</label>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", marginTop: "0.4rem" }}>
+          {(draft.optionLabels ?? []).map((lbl, i) => (
+            <div key={i} style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+              <input value={lbl} onChange={(e) => { const u = [...(draft.optionLabels ?? [])]; u[i] = e.target.value; onChange({ ...draft, optionLabels: u }); }} style={{ flex: 1 }} />
               {(draft.optionLabels?.length ?? 0) > 2 && (
-                <button
-                  type="button"
-                  onClick={() => onChange({
-                    ...draft,
-                    optionLabels: draft.optionLabels?.filter((_, idx) => idx !== i),
-                  })}
-                  className="text-gray-400 hover:text-red-500 text-lg leading-none"
-                >
-                  ×
-                </button>
+                <button type="button" onClick={() => onChange({ ...draft, optionLabels: draft.optionLabels?.filter((_, idx) => idx !== i) })}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text-muted)", fontSize: "1.25rem", lineHeight: 1 }}>×</button>
               )}
             </div>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={() => onChange({ ...draft, optionLabels: [...(draft.optionLabels ?? []), ""] })}
-          className="text-xs text-rose-600 hover:underline mt-1"
-        >
+        <button type="button" onClick={() => onChange({ ...draft, optionLabels: [...(draft.optionLabels ?? []), ""] })}
+          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-dome-gold)", fontSize: "0.85rem", fontFamily: "var(--font-sans)", padding: 0, marginTop: "0.4rem" }}>
           + Add option
         </button>
       </div>
-      <div className="flex gap-2 pt-1">
-        <button
-          onClick={onSave}
-          className="bg-rose-600 text-white text-sm px-4 py-1.5 rounded hover:bg-rose-700"
-        >
-          Save
-        </button>
-        <button
-          onClick={onCancel}
-          className="text-sm px-4 py-1.5 rounded border hover:bg-gray-50"
-        >
-          Cancel
-        </button>
+      <div style={{ display: "flex", gap: "0.5rem" }}>
+        <button onClick={onSave} className="btn btn--primary btn--sm">Save</button>
+        <button onClick={onCancel} className="btn btn--ghost btn--sm">Cancel</button>
       </div>
     </div>
   );

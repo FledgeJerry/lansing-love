@@ -25,12 +25,11 @@ export default function ResolverPage() {
   useEffect(() => {
     if (status === "loading") return;
     if (!session || (session.user.role !== "RESOLVER" && session.user.role !== "ADMIN")) {
-      router.push("/");
-      return;
+      router.push("/"); return;
     }
     fetch("/api/resolver/questions")
       .then((r) => r.json())
-      .then((data) => { setQuestions(data); setLoading(false); });
+      .then((d) => { setQuestions(d); setLoading(false); });
   }, [session, status, router]);
 
   async function resolve(id: string) {
@@ -44,52 +43,67 @@ export default function ResolverPage() {
     setQuestions((qs) => qs.filter((q) => q.id !== id));
   }
 
-  if (status === "loading" || loading) return <p className="text-gray-400">Loading…</p>;
+  if (status === "loading" || loading) return <p style={{ color: "var(--color-text-muted)" }}>Loading…</p>;
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-2">Resolve Questions</h1>
-      <p className="text-gray-500 text-sm mb-6">Mark the correct outcome for closed questions.</p>
+      <h1 style={{ marginBottom: "0.25rem" }}>Resolve Questions</h1>
+      <p style={{ marginBottom: "2rem" }}>Mark the correct outcome for closed questions.</p>
+
       {questions.length === 0 ? (
-        <p className="text-gray-400">No questions ready to resolve.</p>
+        <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
+          <p style={{ color: "var(--color-text-muted)", margin: 0 }}>No questions ready to resolve.</p>
+        </div>
       ) : (
-        <div className="space-y-4">
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           {questions.map((q) => (
-            <div key={q.id} className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
-              <p className="font-semibold">{q.title}</p>
-              {q.description && <p className="text-sm text-gray-500 mt-1">{q.description}</p>}
-              <p className="text-xs text-gray-400 mt-1">
+            <div key={q.id} className="card">
+              {q.category && <span className="eyebrow">{q.category}</span>}
+              <p style={{ fontFamily: "var(--font-serif)", fontSize: "1.05rem", color: "var(--color-limestone)", marginBottom: "0.5rem" }}>
+                {q.title}
+              </p>
+              {q.description && (
+                <p style={{ fontSize: "0.875rem", marginBottom: "0.75rem" }}>{q.description}</p>
+              )}
+              <p style={{ fontSize: "0.8rem", color: "var(--color-text-muted)", marginBottom: "1rem" }}>
                 {q._count.predictions} prediction{q._count.predictions !== 1 ? "s" : ""}
               </p>
-              <div className="mt-3 space-y-2">
-                <p className="text-sm font-medium">What actually happened?</p>
-                {q.options.map((o) => (
-                  <label key={o.id} className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name={`pick-${q.id}`}
-                      value={o.id}
-                      checked={picks[q.id] === o.id}
-                      onChange={() => setPicks((p) => ({ ...p, [q.id]: o.id }))}
-                      className="accent-rose-600"
-                    />
-                    <span className="text-sm">{o.label}</span>
-                  </label>
-                ))}
+
+              <div style={{ marginBottom: "1rem" }}>
+                <label style={{ marginBottom: "0.5rem" }}>What actually happened?</label>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                  {q.options.map((o) => (
+                    <label key={o.id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", color: "var(--color-text-secondary)", fontWeight: 400 }}>
+                      <input
+                        type="radio"
+                        name={`pick-${q.id}`}
+                        value={o.id}
+                        checked={picks[q.id] === o.id}
+                        onChange={() => setPicks((p) => ({ ...p, [q.id]: o.id }))}
+                        style={{ accentColor: "var(--color-dome-gold)", width: "auto" }}
+                      />
+                      {o.label}
+                    </label>
+                  ))}
+                </div>
               </div>
-              <div className="mt-3">
+
+              <div style={{ marginBottom: "1rem" }}>
+                <label htmlFor={`notes-${q.id}`}>Resolution notes (optional)</label>
                 <textarea
-                  placeholder="Resolution notes (optional)"
+                  id={`notes-${q.id}`}
                   value={notes[q.id] ?? ""}
                   onChange={(e) => setNotes((n) => ({ ...n, [q.id]: e.target.value }))}
                   rows={2}
-                  className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  placeholder="Source link, context, etc."
+                  style={{ minHeight: "unset" }}
                 />
               </div>
+
               <button
                 onClick={() => resolve(q.id)}
                 disabled={!picks[q.id]}
-                className="mt-3 bg-rose-600 text-white text-sm px-4 py-1.5 rounded hover:bg-rose-700 disabled:opacity-40"
+                className="btn btn--primary btn--sm"
               >
                 Mark resolved
               </button>

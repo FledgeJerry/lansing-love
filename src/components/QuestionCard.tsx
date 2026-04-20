@@ -43,30 +43,29 @@ export default function QuestionCard({
     router.refresh();
   }
 
+  const statusBadge = isResolved
+    ? <span className="badge badge--teal">Resolved</span>
+    : isClosed
+    ? <span className="badge badge--muted">Closed</span>
+    : <span className="badge badge--gold">Open</span>;
+
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-      <div className="flex items-start justify-between gap-2 mb-1">
-        <h2 className="font-semibold text-base">{question.title}</h2>
-        <span
-          className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${
-            isResolved
-              ? "bg-green-100 text-green-700"
-              : isClosed
-              ? "bg-yellow-100 text-yellow-700"
-              : "bg-rose-100 text-rose-700"
-          }`}
-        >
-          {isResolved ? "Resolved" : isClosed ? "Closed" : "Active"}
-        </span>
+    <div className="prediction-card">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.75rem", marginBottom: "0.5rem" }}>
+        <h3 className="prediction-card__question" style={{ margin: 0 }}>{question.title}</h3>
+        {statusBadge}
       </div>
+
       {question.description && (
-        <p className="text-sm text-gray-500 mb-3">{question.description}</p>
+        <p style={{ fontSize: "0.875rem", color: "var(--color-text-muted)", marginBottom: "0.75rem" }}>
+          {question.description}
+        </p>
       )}
       {question.category && (
-        <span className="text-xs text-gray-400 mb-3 block">{question.category}</span>
+        <span className="eyebrow" style={{ marginBottom: "1rem" }}>{question.category}</span>
       )}
 
-      <div className="space-y-2 mt-3">
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "1rem" }}>
         {question.options.map((opt) => {
           const pct = total > 0 ? Math.round((opt._count.predictions / total) * 100) : 0;
           const isCorrect = question.outcome?.optionId === opt.id;
@@ -77,49 +76,42 @@ export default function QuestionCard({
               key={opt.id}
               onClick={() => predict(opt.id)}
               disabled={!canPredict || loading}
-              className={`w-full text-left rounded overflow-hidden border transition-colors ${
-                isMyPick ? "border-rose-500" : "border-gray-200"
-              } ${canPredict ? "hover:border-rose-400 cursor-pointer" : "cursor-default"}`}
+              className={`vote-pill${isMyPick ? " selected" : ""}${isCorrect ? " correct" : ""}`}
+              style={{ flexDirection: "column", alignItems: "stretch", borderRadius: "8px", padding: "0.6rem 0.875rem" }}
             >
-              <div className="relative px-3 py-2">
-                {/* progress bar background */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                <span style={{ fontWeight: 500 }}>
+                  {opt.label}
+                  {isMyPick && !isCorrect && <span style={{ fontSize: "0.75rem", marginLeft: "0.4rem", opacity: 0.8 }}>★ your pick</span>}
+                  {isCorrect && <span style={{ fontSize: "0.75rem", marginLeft: "0.4rem" }}>✓ correct</span>}
+                </span>
+                <span style={{ fontSize: "0.8rem", opacity: 0.8 }}>{pct}%</span>
+              </div>
+              <div className="prediction-bar__track">
                 <div
-                  className={`absolute inset-0 ${
-                    isCorrect
-                      ? "bg-green-100"
-                      : isMyPick
-                      ? "bg-rose-50"
-                      : "bg-gray-50"
-                  }`}
+                  className={`prediction-bar__fill${isCorrect ? " prediction-bar__fill--teal" : ""}`}
                   style={{ width: `${pct}%` }}
                 />
-                <div className="relative flex justify-between text-sm">
-                  <span className="font-medium">
-                    {opt.label}
-                    {isMyPick && <span className="ml-1 text-rose-500 text-xs">★ your pick</span>}
-                    {isCorrect && <span className="ml-1 text-green-600 text-xs">✓ correct</span>}
-                  </span>
-                  <span className="text-gray-500">{pct}%</span>
-                </div>
               </div>
             </button>
           );
         })}
       </div>
 
-      <p className="text-xs text-gray-400 mt-3">
-        {total} prediction{total !== 1 ? "s" : ""}
-        {question.closeAt && !isResolved && (
-          <> · closes {new Date(question.closeAt).toLocaleDateString()}</>
+      <div style={{ marginTop: "0.875rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontSize: "0.8rem", color: "var(--color-text-muted)" }}>
+          {total} prediction{total !== 1 ? "s" : ""}
+          {question.closeAt && !isResolved && (
+            <> · closes {new Date(question.closeAt).toLocaleDateString()}</>
+          )}
+          {isResolved && question.outcome && (
+            <> · <span style={{ color: "var(--color-teal-accent)" }}>{question.outcome.option.label}</span></>
+          )}
+        </span>
+        {!isLoggedIn && (
+          <span style={{ fontSize: "0.8rem", color: "var(--color-dome-gold)" }}>Sign in to predict</span>
         )}
-        {isResolved && question.outcome && (
-          <> · resolved: <span className="text-green-600">{question.outcome.option.label}</span></>
-        )}
-      </p>
-
-      {!isLoggedIn && (
-        <p className="text-xs text-rose-500 mt-2">Sign in to make a prediction</p>
-      )}
+      </div>
     </div>
   );
 }

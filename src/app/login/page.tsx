@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: { preventDefault(): void; currentTarget: HTMLFormElement }) {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -30,41 +30,28 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-sm mx-auto mt-16">
-      <h1 className="text-2xl font-bold mb-6">Sign in</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input
-            name="email"
-            type="email"
-            required
-            className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
-          />
+    <div style={{ maxWidth: "420px", margin: "3rem auto" }}>
+      <h1 style={{ marginBottom: "0.25rem" }}>Sign in</h1>
+      <p style={{ marginBottom: "2rem" }}>Welcome back to lansing.love</p>
+
+      <form onSubmit={handleSubmit} className="card">
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com" />
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input
-            name="password"
-            type="password"
-            required
-            className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
-          />
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input id="password" name="password" type="password" required />
         </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-rose-600 text-white py-2 rounded hover:bg-rose-700 disabled:opacity-50 text-sm"
-        >
+        {error && <div className="alert alert--error">{error}</div>}
+        <button type="submit" disabled={loading} className="btn btn--primary" style={{ width: "100%", justifyContent: "center" }}>
           {loading ? "Signing in…" : "Sign in"}
         </button>
       </form>
-      <p className="text-sm text-center mt-4 text-gray-500">
+
+      <p style={{ textAlign: "center", marginTop: "1.25rem", fontSize: "0.9rem", color: "var(--color-text-muted)" }}>
         No account?{" "}
-        <Link href="/register" className="text-rose-600 hover:underline">
-          Join
-        </Link>
+        <Link href="/register" style={{ color: "var(--color-dome-gold)" }}>Join lansing.love</Link>
       </p>
     </div>
   );

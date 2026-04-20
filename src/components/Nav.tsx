@@ -7,41 +7,40 @@ export default function Nav() {
   const { data: session } = useSession();
 
   return (
-    <nav className="bg-white border-b border-gray-200">
-      <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="font-bold text-lg tracking-tight text-rose-600">
-          lansing.love
-        </Link>
-        <div className="flex items-center gap-4 text-sm">
-          <Link href="/" className="hover:text-rose-600">Predictions</Link>
-          <Link href="/leaderboard" className="hover:text-rose-600">Leaderboard</Link>
-          <Link href="/about" className="hover:text-rose-600">About</Link>
-          {session?.user.role === "ADMIN" && (
-            <Link href="/admin" className="hover:text-rose-600">Admin</Link>
-          )}
-          {(session?.user.role === "RESOLVER" || session?.user.role === "ADMIN") && (
-            <Link href="/resolver" className="hover:text-rose-600">Resolve</Link>
-          )}
-          {session ? (
+    <nav className="site-nav">
+      <Link href="/" className="site-nav__logo">
+        lansing<span>.</span>love
+      </Link>
+      <ul className="site-nav__links">
+        <li><Link href="/">Predictions</Link></li>
+        <li><Link href="/leaderboard">Leaderboard</Link></li>
+        <li><Link href="/about">About</Link></li>
+        {session?.user.role === "ADMIN" && (
+          <li><Link href="/admin">Admin</Link></li>
+        )}
+        {(session?.user.role === "RESOLVER" || session?.user.role === "ADMIN") && (
+          <li><Link href="/resolver">Resolve</Link></li>
+        )}
+        {session ? (
+          <li>
             <button
               onClick={() => signOut()}
-              className="text-gray-500 hover:text-gray-900"
+              style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text-muted)", fontSize: "0.9rem", fontWeight: 500, fontFamily: "var(--font-sans)" }}
             >
               Sign out
             </button>
-          ) : (
-            <>
-              <Link href="/login" className="hover:text-rose-600">Sign in</Link>
-              <Link
-                href="/register"
-                className="bg-rose-600 text-white px-3 py-1 rounded hover:bg-rose-700"
-              >
+          </li>
+        ) : (
+          <>
+            <li><Link href="/login">Sign in</Link></li>
+            <li>
+              <Link href="/register" className="btn btn--primary btn--sm">
                 Join
               </Link>
-            </>
-          )}
-        </div>
-      </div>
+            </li>
+          </>
+        )}
+      </ul>
     </nav>
   );
 }

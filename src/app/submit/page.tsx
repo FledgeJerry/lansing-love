@@ -12,25 +12,13 @@ export default function SubmitPage() {
   const [error, setError] = useState("");
 
   if (status === "loading") return null;
-  if (!session) {
-    router.push("/login");
-    return null;
-  }
+  if (!session) { router.push("/login"); return null; }
 
-  function addOption() {
-    setOptions([...options, ""]);
-  }
+  function addOption() { setOptions([...options, ""]); }
+  function updateOption(i: number, val: string) { setOptions(options.map((o, idx) => (idx === i ? val : o))); }
+  function removeOption(i: number) { if (options.length > 2) setOptions(options.filter((_, idx) => idx !== i)); }
 
-  function updateOption(i: number, val: string) {
-    setOptions(options.map((o, idx) => (idx === i ? val : o)));
-  }
-
-  function removeOption(i: number) {
-    if (options.length <= 2) return;
-    setOptions(options.filter((_, idx) => idx !== i));
-  }
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: { preventDefault(): void; currentTarget: HTMLFormElement }) {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -56,83 +44,63 @@ export default function SubmitPage() {
   }
 
   return (
-    <div className="max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-2">Submit a prediction question</h1>
-      <p className="text-gray-500 text-sm mb-6">
+    <div style={{ maxWidth: "600px" }}>
+      <h1 style={{ marginBottom: "0.25rem" }}>Submit a question</h1>
+      <p style={{ marginBottom: "2rem" }}>
         Questions are reviewed by our admin before going live.
       </p>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Question *</label>
-          <input
-            name="title"
-            required
-            placeholder="Will the downtown development be approved?"
-            className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
-          />
+
+      <form onSubmit={handleSubmit} className="card" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+        <div className="form-group" style={{ margin: 0 }}>
+          <label htmlFor="title">Question *</label>
+          <input id="title" name="title" required placeholder="Will the downtown development be approved?" />
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Details</label>
-          <textarea
-            name="description"
-            rows={3}
-            placeholder="Add context, source links, relevant background…"
-            className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
-          />
+
+        <div className="form-group" style={{ margin: 0 }}>
+          <label htmlFor="description">Context</label>
+          <textarea id="description" name="description" placeholder="Add background, source links, relevant details…" />
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Category</label>
-          <input
-            name="category"
-            placeholder="e.g. Housing, Transit, Elections"
-            className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
-          />
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div className="form-group" style={{ margin: 0 }}>
+            <label htmlFor="category">Category</label>
+            <input id="category" name="category" placeholder="e.g. Housing, Transit, Budget" />
+          </div>
+          <div className="form-group" style={{ margin: 0 }}>
+            <label htmlFor="closeAt">Closes on</label>
+            <input id="closeAt" name="closeAt" type="date" />
+          </div>
         </div>
+
         <div>
-          <label className="block text-sm font-medium mb-1">Prediction closes on</label>
-          <input
-            name="closeAt"
-            type="date"
-            className="border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-2">Options *</label>
-          <div className="space-y-2">
+          <label>Options *</label>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.5rem" }}>
             {options.map((opt, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
                 <input
                   value={opt}
                   onChange={(e) => updateOption(i, e.target.value)}
                   placeholder={`Option ${i + 1}`}
-                  className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  style={{ flex: 1 }}
                 />
                 {options.length > 2 && (
-                  <button
-                    type="button"
-                    onClick={() => removeOption(i)}
-                    className="text-gray-400 hover:text-red-500 text-lg leading-none"
-                  >
+                  <button type="button" onClick={() => removeOption(i)}
+                    style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text-muted)", fontSize: "1.25rem", lineHeight: 1, padding: "0 0.25rem" }}>
                     ×
                   </button>
                 )}
               </div>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={addOption}
-            className="mt-2 text-sm text-rose-600 hover:underline"
-          >
+          <button type="button" onClick={addOption}
+            style={{ marginTop: "0.5rem", background: "none", border: "none", cursor: "pointer", color: "var(--color-dome-gold)", fontSize: "0.85rem", fontFamily: "var(--font-sans)", padding: 0 }}>
             + Add option
           </button>
         </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-rose-600 text-white py-2 rounded hover:bg-rose-700 disabled:opacity-50 text-sm"
-        >
+
+        {error && <div className="alert alert--error">{error}</div>}
+
+        <button type="submit" disabled={loading} className="btn btn--primary" style={{ justifyContent: "center" }}>
           {loading ? "Submitting…" : "Submit for review"}
         </button>
       </form>

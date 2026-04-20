@@ -36,62 +36,46 @@ export default async function Home() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem", marginBottom: "2rem" }}>
         <div>
-          <h1 className="text-2xl font-bold">Lansing Predictions</h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)", marginBottom: "0.25rem" }}>Lansing Predictions</h1>
+          <p style={{ margin: 0, color: "var(--color-text-muted)" }}>
             What do you think will happen in our city?
           </p>
         </div>
         {session ? (
-          <Link
-            href="/submit"
-            className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 text-sm"
-          >
+          <Link href="/submit" className="btn btn--primary btn--sm" style={{ whiteSpace: "nowrap" }}>
             Submit a question
           </Link>
         ) : (
-          <Link href="/register" className="text-rose-600 text-sm hover:underline">
-            Join to predict →
+          <Link href="/register" className="btn btn--secondary btn--sm" style={{ whiteSpace: "nowrap" }}>
+            Join to predict
           </Link>
         )}
       </div>
 
       {open.length === 0 && closed.length === 0 ? (
-        <p className="text-gray-400 text-center py-16">No active predictions yet.</p>
+        <p style={{ textAlign: "center", padding: "4rem 0", color: "var(--color-text-muted)" }}>
+          No active predictions yet.
+        </p>
       ) : (
         <>
           {open.length > 0 && (
-            <section className="mb-10">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-3">
-                Open for voting
-              </h2>
-              <div className="space-y-4">
+            <section style={{ marginBottom: "2.5rem" }}>
+              <span className="eyebrow">Open for voting</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 {open.map((q) => (
-                  <QuestionCard
-                    key={q.id}
-                    question={q}
-                    userPickId={predictionMap[q.id] ?? null}
-                    isLoggedIn={!!session}
-                  />
+                  <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={!!session} />
                 ))}
               </div>
             </section>
           )}
-
           {closed.length > 0 && (
             <section>
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-3">
-                Closed
-              </h2>
-              <div className="space-y-4">
+              <span className="eyebrow">Closed</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 {closed.map((q) => (
-                  <QuestionCard
-                    key={q.id}
-                    question={q}
-                    userPickId={predictionMap[q.id] ?? null}
-                    isLoggedIn={!!session}
-                  />
+                  <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={!!session} />
                 ))}
               </div>
             </section>

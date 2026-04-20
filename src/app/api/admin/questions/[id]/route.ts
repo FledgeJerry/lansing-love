@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { notifySubscribersNewQuestion } from "@/lib/email";
 
 // PATCH /api/admin/questions/[id]
 // actions: "approve" | "reject" | "edit" | "set-status"
@@ -26,6 +27,7 @@ export async function PATCH(
         closeAt: body.closeAt ? new Date(body.closeAt) : null,
       },
     });
+    notifySubscribersNewQuestion({ title: question.title, category: question.category, sourceUrl: question.sourceUrl }).catch(() => {});
     return NextResponse.json(question);
   }
 

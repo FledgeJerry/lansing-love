@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { notifySubscribersBatch } from "@/lib/email";
 
 type QuestionInput = {
   title: string;
@@ -46,6 +47,12 @@ export async function POST(req: Request) {
       })
     )
   );
+
+  if (status === "ACTIVE") {
+    notifySubscribersBatch(
+      created.map((q) => ({ title: q.title, category: q.category, sourceUrl: q.sourceUrl }))
+    ).catch(() => {});
+  }
 
   return NextResponse.json({ created: created.length });
 }

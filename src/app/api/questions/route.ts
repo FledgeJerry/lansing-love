@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { notifyAdminsPendingQuestion } from "@/lib/email";
 
 // GET /api/questions - list active questions
 export async function GET() {
@@ -50,6 +51,11 @@ export async function POST(req: Request) {
     },
     include: { options: true },
   });
+
+  notifyAdminsPendingQuestion(
+    { title: question.title, category: question.category, sourceUrl: question.sourceUrl },
+    session.user.name ?? session.user.email ?? "Someone"
+  ).catch(() => {});
 
   return NextResponse.json(question, { status: 201 });
 }

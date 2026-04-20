@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+  RESOLVER
+}
+
+enum QuestionStatus {
+  PENDING
+  ACTIVE
+  CLOSED
+  RESOLVED
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String       @unique
+  emailVerified DateTime?
+  passwordHash  String?
+  role          Role         @default(USER)
+  createdAt     DateTime     @default(now())
+
+  predictions   Prediction[]
+  submissions   Question[]   @relation("SubmittedBy")
+  approvals     Question[]   @relation("ApprovedBy")
+  resolutions   Outcome[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Question {
+  id          String         @id @default(cuid())
+  title       String
+  description String?
+  category    String?
+  status      QuestionStatus @default(PENDING)
+  closeAt     DateTime?      // deadline for predictions
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  submittedById String
+  submittedBy   User   @relation("SubmittedBy", fields: [submittedById], references: [id])
+
+  approvedById String?
+  approvedBy   User?   @relation("ApprovedBy", fields: [approvedById], references: [id])
+
+  options     Option[]
+  predictions Prediction[]
+  outcome     Outcome?
+}
+
+model Option {
+  id         String  @id @default(cuid())
+  questionId String
+  label      String  // e.g. "Yes", "No", "Passes", "Fails"
+
+  question    Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  predictions Prediction[]
+  outcome     Outcome?
+}
+
+model Prediction {
+  id         String   @id @default(cuid())
+  userId     String
+  questionId String
+  optionId   String
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id])
+  question Question @relation(fields: [questionId], references: [id])
+  option   Option   @relation(fields: [optionId], references: [id])
+
+  @@unique([userId, questionId]) // one prediction per user per question
+}
+
+model Outcome {
+  id          String   @id @default(cuid())
+  questionId  String   @unique
+  optionId    String   @unique
+  resolvedAt  DateTime @default(now())
+  notes       String?
+
+  resolvedById String
+  resolvedBy   User   @relation(fields: [resolvedById], references: [id])
+
+  question Question @relation(fields: [questionId], references: [id])
+  option   Option   @relation(fields: [optionId], references: [id])
+}

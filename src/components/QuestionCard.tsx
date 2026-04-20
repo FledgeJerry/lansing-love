@@ -108,9 +108,22 @@ export default function QuestionCard({
             <> · <span style={{ color: "var(--color-teal-accent)" }}>{question.outcome.option.label}</span></>
           )}
         </span>
-        {!isLoggedIn && (
-          <span style={{ fontSize: "0.8rem", color: "var(--color-dome-gold)" }}>Sign in to predict</span>
-        )}
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          {question.sourceUrl && (
+            <a
+              href={question.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: "0.8rem", color: "var(--color-dome-gold)" }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              Learn more →
+            </a>
+          )}
+          {!isLoggedIn && (
+            <span style={{ fontSize: "0.8rem", color: "var(--color-dome-gold)" }}>Sign in to predict</span>
+          )}
+        </div>
       </div>
     </div>
   );

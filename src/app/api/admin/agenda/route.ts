@@ -50,6 +50,8 @@ For each item, produce:
 - 2-4 answer options that cover the realistic outcomes (e.g. "Approved", "Denied", "Tabled", "Amended and approved")
 - A short description with context (1-2 sentences max)
 - A category (e.g. "Zoning", "Budget", "Elections", "Transit", "Housing", "Public Safety")
+- A sourceUrl if a URL is explicitly mentioned in the agenda text for this item (e.g. a link to a document, report, or agenda packet). Leave as null if none is present — do not guess or fabricate URLs.
+- A sourceText with a brief excerpt or reference from the agenda that relates to this item (1-2 sentences max, or null if nothing useful)
 
 Skip purely administrative items (minutes approval, roll call, adjournment, etc.) that have no uncertain outcome.
 
@@ -60,7 +62,9 @@ Return ONLY valid JSON in this exact format, no markdown, no explanation:
       "title": "...",
       "description": "...",
       "category": "...",
-      "options": ["...", "..."]
+      "options": ["...", "..."],
+      "sourceUrl": "..." or null,
+      "sourceText": "..." or null
     }
   ]
 }
@@ -71,7 +75,7 @@ ${agendaText}`;
     const result = await model.generateContent(prompt);
     const raw = result.response.text();
 
-    let parsed: { questions: { title: string; description: string; category: string; options: string[] }[] };
+    let parsed: { questions: { title: string; description: string; category: string; options: string[]; sourceUrl?: string | null; sourceText?: string | null }[] };
     try {
       parsed = JSON.parse(raw);
     } catch {

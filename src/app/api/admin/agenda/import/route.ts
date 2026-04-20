@@ -8,6 +8,8 @@ type QuestionInput = {
   category: string;
   options: string[];
   closeAt?: string;
+  sourceUrl?: string;
+  sourceText?: string;
   status?: "PENDING" | "ACTIVE";
 };
 
@@ -31,6 +33,8 @@ export async function POST(req: Request) {
           title: q.title,
           description: q.description || null,
           category: q.category || null,
+          sourceUrl: q.sourceUrl || null,
+          sourceText: q.sourceText || null,
           status,
           closeAt: q.closeAt ? new Date(q.closeAt) : null,
           submittedById: session.user.id,

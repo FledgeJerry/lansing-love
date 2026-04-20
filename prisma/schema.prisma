@@ -77,6 +77,8 @@ model Question {
   title       String
   description String?
   category    String?
+  sourceUrl   String?
+  sourceText  String?
   status      QuestionStatus @default(PENDING)
   closeAt     DateTime?      // deadline for predictions
   createdAt   DateTime       @default(now())

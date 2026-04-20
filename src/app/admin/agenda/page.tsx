@@ -11,6 +11,8 @@ type SuggestedQuestion = {
   category: string;
   options: string[];
   closeAt?: string;
+  sourceUrl?: string;
+  sourceText?: string;
   enabled: boolean;
 };
 
@@ -67,6 +69,8 @@ export default function AgendaPage() {
         ...q,
         enabled: true,
         closeAt: "",
+        sourceUrl: q.sourceUrl ?? "",
+        sourceText: q.sourceText ?? "",
       }))
     );
   }
@@ -268,6 +272,15 @@ export default function AgendaPage() {
                         className="w-full border rounded px-3 py-1.5 text-sm mt-0.5 focus:outline-none focus:ring-2 focus:ring-rose-400"
                       />
                     </div>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500">Source URL</label>
+                    <input
+                      value={q.sourceUrl ?? ""}
+                      onChange={(e) => updateQuestion(i, { sourceUrl: e.target.value })}
+                      placeholder="https://… (optional)"
+                      className="w-full border rounded px-3 py-1.5 text-sm mt-0.5 focus:outline-none focus:ring-2 focus:ring-rose-400"
+                    />
                   </div>
                   <div>
                     <label className="text-xs text-gray-500">Options</label>

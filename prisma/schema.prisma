@@ -29,6 +29,17 @@ model User {
   role          Role         @default(USER)
   createdAt     DateTime     @default(now())
 
+  // Demographics
+  neighborhood    String?
+  ward            String?
+  ageRange        String?
+  gender          String?
+  raceEthnicity   String?
+  occupation      String?
+  attendsMeetings String?
+  interests       String?
+  emailSubscribed Boolean  @default(true)
+
   predictions   Prediction[]
   submissions   Question[]   @relation("SubmittedBy")
   approvals     Question[]   @relation("ApprovedBy")

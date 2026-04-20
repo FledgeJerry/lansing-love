@@ -51,7 +51,7 @@ For each item, produce:
 - A short description with context (1-2 sentences max)
 - A category (e.g. "Zoning", "Budget", "Elections", "Transit", "Housing", "Public Safety")
 - A sourceUrl if a URL is explicitly mentioned in the agenda text for this item (e.g. a link to a document, report, or agenda packet). Leave as null if none is present — do not guess or fabricate URLs.
-- A sourceText with a brief excerpt or reference from the agenda that relates to this item (1-2 sentences max, or null if nothing useful)
+- A sourceText identifying the agenda item number and meeting this came from (e.g. "Agenda Item #7 — Lansing City Council Meeting, April 15, 2026"). Extract the meeting date and body name from the agenda header. If no item number is present, use the section heading. Never leave this null if you can identify the meeting.
 
 Skip purely administrative items (minutes approval, roll call, adjournment, etc.) that have no uncertain outcome.
 

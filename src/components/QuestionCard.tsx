@@ -10,6 +10,8 @@ type QuestionWithDetails = Question & {
   options: OptionWithCount[];
   _count: { predictions: number };
   outcome: OutcomeWithOption | null;
+  sourceUrl?: string | null;
+  sourceText?: string | null;
 };
 
 export default function QuestionCard({
@@ -59,6 +61,11 @@ export default function QuestionCard({
       {question.description && (
         <p style={{ fontSize: "0.875rem", color: "var(--color-text-muted)", marginBottom: "0.75rem" }}>
           {question.description}
+        </p>
+      )}
+      {question.sourceText && (
+        <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginBottom: "0.5rem", fontStyle: "italic" }}>
+          {question.sourceText}
         </p>
       )}
       {question.category && (

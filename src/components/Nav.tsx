@@ -21,6 +21,9 @@ export default function Nav() {
         {(session?.user.role === "RESOLVER" || session?.user.role === "ADMIN") && (
           <li><Link href="/resolver">Resolve</Link></li>
         )}
+        {session && (
+          <li><Link href="/profile">Profile</Link></li>
+        )}
         {session ? (
           <li>
             <button

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   }
 
   const { resolutions } = await req.json() as {
-    resolutions: { questionId: string; optionId: string }[];
+    resolutions: { questionId: string; optionId: string; notes?: string }[];
   };
 
   if (!Array.isArray(resolutions) || resolutions.length === 0) {
@@ -19,12 +19,12 @@ export async function POST(req: Request) {
   }
 
   let resolved = 0;
-  for (const { questionId, optionId } of resolutions) {
+  for (const { questionId, optionId, notes } of resolutions) {
     await prisma.$transaction([
       prisma.outcome.upsert({
         where: { questionId },
-        create: { questionId, optionId, resolvedById: session.user.id },
-        update: { optionId, resolvedById: session.user.id, resolvedAt: new Date() },
+        create: { questionId, optionId, resolvedById: session.user.id, notes: notes || null },
+        update: { optionId, resolvedById: session.user.id, resolvedAt: new Date(), notes: notes || null },
       }),
       prisma.question.update({
         where: { id: questionId },

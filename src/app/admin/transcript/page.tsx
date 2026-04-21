@@ -44,6 +44,7 @@ export default function TranscriptPage() {
   const [unresolved, setUnresolved] = useState<Unresolved[]>([]);
   // selections: questionId → optionId (or "" to skip)
   const [selections, setSelections] = useState<Record<string, string>>({});
+  const [notes, setNotes] = useState<Record<string, string>>({});
   const [error, setError] = useState("");
   const [done, setDone] = useState<number | null>(null);
 
@@ -59,6 +60,7 @@ export default function TranscriptPage() {
     setSuggestions([]);
     setUnresolved([]);
     setSelections({});
+    setNotes({});
     setDone(null);
 
     const form = new FormData();
@@ -96,7 +98,7 @@ export default function TranscriptPage() {
   async function resolve() {
     const resolutionsList = Object.entries(selections)
       .filter(([, optionId]) => optionId)
-      .map(([questionId, optionId]) => ({ questionId, optionId }));
+      .map(([questionId, optionId]) => ({ questionId, optionId, notes: notes[questionId] || undefined }));
 
     if (resolutionsList.length === 0) return;
     setResolving(true);
@@ -262,6 +264,13 @@ export default function TranscriptPage() {
                     );
                   })}
                 </div>
+                <textarea
+                  value={notes[q.questionId] ?? ""}
+                  onChange={(e) => setNotes((n) => ({ ...n, [q.questionId]: e.target.value }))}
+                  placeholder="Resolution notes (optional) — e.g. voted 5-2, tabled for next meeting…"
+                  rows={2}
+                  style={{ marginTop: "0.75rem", width: "100%", fontSize: "0.8rem", resize: "vertical", minHeight: "unset" }}
+                />
               </div>
             );
           })}

@@ -56,6 +56,7 @@ export default function AdminPage() {
   const [editing, setEditing] = useState<string | null>(null);
   const [editDraft, setEditDraft] = useState<Partial<Question> & { optionLabels?: string[] }>({});
   const [resolveSelections, setResolveSelections] = useState<Record<string, string>>({});
+  const [resolveNotes, setResolveNotes] = useState<Record<string, string>>({});
   const [resolving, setResolving] = useState(false);
   const [resolvedCount, setResolvedCount] = useState<number | null>(null);
 
@@ -86,6 +87,7 @@ export default function AdminPage() {
           );
           setQuestions(resolvable);
           setResolveSelections({});
+          setResolveNotes({});
           setResolvedCount(null);
           setLoading(false);
         });
@@ -155,7 +157,7 @@ export default function AdminPage() {
   async function bulkResolve() {
     const resolutions = Object.entries(resolveSelections)
       .filter(([, optionId]) => optionId)
-      .map(([questionId, optionId]) => ({ questionId, optionId }));
+      .map(([questionId, optionId]) => ({ questionId, optionId, notes: resolveNotes[questionId] || undefined }));
     if (resolutions.length === 0) return;
     setResolving(true);
     const res = await fetch("/api/admin/questions/bulk-resolve", {
@@ -292,6 +294,13 @@ export default function AdminPage() {
                         </button>
                       )}
                     </div>
+                    <textarea
+                      value={resolveNotes[q.id] ?? ""}
+                      onChange={(e) => setResolveNotes((n) => ({ ...n, [q.id]: e.target.value }))}
+                      placeholder="Resolution notes (optional) — e.g. voted 5-2, tabled for next meeting…"
+                      rows={2}
+                      style={{ marginTop: "0.75rem", width: "100%", fontSize: "0.8rem", resize: "vertical", minHeight: "unset" }}
+                    />
                   </div>
                 ))}
               </div>

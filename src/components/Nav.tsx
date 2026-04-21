@@ -16,9 +16,6 @@ export default function Nav() {
       {session?.user.role === "ADMIN" && (
         <li><Link href="/admin" onClick={() => setOpen(false)}>Admin</Link></li>
       )}
-      {(session?.user.role === "RESOLVER" || session?.user.role === "ADMIN") && (
-        <li><Link href="/resolver" onClick={() => setOpen(false)}>Resolve</Link></li>
-      )}
       {session && (
         <li><Link href="/profile" onClick={() => setOpen(false)}>Profile</Link></li>
       )}

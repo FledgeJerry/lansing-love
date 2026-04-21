@@ -52,11 +52,13 @@ For each item, produce:
 - A category (e.g. "Zoning", "Budget", "Elections", "Transit", "Housing", "Public Safety")
 - A sourceUrl if a URL is explicitly mentioned in the agenda text for this item (e.g. a link to a document, report, or agenda packet). Leave as null if none is present — do not guess or fabricate URLs.
 - A sourceText identifying the agenda item number and meeting this came from (e.g. "Agenda Item #7 — Lansing City Council Meeting, April 15, 2026"). Extract the meeting date and body name from the agenda header. If no item number is present, use the section heading. Never leave this null if you can identify the meeting.
+- A meetingStart datetime when the meeting is scheduled to begin, extracted from the agenda header (e.g. "2026-04-21T07:00:00"). Use ISO 8601 format. This is the time predictions should close — people should not be able to predict after the meeting starts. If no time is listed, default to 07:00:00 PM local time (19:00:00). If no date can be found, leave as null.
 
 Skip purely administrative items (minutes approval, roll call, adjournment, etc.) that have no uncertain outcome.
 
 Return ONLY valid JSON in this exact format, no markdown, no explanation:
 {
+  "meetingStart": "2026-04-21T19:00:00" or null,
   "questions": [
     {
       "title": "...",
@@ -75,7 +77,7 @@ ${agendaText}`;
     const result = await model.generateContent(prompt);
     const raw = result.response.text();
 
-    let parsed: { questions: { title: string; description: string; category: string; options: string[]; sourceUrl?: string | null; sourceText?: string | null }[] };
+    let parsed: { meetingStart?: string | null; questions: { title: string; description: string; category: string; options: string[]; sourceUrl?: string | null; sourceText?: string | null }[] };
     try {
       parsed = JSON.parse(raw);
     } catch {

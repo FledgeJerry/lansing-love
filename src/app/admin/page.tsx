@@ -27,7 +27,7 @@ type User = {
   createdAt: string;
 };
 
-type Tab = "pending" | "all" | "users" | "stats";
+type Tab = "pending" | "resolve" | "all" | "users" | "stats";
 
 type Stats = {
   questionsByStatus: { status: string; count: number }[];
@@ -55,6 +55,9 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [editDraft, setEditDraft] = useState<Partial<Question> & { optionLabels?: string[] }>({});
+  const [resolveSelections, setResolveSelections] = useState<Record<string, string>>({});
+  const [resolving, setResolving] = useState(false);
+  const [resolvedCount, setResolvedCount] = useState<number | null>(null);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -72,6 +75,20 @@ export default function AdminPage() {
       fetch("/api/admin/stats")
         .then((r) => r.json())
         .then((d) => { setStats(d); setLoading(false); });
+    } else if (tab === "resolve") {
+      fetch("/api/admin/questions?status=ALL")
+        .then((r) => r.json())
+        .then((d: Question[]) => {
+          const now = new Date();
+          const resolvable = d.filter((q) =>
+            q.status === "CLOSED" ||
+            (q.status === "ACTIVE" && q.closeAt && new Date(q.closeAt) < now)
+          );
+          setQuestions(resolvable);
+          setResolveSelections({});
+          setResolvedCount(null);
+          setLoading(false);
+        });
     } else {
       const qs = tab === "pending" ? "PENDING" : "ALL";
       fetch(`/api/admin/questions?status=${qs}`)
@@ -135,6 +152,26 @@ export default function AdminPage() {
       .then(setQuestions);
   }
 
+  async function bulkResolve() {
+    const resolutions = Object.entries(resolveSelections)
+      .filter(([, optionId]) => optionId)
+      .map(([questionId, optionId]) => ({ questionId, optionId }));
+    if (resolutions.length === 0) return;
+    setResolving(true);
+    const res = await fetch("/api/admin/questions/bulk-resolve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ resolutions }),
+    });
+    setResolving(false);
+    if (res.ok) {
+      const data = await res.json();
+      setResolvedCount(data.resolved);
+      setQuestions((qs) => qs.filter((q) => !resolveSelections[q.id]));
+      setResolveSelections({});
+    }
+  }
+
   async function setUserRole(id: string, role: string) {
     const res = await fetch(`/api/admin/users/${id}`, {
       method: "PATCH",
@@ -160,6 +197,7 @@ export default function AdminPage() {
 
       <div className="tabs">
         <button className={`tab-btn${tab === "pending" ? " active" : ""}`} onClick={() => setTab("pending")}>Pending</button>
+        <button className={`tab-btn${tab === "resolve" ? " active" : ""}`} onClick={() => setTab("resolve")}>Resolve</button>
         <button className={`tab-btn${tab === "all" ? " active" : ""}`} onClick={() => setTab("all")}>All Questions</button>
         <button className={`tab-btn${tab === "users" ? " active" : ""}`} onClick={() => setTab("users")}>Users</button>
         <button className={`tab-btn${tab === "stats" ? " active" : ""}`} onClick={() => setTab("stats")}>Stats</button>
@@ -183,6 +221,90 @@ export default function AdminPage() {
                 />
               ))}
             </div>
+          )}
+        </>
+      )}
+
+      {/* RESOLVE TAB */}
+      {!loading && tab === "resolve" && (
+        <>
+          {resolvedCount !== null && (
+            <div className="card" style={{ background: "var(--color-teal-accent)", color: "#fff", padding: "0.75rem 1.25rem", marginBottom: "1rem" }}>
+              {resolvedCount} question{resolvedCount !== 1 ? "s" : ""} resolved successfully.
+            </div>
+          )}
+          {questions.length === 0 && resolvedCount === null && (
+            <p style={{ color: "var(--color-text-muted)" }}>No questions awaiting resolution.</p>
+          )}
+          {questions.length > 0 && (
+            <>
+              <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem", marginBottom: "1rem" }}>
+                Select the correct outcome for each question. Questions with no selection will be skipped.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {questions.map((q) => (
+                  <div key={q.id} className="card" style={{ borderLeft: resolveSelections[q.id] ? "3px solid var(--color-teal-accent)" : "3px solid var(--color-border)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", marginBottom: "0.5rem" }}>
+                      <div>
+                        {q.category && <span className="eyebrow">{q.category}</span>}
+                        <p style={{ fontFamily: "var(--font-serif)", color: "var(--color-limestone)", margin: "0.25rem 0 0" }}>{q.title}</p>
+                        {q.description && <p style={{ fontSize: "0.8rem", color: "var(--color-text-muted)", margin: "0.25rem 0 0" }}>{q.description}</p>}
+                      </div>
+                      <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", flexShrink: 0 }}>
+                        {q._count?.predictions ?? 0} predictions
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.75rem" }}>
+                      {q.options.map((o) => (
+                        <label
+                          key={o.id}
+                          style={{
+                            display: "flex", alignItems: "center", gap: "0.4rem", cursor: "pointer",
+                            padding: "0.4rem 0.875rem", borderRadius: "999px", fontSize: "0.875rem",
+                            border: `1px solid ${resolveSelections[q.id] === o.id ? "var(--color-teal-accent)" : "var(--color-border)"}`,
+                            background: resolveSelections[q.id] === o.id ? "rgba(0,180,160,0.1)" : "transparent",
+                            color: resolveSelections[q.id] === o.id ? "var(--color-teal-accent)" : "var(--color-text-muted)",
+                            transition: "all 0.15s",
+                          }}
+                        >
+                          <input
+                            type="radio"
+                            name={`resolve-${q.id}`}
+                            value={o.id}
+                            checked={resolveSelections[q.id] === o.id}
+                            onChange={() => setResolveSelections((s) => ({ ...s, [q.id]: o.id }))}
+                            style={{ display: "none" }}
+                          />
+                          {o.label}
+                        </label>
+                      ))}
+                      {resolveSelections[q.id] && (
+                        <button
+                          onClick={() => setResolveSelections((s) => { const n = { ...s }; delete n[q.id]; return n; })}
+                          style={{ background: "none", border: "none", cursor: "pointer", fontSize: "0.8rem", color: "var(--color-text-muted)", padding: "0.4rem 0.5rem" }}
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: "1.5rem", display: "flex", alignItems: "center", gap: "1rem" }}>
+                <button
+                  onClick={bulkResolve}
+                  disabled={resolving || Object.keys(resolveSelections).length === 0}
+                  className="btn btn--primary"
+                >
+                  {resolving
+                    ? "Resolving…"
+                    : `Resolve ${Object.keys(resolveSelections).length} question${Object.keys(resolveSelections).length !== 1 ? "s" : ""}`}
+                </button>
+                {Object.keys(resolveSelections).length === 0 && (
+                  <span style={{ fontSize: "0.8rem", color: "var(--color-text-muted)" }}>Select at least one outcome above</span>
+                )}
+              </div>
+            </>
           )}
         </>
       )}

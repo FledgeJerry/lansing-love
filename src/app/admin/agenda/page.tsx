@@ -16,6 +16,8 @@ type SuggestedQuestion = {
   enabled: boolean;
 };
 
+type CloseAtDisplay = { date: string; time: string };
+
 export default function AgendaPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -26,6 +28,7 @@ export default function AgendaPage() {
   const [extracting, setExtracting] = useState(false);
   const [importing, setImporting] = useState(false);
   const [questions, setQuestions] = useState<SuggestedQuestion[]>([]);
+  const [meetingStart, setMeetingStart] = useState<CloseAtDisplay>({ date: "", time: "19:00" });
   const [error, setError] = useState("");
   const [importStatus, setImportStatus] = useState<"PENDING" | "ACTIVE">("ACTIVE");
   const [done, setDone] = useState(false);
@@ -64,11 +67,24 @@ export default function AgendaPage() {
     }
 
     const data = JSON.parse(body);
+
+    let parsedDate = "";
+    let parsedTime = "19:00";
+    if (data.meetingStart) {
+      const dt = new Date(data.meetingStart);
+      if (!isNaN(dt.getTime())) {
+        parsedDate = dt.toISOString().split("T")[0];
+        parsedTime = dt.toTimeString().slice(0, 5);
+      }
+    }
+    setMeetingStart({ date: parsedDate, time: parsedTime });
+
+    const closeAt = parsedDate ? `${parsedDate}T${parsedTime}` : "";
     setQuestions(
       (data.questions ?? []).map((q: Omit<SuggestedQuestion, "enabled">) => ({
         ...q,
         enabled: true,
-        closeAt: "",
+        closeAt,
         sourceUrl: q.sourceUrl ?? "",
         sourceText: q.sourceText ?? "",
       }))
@@ -191,6 +207,38 @@ export default function AgendaPage() {
       {/* Review section */}
       {questions.length > 0 && !done && (
         <div className="space-y-4">
+          <div className="bg-white border border-gray-200 rounded-lg p-4 flex flex-wrap items-end gap-4">
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">Meeting date (auto-close all questions)</label>
+              <input
+                type="date"
+                value={meetingStart.date}
+                onChange={(e) => {
+                  const date = e.target.value;
+                  setMeetingStart((s) => ({ ...s, date }));
+                  const closeAt = date ? `${date}T${meetingStart.time}` : "";
+                  setQuestions((qs) => qs.map((q) => ({ ...q, closeAt })));
+                }}
+                className="border rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-500 block mb-1">Meeting start time</label>
+              <input
+                type="time"
+                value={meetingStart.time}
+                onChange={(e) => {
+                  const time = e.target.value;
+                  setMeetingStart((s) => ({ ...s, time }));
+                  const closeAt = meetingStart.date ? `${meetingStart.date}T${time}` : "";
+                  setQuestions((qs) => qs.map((q) => ({ ...q, closeAt })));
+                }}
+                className="border rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400"
+              />
+            </div>
+            <p className="text-xs text-gray-400">Predictions close at meeting start. You can override per-question below.</p>
+          </div>
+
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-500">
               {questions.length} question{questions.length !== 1 ? "s" : ""} extracted —{" "}
@@ -263,10 +311,10 @@ export default function AgendaPage() {
                         className="w-full border rounded px-3 py-1.5 text-sm mt-0.5 focus:outline-none focus:ring-2 focus:ring-rose-400"
                       />
                     </div>
-                    <div className="w-36">
-                      <label className="text-xs text-gray-500">Close date</label>
+                    <div className="w-44">
+                      <label className="text-xs text-gray-500">Close date &amp; time</label>
                       <input
-                        type="date"
+                        type="datetime-local"
                         value={q.closeAt ?? ""}
                         onChange={(e) => updateQuestion(i, { closeAt: e.target.value })}
                         className="w-full border rounded px-3 py-1.5 text-sm mt-0.5 focus:outline-none focus:ring-2 focus:ring-rose-400"

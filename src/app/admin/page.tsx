@@ -190,9 +190,14 @@ export default function AdminPage() {
     <div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
         <h1 style={{ margin: 0 }}>Admin</h1>
-        <Link href="/admin/agenda" className="btn btn--primary btn--sm">
-          Import from agenda
-        </Link>
+        <div style={{ display: "flex", gap: "0.5rem" }}>
+          <Link href="/admin/transcript" className="btn btn--ghost btn--sm">
+            Resolve from transcript
+          </Link>
+          <Link href="/admin/agenda" className="btn btn--primary btn--sm">
+            Import from agenda
+          </Link>
+        </div>
       </div>
 
       <div className="tabs">

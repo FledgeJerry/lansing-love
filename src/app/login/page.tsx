@@ -9,6 +9,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPw, setShowPw] = useState(false);
 
   async function handleSubmit(e: { preventDefault(): void; currentTarget: HTMLFormElement }) {
     e.preventDefault();
@@ -40,8 +41,32 @@ export default function LoginPage() {
           <input id="email" name="email" type="email" required placeholder="you@example.com" />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" required />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.4rem" }}>
+            <label htmlFor="password" style={{ margin: 0 }}>Password</label>
+            <Link href="/forgot-password" style={{ fontSize: "0.8rem", color: "var(--color-dome-gold)" }}>
+              Forgot password?
+            </Link>
+          </div>
+          <div style={{ position: "relative" }}>
+            <input
+              id="password"
+              name="password"
+              type={showPw ? "text" : "password"}
+              required
+              style={{ paddingRight: "3rem" }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPw((v) => !v)}
+              style={{
+                position: "absolute", right: "0.75rem", top: "50%", transform: "translateY(-50%)",
+                background: "none", border: "none", cursor: "pointer",
+                color: "var(--color-text-muted)", fontSize: "0.8rem", fontFamily: "var(--font-sans)",
+              }}
+            >
+              {showPw ? "Hide" : "Show"}
+            </button>
+          </div>
         </div>
         {error && <div className="alert alert--error">{error}</div>}
         <button type="submit" disabled={loading} className="btn btn--primary" style={{ width: "100%", justifyContent: "center" }}>

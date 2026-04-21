@@ -44,7 +44,14 @@ export default function ProfilePage() {
     if (status !== "authenticated") return;
     fetch("/api/profile")
       .then((r) => r.ok ? r.json() : null)
-      .then((d) => { if (d) setProfile({ ...EMPTY, ...d }); setLoading(false); });
+      .then((d) => {
+        if (d) setProfile({
+          ...EMPTY,
+          ...Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v ?? ""])),
+          emailSubscribed: d.emailSubscribed ?? true,
+        });
+        setLoading(false);
+      });
   }, [status, router]);
 
   function toggleMulti(field: "raceEthnicity" | "interests", value: string) {

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import LeaderboardTabs from "@/components/LeaderboardTabs";
 
 export const dynamic = "force-dynamic";
 
@@ -29,57 +30,11 @@ export default async function LeaderboardPage() {
     .map((u) => ({ ...u, accuracy: u.total > 0 ? Math.round((u.correct / u.total) * 100) : 0 }))
     .sort((a, b) => b.correct - a.correct || b.accuracy - a.accuracy);
 
-  const medals = ["🥇", "🥈", "🥉"];
-
   return (
     <div>
       <h1 style={{ marginBottom: "0.25rem" }}>Leaderboard</h1>
-      <p style={{ marginBottom: "2rem" }}>Who knows Lansing best? Ranked by correct predictions.</p>
-
-      {leaderboard.length === 0 ? (
-        <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
-          <p style={{ color: "var(--color-text-muted)", margin: 0 }}>
-            No resolved predictions yet — check back soon.
-          </p>
-        </div>
-      ) : (
-        <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-          <table className="ll-table">
-            <thead>
-              <tr>
-                <th style={{ width: "3rem" }}>#</th>
-                <th>Predictor</th>
-                <th style={{ textAlign: "right" }}>Correct</th>
-                <th style={{ textAlign: "right" }}>Total</th>
-                <th style={{ textAlign: "right" }}>Accuracy</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderboard.map((u, i) => (
-                <tr key={u.id}>
-                  <td style={{ color: "var(--color-text-muted)", fontFamily: "var(--font-serif)" }}>
-                    {medals[i] ?? i + 1}
-                  </td>
-                  <td style={{ color: "var(--color-limestone)", fontWeight: i < 3 ? 600 : 400 }}>
-                    {u.name ?? u.email.split("@")[0]}
-                  </td>
-                  <td style={{ textAlign: "right", color: "var(--color-teal-accent)", fontWeight: 600 }}>{u.correct}</td>
-                  <td style={{ textAlign: "right" }}>{u.total}</td>
-                  <td style={{ textAlign: "right" }}>
-                    <span className={`badge ${u.accuracy >= 70 ? "badge--teal" : u.accuracy >= 50 ? "badge--gold" : "badge--muted"}`}>
-                      {u.accuracy}%
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      <p style={{ marginTop: "1rem", fontSize: "0.8rem", color: "var(--color-text-muted)" }}>
-        {resolvedQuestions.length} resolved question{resolvedQuestions.length !== 1 ? "s" : ""} scored so far.
-      </p>
+      <p style={{ marginBottom: "2rem" }}>Who knows Lansing best?</p>
+      <LeaderboardTabs leaderboard={leaderboard} resolvedCount={resolvedQuestions.length} />
     </div>
   );
 }

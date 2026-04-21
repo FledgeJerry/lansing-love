@@ -11,9 +11,20 @@ type LeaderboardEntry = {
   accuracy: number;
 };
 
+type ResolvedQuestion = {
+  id: string;
+  title: string;
+  category: string | null;
+  outcomeLabel: string | null;
+  outcomeNotes: string | null;
+  predictionCount: number;
+  resolvedAt: string | null;
+};
+
 type Stats = {
   questionsByStatus: { status: string; count: number }[];
   questionsByCategory: { category: string; count: number }[];
+  accuracyByCategory: { category: string; correct: number; total: number; accuracy: number }[];
   totalUsers: number;
   totalPredictions: number;
   overallAccuracy: number | null;
@@ -34,11 +45,13 @@ const medals = ["🥇", "🥈", "🥉"];
 export default function LeaderboardTabs({
   leaderboard,
   resolvedCount,
+  resolvedQuestions,
 }: {
   leaderboard: LeaderboardEntry[];
   resolvedCount: number;
+  resolvedQuestions: ResolvedQuestion[];
 }) {
-  const [tab, setTab] = useState<"leaderboard" | "stats">("leaderboard");
+  const [tab, setTab] = useState<"leaderboard" | "resolved" | "stats">("leaderboard");
   const [stats, setStats] = useState<Stats | null>(null);
   const [loadingStats, setLoadingStats] = useState(false);
 
@@ -58,6 +71,9 @@ export default function LeaderboardTabs({
       <div className="tabs" style={{ marginBottom: "1.5rem" }}>
         <button className={`tab-btn${tab === "leaderboard" ? " active" : ""}`} onClick={() => setTab("leaderboard")}>
           Leaderboard
+        </button>
+        <button className={`tab-btn${tab === "resolved" ? " active" : ""}`} onClick={() => setTab("resolved")}>
+          Resolved {resolvedCount > 0 && <span style={{ opacity: 0.65 }}>({resolvedCount})</span>}
         </button>
         <button className={`tab-btn${tab === "stats" ? " active" : ""}`} onClick={() => setTab("stats")}>
           Community Stats
@@ -113,6 +129,47 @@ export default function LeaderboardTabs({
         </>
       )}
 
+      {/* RESOLVED TAB */}
+      {tab === "resolved" && (
+        <>
+          {resolvedQuestions.length === 0 ? (
+            <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
+              <p style={{ color: "var(--color-text-muted)", margin: 0 }}>No resolved questions yet.</p>
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {resolvedQuestions.map((q) => (
+                <div key={q.id} className="card" style={{ padding: "1rem 1.25rem" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem" }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      {q.category && <span className="eyebrow">{q.category}</span>}
+                      <p style={{ fontFamily: "var(--font-serif)", color: "var(--color-limestone)", margin: "0.2rem 0 0.4rem", fontSize: "0.95rem" }}>
+                        {q.title}
+                      </p>
+                      {q.outcomeNotes && (
+                        <p style={{ fontSize: "0.8rem", color: "var(--color-text-muted)", fontStyle: "italic", margin: 0 }}>
+                          {q.outcomeNotes}
+                        </p>
+                      )}
+                    </div>
+                    <div style={{ textAlign: "right", flexShrink: 0 }}>
+                      {q.outcomeLabel && (
+                        <span className="badge badge--teal" style={{ display: "block", marginBottom: "0.25rem" }}>
+                          {q.outcomeLabel}
+                        </span>
+                      )}
+                      <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>
+                        {q.predictionCount} prediction{q.predictionCount !== 1 ? "s" : ""}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
       {/* STATS TAB */}
       {tab === "stats" && (
         <>
@@ -134,6 +191,37 @@ export default function LeaderboardTabs({
                   </div>
                 ))}
               </div>
+
+              {/* Accuracy by category */}
+              {stats.accuracyByCategory.length > 0 && (
+                <div className="card" style={{ padding: "1.25rem" }}>
+                  <p style={{ fontWeight: 600, marginBottom: "1rem" }}>Accuracy by category</p>
+                  <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+                    <thead>
+                      <tr style={{ color: "var(--color-text-muted)", fontSize: "0.75rem" }}>
+                        <th style={{ textAlign: "left", paddingBottom: "0.5rem" }}>Category</th>
+                        <th style={{ textAlign: "right", paddingBottom: "0.5rem" }}>Correct</th>
+                        <th style={{ textAlign: "right", paddingBottom: "0.5rem" }}>Predictions</th>
+                        <th style={{ textAlign: "right", paddingBottom: "0.5rem" }}>Accuracy</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {stats.accuracyByCategory.map((c) => (
+                        <tr key={c.category} style={{ borderTop: "1px solid var(--color-border)" }}>
+                          <td style={{ padding: "0.5rem 0" }}>{c.category}</td>
+                          <td style={{ textAlign: "right", color: "var(--color-text-muted)" }}>{c.correct}</td>
+                          <td style={{ textAlign: "right", color: "var(--color-text-muted)" }}>{c.total}</td>
+                          <td style={{ textAlign: "right" }}>
+                            <span className={`badge ${c.accuracy >= 70 ? "badge--teal" : c.accuracy >= 50 ? "badge--gold" : "badge--muted"}`}>
+                              {c.accuracy}%
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
 
               {/* Questions by status */}
               <div className="card" style={{ padding: "1.25rem" }}>

@@ -33,14 +33,10 @@ export default function QuestionFeed({
       ? questions
       : questions.filter((q) => (q.category || "Other") === activeCategory);
 
-  const open = filtered.filter((q) => q.status === "ACTIVE");
-  const awaiting = filtered.filter((q) => q.status === "CLOSED");
-  const resolved = filtered.filter((q) => q.status === "RESOLVED");
-
   if (questions.length === 0) {
     return (
       <p style={{ textAlign: "center", padding: "4rem 0", color: "var(--color-text-muted)" }}>
-        No active predictions yet.
+        No active predictions yet — check back soon.
       </p>
     );
   }
@@ -65,43 +61,16 @@ export default function QuestionFeed({
         })}
       </div>
 
-      {open.length === 0 && awaiting.length === 0 && resolved.length === 0 ? (
+      {filtered.length === 0 ? (
         <p style={{ textAlign: "center", padding: "4rem 0", color: "var(--color-text-muted)" }}>
-          No predictions in this category yet.
+          No active predictions in this category.
         </p>
       ) : (
-        <>
-          {open.length > 0 && (
-            <section style={{ marginBottom: "2.5rem" }}>
-              <span className="eyebrow">Open for voting</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                {open.map((q) => (
-                  <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={isLoggedIn} />
-                ))}
-              </div>
-            </section>
-          )}
-          {awaiting.length > 0 && (
-            <section style={{ marginBottom: "2.5rem" }}>
-              <span className="eyebrow">Awaiting resolution</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                {awaiting.map((q) => (
-                  <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={isLoggedIn} />
-                ))}
-              </div>
-            </section>
-          )}
-          {resolved.length > 0 && (
-            <section>
-              <span className="eyebrow">Resolved</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                {resolved.map((q) => (
-                  <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={isLoggedIn} />
-                ))}
-              </div>
-            </section>
-          )}
-        </>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {filtered.map((q) => (
+            <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={isLoggedIn} />
+          ))}
+        </div>
       )}
     </>
   );

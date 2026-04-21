@@ -9,7 +9,7 @@ export default async function Home() {
   const session = await auth();
 
   const questions = await prisma.question.findMany({
-    where: { status: { in: ["ACTIVE", "CLOSED", "RESOLVED"] } },
+    where: { status: "ACTIVE" },
     include: {
       options: {
         include: { _count: { select: { predictions: true } } },

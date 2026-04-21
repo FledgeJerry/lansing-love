@@ -102,12 +102,12 @@ export async function GET() {
 async function getAccuracyByField(field: "ward" | "attendsMeetings", minGroup: number) {
   const users = await prisma.user.findMany({
     where: { [field]: { not: null } },
-    select: { id: true, [field]: true },
+    select: { id: true, ward: true, attendsMeetings: true },
   });
 
   const groups: Record<string, string[]> = {};
   for (const u of users) {
-    const val = u[field] as string;
+    const val = u[field];
     if (!val) continue;
     if (!groups[val]) groups[val] = [];
     groups[val].push(u.id);

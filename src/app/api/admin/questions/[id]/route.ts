@@ -32,7 +32,11 @@ export async function PATCH(
   }
 
   if (action === "reject") {
-    await prisma.question.delete({ where: { id } });
+    await prisma.$transaction([
+      prisma.outcome.deleteMany({ where: { questionId: id } }),
+      prisma.prediction.deleteMany({ where: { questionId: id } }),
+      prisma.question.delete({ where: { id } }),
+    ]);
     return NextResponse.json({ deleted: true });
   }
 

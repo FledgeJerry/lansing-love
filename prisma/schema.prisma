@@ -38,7 +38,7 @@ model User {
   occupation      String?
   attendsMeetings String?
   interests       String?
-  emailSubscribed Boolean  @default(true)
+  emailSubscribed Boolean  @default(false)
 
   predictions   Prediction[]
   submissions   Question[]   @relation("SubmittedBy")

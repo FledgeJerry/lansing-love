@@ -28,7 +28,7 @@ type Profile = {
 const EMPTY: Profile = {
   name: "", email: "", neighborhood: "", ward: "", ageRange: "",
   gender: "", raceEthnicity: "", occupation: "", attendsMeetings: "",
-  interests: "", emailSubscribed: true,
+  interests: "", emailSubscribed: false,
 };
 
 export default function ProfilePage() {
@@ -48,7 +48,7 @@ export default function ProfilePage() {
         if (d) setProfile({
           ...EMPTY,
           ...Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v ?? ""])),
-          emailSubscribed: d.emailSubscribed ?? true,
+          emailSubscribed: d.emailSubscribed ?? false,
         });
         setLoading(false);
       });

@@ -25,6 +25,14 @@ type User = {
   email: string;
   role: "USER" | "ADMIN" | "RESOLVER";
   createdAt: string;
+  emailSubscribed: boolean;
+  ward: string | null;
+  ageRange: string | null;
+  gender: string | null;
+  raceEthnicity: string | null;
+  occupation: string | null;
+  attendsMeetings: string | null;
+  interests: string | null;
 };
 
 type Tab = "pending" | "resolve" | "all" | "users" | "stats";
@@ -359,40 +367,93 @@ export default function AdminPage() {
 
       {/* USERS TAB */}
       {!loading && tab === "users" && (
-        <div className="card" style={{ padding: 0, overflow: "hidden" }}>
-          <table className="ll-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Joined</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((u) => (
-                <tr key={u.id}>
-                  <td style={{ color: "var(--color-limestone)" }}>{u.name ?? "—"}</td>
-                  <td>{u.email}</td>
-                  <td>
-                    <select
-                      value={u.role}
-                      onChange={(e) => setUserRole(u.id, e.target.value)}
-                      disabled={u.id === session?.user.id}
-                      style={{ width: "auto" }}
-                    >
-                      <option value="USER">User</option>
-                      <option value="RESOLVER">Resolver</option>
-                      <option value="ADMIN">Admin</option>
-                    </select>
-                  </td>
-                  <td style={{ fontSize: "0.8rem" }}>{new Date(u.createdAt).toLocaleDateString()}</td>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          <div className="card" style={{ padding: 0, overflow: "hidden" }}>
+            <table className="ll-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Subscribed</th>
+                  <th>Role</th>
+                  <th>Joined</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users.map((u) => (
+                  <tr key={u.id}>
+                    <td style={{ color: "var(--color-limestone)" }}>{u.name ?? "—"}</td>
+                    <td>{u.email}</td>
+                    <td>
+                      <span className={`badge ${u.emailSubscribed ? "badge--teal" : "badge--muted"}`}>
+                        {u.emailSubscribed ? "Yes" : "No"}
+                      </span>
+                    </td>
+                    <td>
+                      <select
+                        value={u.role}
+                        onChange={(e) => setUserRole(u.id, e.target.value)}
+                        disabled={u.id === session?.user.id}
+                        style={{ width: "auto" }}
+                      >
+                        <option value="USER">User</option>
+                        <option value="RESOLVER">Resolver</option>
+                        <option value="ADMIN">Admin</option>
+                      </select>
+                    </td>
+                    <td style={{ fontSize: "0.8rem" }}>{new Date(u.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <DemographicReport users={users} />
         </div>
       )}
+    </div>
+  );
+}
+
+function DemographicReport({ users }: { users: User[] }) {
+  function tally(key: keyof User) {
+    const counts: Record<string, number> = {};
+    for (const u of users) {
+      const val = (u[key] as string | null) ?? "Not provided";
+      counts[val] = (counts[val] ?? 0) + 1;
+    }
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }
+
+  const sections: { label: string; key: keyof User }[] = [
+    { label: "Ward", key: "ward" },
+    { label: "Age range", key: "ageRange" },
+    { label: "Gender", key: "gender" },
+    { label: "Race / ethnicity", key: "raceEthnicity" },
+    { label: "Occupation", key: "occupation" },
+    { label: "Attends meetings", key: "attendsMeetings" },
+  ];
+
+  const subscribed = users.filter((u) => u.emailSubscribed).length;
+
+  return (
+    <div className="card">
+      <p style={{ fontWeight: 600, marginBottom: "1rem" }}>Demographics — {users.length} users</p>
+      <p style={{ fontSize: "0.875rem", marginBottom: "1.25rem", color: "var(--color-text-muted)" }}>
+        Email subscribers: <strong>{subscribed}</strong> of {users.length}
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1.25rem" }}>
+        {sections.map(({ label, key }) => (
+          <div key={key}>
+            <p style={{ fontWeight: 600, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.4rem" }}>{label}</p>
+            {tally(key).map(([val, count]) => (
+              <div key={val} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", marginBottom: "0.2rem" }}>
+                <span style={{ color: "var(--color-text-muted)" }}>{val}</span>
+                <span style={{ fontWeight: 600 }}>{count}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

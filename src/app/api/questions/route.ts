@@ -10,7 +10,7 @@ export async function GET() {
     include: {
       options: {
         include: {
-          _count: { select: { predictions: true } },
+          _count: { select: { predictions: true, desires: true } },
         },
       },
       _count: { select: { predictions: true } },

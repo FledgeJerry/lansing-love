@@ -113,6 +113,7 @@ model Option {
 
   question    Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
   predictions Prediction[]
+  desires     Prediction[] @relation("DesiredOption")
   outcome     Outcome?
 }
 
@@ -121,11 +122,13 @@ model Prediction {
   userId     String
   questionId String
   optionId   String
+  desiredId  String?
   createdAt  DateTime @default(now())
 
   user     User     @relation(fields: [userId], references: [id])
   question Question @relation(fields: [questionId], references: [id])
   option   Option   @relation(fields: [optionId], references: [id])
+  desired  Option?  @relation("DesiredOption", fields: [desiredId], references: [id])
 
   @@unique([userId, questionId]) // one prediction per user per question
 }

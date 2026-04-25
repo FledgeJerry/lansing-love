@@ -4,7 +4,7 @@ import { useState } from "react";
 import QuestionCard from "./QuestionCard";
 import type { Option, Outcome, Question } from "@prisma/client";
 
-type OptionWithCount = Option & { _count: { predictions: number } };
+type OptionWithCount = Option & { _count: { predictions: number; desires: number } };
 type OutcomeWithOption = Outcome & { option: Option };
 type QuestionWithDetails = Question & {
   options: OptionWithCount[];
@@ -15,10 +15,12 @@ type QuestionWithDetails = Question & {
 export default function QuestionFeed({
   questions,
   predictionMap,
+  desiredMap,
   isLoggedIn,
 }: {
   questions: QuestionWithDetails[];
   predictionMap: Record<string, string>;
+  desiredMap: Record<string, string>;
   isLoggedIn: boolean;
 }) {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -68,7 +70,13 @@ export default function QuestionFeed({
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           {filtered.map((q) => (
-            <QuestionCard key={q.id} question={q} userPickId={predictionMap[q.id] ?? null} isLoggedIn={isLoggedIn} />
+            <QuestionCard
+              key={q.id}
+              question={q}
+              userPickId={predictionMap[q.id] ?? null}
+              userDesiredId={desiredMap[q.id] ?? null}
+              isLoggedIn={isLoggedIn}
+            />
           ))}
         </div>
       )}

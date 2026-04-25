@@ -12,7 +12,7 @@ export async function POST(
   }
 
   const { id } = await params;
-  const { optionId } = await req.json();
+  const { optionId, desiredId } = await req.json();
 
   const question = await prisma.question.findUnique({ where: { id } });
   if (!question || question.status !== "ACTIVE") {
@@ -22,11 +22,21 @@ export async function POST(
     return NextResponse.json({ error: "Predictions closed" }, { status: 400 });
   }
 
-  const prediction = await prisma.prediction.upsert({
-    where: { userId_questionId: { userId: session.user.id, questionId: id } },
-    update: { optionId },
-    create: { userId: session.user.id, questionId: id, optionId },
-  });
+  let prediction;
+  if (optionId) {
+    prediction = await prisma.prediction.upsert({
+      where: { userId_questionId: { userId: session.user.id, questionId: id } },
+      update: { optionId, ...(desiredId !== undefined && { desiredId }) },
+      create: { userId: session.user.id, questionId: id, optionId, desiredId: desiredId ?? null },
+    });
+  } else if (desiredId !== undefined) {
+    prediction = await prisma.prediction.update({
+      where: { userId_questionId: { userId: session.user.id, questionId: id } },
+      data: { desiredId },
+    });
+  } else {
+    return NextResponse.json({ error: "optionId or desiredId required" }, { status: 400 });
+  }
 
   return NextResponse.json(prediction);
 }

@@ -6,13 +6,13 @@ import QuestionFeed from "@/components/QuestionFeed";
 import Link from "next/link";
 
 export default async function Home() {
-  const session = await auth();
+  const session = await auth().catch(() => null);
 
   const questions = await prisma.question.findMany({
     where: { status: "ACTIVE" },
     include: {
       options: {
-        include: { _count: { select: { predictions: true } } },
+        include: { _count: { select: { predictions: true, desires: true } } },
       },
       _count: { select: { predictions: true } },
       outcome: { include: { option: true } },
@@ -23,12 +23,15 @@ export default async function Home() {
   const userPredictions = session
     ? await prisma.prediction.findMany({
         where: { userId: session.user.id },
-        select: { questionId: true, optionId: true },
+        select: { questionId: true, optionId: true, desiredId: true },
       })
     : [];
 
   const predictionMap = Object.fromEntries(
-    userPredictions.map((p: { questionId: string; optionId: string }) => [p.questionId, p.optionId])
+    userPredictions.map((p) => [p.questionId, p.optionId])
+  );
+  const desiredMap = Object.fromEntries(
+    userPredictions.filter((p) => p.desiredId).map((p) => [p.questionId, p.desiredId!])
   );
 
   return (
@@ -56,7 +59,7 @@ export default async function Home() {
         )}
       </div>
 
-      <QuestionFeed questions={questions} predictionMap={predictionMap} isLoggedIn={!!session} />
+      <QuestionFeed questions={questions} predictionMap={predictionMap} desiredMap={desiredMap} isLoggedIn={!!session} />
     </div>
   );
 }

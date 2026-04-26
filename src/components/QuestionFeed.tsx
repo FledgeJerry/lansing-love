@@ -24,16 +24,25 @@ export default function QuestionFeed({
   isLoggedIn: boolean;
 }) {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [sort, setSort] = useState<"newest" | "closing">("newest");
 
   const categories = [
     "All",
     ...Array.from(new Set(questions.map((q) => q.category || "Other"))).sort(),
   ];
 
-  const filtered =
-    activeCategory === "All"
-      ? questions
-      : questions.filter((q) => (q.category || "Other") === activeCategory);
+  const filtered = (activeCategory === "All"
+    ? questions
+    : questions.filter((q) => (q.category || "Other") === activeCategory)
+  ).slice().sort((a, b) => {
+    if (sort === "closing") {
+      if (!a.closeAt && !b.closeAt) return 0;
+      if (!a.closeAt) return 1;
+      if (!b.closeAt) return -1;
+      return new Date(a.closeAt).getTime() - new Date(b.closeAt).getTime();
+    }
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
 
   if (questions.length === 0) {
     return (
@@ -45,7 +54,8 @@ export default function QuestionFeed({
 
   return (
     <>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "2rem" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "2rem" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
         {categories.map((cat) => {
           const count =
             cat === "All"
@@ -61,6 +71,11 @@ export default function QuestionFeed({
             </button>
           );
         })}
+        </div>
+        <div style={{ display: "flex", gap: "0.4rem" }}>
+          <button onClick={() => setSort("newest")} className={`btn btn--sm ${sort === "newest" ? "btn--primary" : "btn--ghost"}`}>Newest</button>
+          <button onClick={() => setSort("closing")} className={`btn btn--sm ${sort === "closing" ? "btn--primary" : "btn--ghost"}`}>Closing soon</button>
+        </div>
       </div>
 
       {filtered.length === 0 ? (

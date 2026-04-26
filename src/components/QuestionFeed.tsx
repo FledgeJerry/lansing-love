@@ -5,10 +5,11 @@ import QuestionCard from "./QuestionCard";
 import type { Option, Outcome, Question } from "@prisma/client";
 
 type OptionWithCount = Option & { _count: { predictions: number; desires: number } };
+
 type OutcomeWithOption = Outcome & { option: Option };
 type QuestionWithDetails = Question & {
   options: OptionWithCount[];
-  _count: { predictions: number };
+  _count: { predictions: number; comments: number };
   outcome: OutcomeWithOption | null;
 };
 

@@ -41,6 +41,7 @@ model User {
   emailSubscribed Boolean  @default(false)
 
   predictions   Prediction[]
+  comments      Comment[]
   submissions   Question[]   @relation("SubmittedBy")
   approvals     Question[]   @relation("ApprovedBy")
   resolutions   Outcome[]
@@ -103,6 +104,7 @@ model Question {
 
   options     Option[]
   predictions Prediction[]
+  comments    Comment[]
   outcome     Outcome?
 }
 
@@ -131,6 +133,18 @@ model Prediction {
   desired  Option?  @relation("DesiredOption", fields: [desiredId], references: [id])
 
   @@unique([userId, questionId]) // one prediction per user per question
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  userId     String
+  questionId String
+  body       String
+  url        String?
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id])
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
 model Outcome {

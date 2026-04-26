@@ -14,7 +14,7 @@ export default async function Home() {
       options: {
         include: { _count: { select: { predictions: true, desires: true } } },
       },
-      _count: { select: { predictions: true } },
+      _count: { select: { predictions: true, comments: true } },
       outcome: { include: { option: true } },
     },
     orderBy: { createdAt: "desc" },

@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 
 const WARDS = ["Ward 1", "Ward 2", "Ward 3", "Ward 4", "Outside Lansing", "Not sure"];
 const AGE_RANGES = ["Under 18", "18–24", "25–34", "35–44", "45–54", "55–64", "65+", "Prefer not to say"];
-const GENDERS = ["Man", "Woman", "Non-binary", "Self-describe", "Prefer not to say"];
-const RACES = ["Black / African American", "White", "Hispanic / Latino", "Asian", "Native American", "Middle Eastern", "Multiracial", "Other", "Prefer not to say"];
 const MEETINGS = ["Regularly (most meetings)", "Occasionally", "Never", "I watch online / on replay"];
 const INTEREST_OPTIONS = ["Housing", "Zoning", "Budget", "Transit", "Public Safety", "Education", "Environment", "Elections", "Economic Development"];
 
@@ -17,8 +15,6 @@ type Profile = {
   neighborhood: string;
   ward: string;
   ageRange: string;
-  gender: string;
-  raceEthnicity: string;
   occupation: string;
   attendsMeetings: string;
   interests: string;
@@ -27,8 +23,7 @@ type Profile = {
 
 const EMPTY: Profile = {
   name: "", email: "", neighborhood: "", ward: "", ageRange: "",
-  gender: "", raceEthnicity: "", occupation: "", attendsMeetings: "",
-  interests: "", emailSubscribed: false,
+  occupation: "", attendsMeetings: "", interests: "", emailSubscribed: false,
 };
 
 export default function ProfilePage() {
@@ -54,15 +49,15 @@ export default function ProfilePage() {
       });
   }, [status, router]);
 
-  function toggleMulti(field: "raceEthnicity" | "interests", value: string) {
+  function toggleMulti(field: "interests", value: string) {
     const current = profile[field] ? profile[field].split(",") : [];
     const updated = current.includes(value)
-      ? current.filter((v) => v !== value)
+      ? current.filter((v: string) => v !== value)
       : [...current, value];
     setProfile({ ...profile, [field]: updated.join(",") });
   }
 
-  function isChecked(field: "raceEthnicity" | "interests", value: string) {
+  function isChecked(field: "interests", value: string) {
     return profile[field] ? profile[field].split(",").includes(value) : false;
   }
 
@@ -152,24 +147,6 @@ export default function ProfilePage() {
                 <option value="">Select…</option>
                 {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
               </select>
-            </div>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label>Gender</label>
-              <select value={profile.gender} onChange={(e) => setProfile({ ...profile, gender: e.target.value })}>
-                <option value="">Select…</option>
-                {GENDERS.map((g) => <option key={g} value={g}>{g}</option>)}
-              </select>
-            </div>
-            <div className="form-group" style={{ margin: 0 }}>
-              <label>Race / Ethnicity <span style={{ fontWeight: 400, color: "var(--color-text-muted)" }}>(select all that apply)</span></label>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.4rem" }}>
-                {RACES.map((r) => (
-                  <label key={r} style={{ display: "flex", alignItems: "center", gap: "0.375rem", cursor: "pointer", fontSize: "0.875rem" }}>
-                    <input type="checkbox" checked={isChecked("raceEthnicity", r)} onChange={() => toggleMulti("raceEthnicity", r)} />
-                    {r}
-                  </label>
-                ))}
-              </div>
             </div>
             <div className="form-group" style={{ margin: 0 }}>
               <label>Occupation</label>

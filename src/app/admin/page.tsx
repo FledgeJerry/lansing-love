@@ -28,8 +28,6 @@ type User = {
   emailSubscribed: boolean;
   ward: string | null;
   ageRange: string | null;
-  gender: string | null;
-  raceEthnicity: string | null;
   occupation: string | null;
   attendsMeetings: string | null;
   interests: string | null;
@@ -427,8 +425,6 @@ function DemographicReport({ users }: { users: User[] }) {
   const sections: { label: string; key: keyof User }[] = [
     { label: "Ward", key: "ward" },
     { label: "Age range", key: "ageRange" },
-    { label: "Gender", key: "gender" },
-    { label: "Race / ethnicity", key: "raceEthnicity" },
     { label: "Occupation", key: "occupation" },
     { label: "Attends meetings", key: "attendsMeetings" },
   ];

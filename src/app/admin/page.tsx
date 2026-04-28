@@ -192,6 +192,14 @@ export default function AdminPage() {
     }
   }
 
+  async function deleteUser(id: string, email: string) {
+    if (!confirm(`Delete ${email}? This cannot be undone.`)) return;
+    const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      setUsers((us) => us.filter((u) => u.id !== id));
+    }
+  }
+
   if (status === "loading") return <p className="text-gray-400">Loading…</p>;
 
   return (
@@ -375,6 +383,7 @@ export default function AdminPage() {
                   <th>Subscribed</th>
                   <th>Role</th>
                   <th>Joined</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -400,6 +409,16 @@ export default function AdminPage() {
                       </select>
                     </td>
                     <td style={{ fontSize: "0.8rem" }}>{new Date(u.createdAt).toLocaleDateString()}</td>
+                    <td>
+                      {u.id !== session?.user.id && (
+                        <button
+                          onClick={() => deleteUser(u.id, u.email)}
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text-muted)", fontSize: "0.8rem", fontFamily: "var(--font-sans)", padding: 0 }}
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

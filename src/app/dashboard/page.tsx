@@ -73,26 +73,10 @@ async function getResiliencePulse() {
 
 async function getFreeStandData() {
   try {
-    const [standRes, eventsRes] = await Promise.all([
-      fetch("https://freestand.thefledge.com/api/v1/admin/metrics/stand", { next: { revalidate: 300 } }),
-      fetch("https://freestand.thefledge.com/api/v1/admin/events?event_type=interaction_detected&limit=100", { next: { revalidate: 300 } }),
-    ]);
-    const stand = standRes.ok ? await standRes.json() : null;
-    const events = eventsRes.ok ? await eventsRes.json() : null;
-
-    // Count interactions per day for last 14 days
-    const daily: Record<string, number> = {};
-    if (events?.events) {
-      const cutoff = Date.now() - 14 * 24 * 60 * 60 * 1000;
-      for (const e of events.events) {
-        const d = new Date(e.event_ts);
-        if (d.getTime() < cutoff) continue;
-        const key = d.toISOString().slice(0, 10);
-        daily[key] = (daily[key] ?? 0) + 1;
-      }
-    }
-
-    return { stand, dailyInteractions: daily, totalEvents: events?.events?.length ?? 0 };
+    const res = await fetch("https://freestand.thefledge.com/api/v1/admin/metrics/stand", { next: { revalidate: 300 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.ok ? data : null;
   } catch {
     return null;
   }
@@ -160,7 +144,9 @@ export default async function DashboardPage() {
   );
 
   const maxGapPct = gap.byCategory.length > 0 ? Math.max(...gap.byCategory.map((c) => c.pct)) : 100;
-  const freestandTotal = freestand ? Object.values(freestand.dailyInteractions).reduce((a, b) => a + b, 0) : null;
+  type FreeStandDay = { day: string; count: number; morning?: number; afternoon?: number; evening?: number; night?: number };
+  const freestandDays: FreeStandDay[] = freestand?.daily_interactions ?? [];
+  const maxDayCount = freestandDays.length > 0 ? Math.max(...freestandDays.map((d: FreeStandDay) => d.count)) : 1;
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2rem 1rem 4rem" }}>
@@ -319,19 +305,16 @@ export default async function DashboardPage() {
             <div className="card" style={{ padding: "1.5rem" }}>
               <p style={{ fontWeight: 600, marginBottom: "1rem", fontSize: "0.9rem" }}>Free Food Stand — Community Need Met</p>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "1rem" }}>
-                <StatBox value={freestandTotal ?? "—"} label="Interactions (14 days)" color="var(--color-teal-accent)" />
-                <StatBox value={Object.keys(freestand.dailyInteractions).length} label="Active days" />
+                <StatBox value={(freestand as Record<string, number>).interactions_week ?? "—"} label="Interactions this week" color="var(--color-teal-accent)" />
+                <StatBox value={(freestand as Record<string, number>).interactions_today ?? "—"} label="Today" />
+                <StatBox value={(freestand as Record<string, number>).interactions_total ?? "—"} label="All time" />
+                <StatBox value={freestandDays.length} label="Days tracked" />
               </div>
-              {Object.keys(freestand.dailyInteractions).length > 0 && (
+              {freestandDays.length > 0 && (
                 <div style={{ display: "flex", alignItems: "flex-end", gap: "2px", height: "48px" }}>
-                  {Object.entries(freestand.dailyInteractions)
-                    .sort(([a], [b]) => a.localeCompare(b))
-                    .map(([date, count]) => {
-                      const max = Math.max(...Object.values(freestand.dailyInteractions));
-                      return (
-                        <div key={date} style={{ flex: 1, height: `${Math.max(4, Math.round((count / max) * 48))}px`, background: "var(--color-teal-accent)", borderRadius: "2px 2px 0 0", opacity: 0.8 }} title={`${date}: ${count}`} />
-                      );
-                    })}
+                  {freestandDays.slice(-14).map((d: FreeStandDay) => (
+                    <div key={d.day} style={{ flex: 1, height: `${Math.max(4, Math.round((d.count / maxDayCount) * 48))}px`, background: "var(--color-teal-accent)", borderRadius: "2px 2px 0 0", opacity: 0.8 }} title={`${d.day}: ${d.count}`} />
+                  ))}
                 </div>
               )}
             </div>

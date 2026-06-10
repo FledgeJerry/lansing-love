@@ -62,7 +62,7 @@ async function getLegitimacyData() {
 async function getResiliencePulse() {
   try {
     const res = await fetch("https://resilience.foundation/api/pulse", {
-      next: { revalidate: 300 },
+      cache: "no-store",
     });
     if (!res.ok) return null;
     return res.json();
@@ -73,7 +73,7 @@ async function getResiliencePulse() {
 
 async function getFreeStandData() {
   try {
-    const res = await fetch("https://freestand.thefledge.com/api/v1/admin/metrics/stand", { next: { revalidate: 300 } });
+    const res = await fetch("https://freestand.thefledge.com/api/v1/admin/metrics/stand", { cache: "no-store" });
     if (!res.ok) return null;
     const data = await res.json();
     return data.ok ? data : null;

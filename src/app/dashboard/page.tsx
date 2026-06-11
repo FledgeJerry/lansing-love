@@ -74,12 +74,67 @@ async function getFreeStandData() {
   }
 }
 
+async function getRhinoTrackerData() {
+  try {
+    const res = await fetch("https://rhinocerosmedia.org/council-tracker", {
+      cache: "no-store",
+      headers: { "User-Agent": "lansing.love governance dashboard" },
+    });
+    if (!res.ok) return null;
+    const html = await res.text();
+
+    const matchN = (label: string) => {
+      const m = html.match(new RegExp(label + "</[^>]+>\\s*<[^>]+>(\\d+)"));
+      return m ? parseInt(m[1], 10) : 0;
+    };
+    const matchPct = (label: string) => {
+      const m = html.match(new RegExp(label + "</[^>]+>\\s*<[^>]+>(\\d+)%"));
+      return m ? parseInt(m[1], 10) : 0;
+    };
+
+    const tbodyMatch = html.match(/<tbody[^>]*>([\s\S]*?)<\/tbody>/);
+    if (!tbodyMatch) return null;
+
+    const parseVal = (s: string) => (s === "—" || s === "—") ? 0 : parseInt(s, 10) || 0;
+    const parsePct = (s: string) => parseInt(s.replace("%", ""), 10) || 0;
+
+    const members = [...tbodyMatch[1].matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)].flatMap((rowMatch) => {
+      const tds = [...rowMatch[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)]
+        .map((m) => m[1].replace(/<[^>]+>/g, "").trim());
+      if (tds.length < 10 || !tds[0]) return [];
+      return [{
+        name: tds[0],
+        seat: tds[1],
+        rollCalls: parseVal(tds[2]),
+        yes: parseVal(tds[3]),
+        no: parseVal(tds[4]),
+        abstain: parseVal(tds[5]),
+        recuse: parseVal(tds[6]),
+        absent: parseVal(tds[7]),
+        splitRate: parsePct(tds[8]),
+        attendance: parsePct(tds[9]),
+      }];
+    });
+
+    return {
+      totalRollCalls: matchN("Roll calls"),
+      unanimous: matchN("Unanimous"),
+      contested: matchN("Contested"),
+      bodySplitRate: matchPct("Body split rate"),
+      members,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export default async function DashboardPage() {
-  const [session, gap, resilience, freestand, ownershipChecks] = await Promise.all([
+  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks] = await Promise.all([
     auth(),
     getLegitimacyData(),
     getResiliencePulse(),
     getFreeStandData(),
+    getRhinoTrackerData(),
     prisma.ownershipCheck.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
 
@@ -102,6 +157,7 @@ export default async function DashboardPage() {
         gap={gap}
         resilience={resilience}
         freestand={freestand}
+        rhinoTracker={rhinoTracker}
         ownershipChecks={ownershipChecks.map((c) => ({
           id: c.id,
           sortOrder: c.sortOrder,

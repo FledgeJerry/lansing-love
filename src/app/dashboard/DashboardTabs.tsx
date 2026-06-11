@@ -30,6 +30,27 @@ type FreeStandData = {
   daily_interactions: FreeStandDay[];
 } | null;
 
+type CouncilMemberStat = {
+  name: string;
+  seat: string;
+  rollCalls: number;
+  yes: number;
+  no: number;
+  abstain: number;
+  recuse: number;
+  absent: number;
+  splitRate: number;
+  attendance: number;
+};
+
+type RhinoTrackerData = {
+  totalRollCalls: number;
+  unanimous: number;
+  contested: number;
+  bodySplitRate: number;
+  members: CouncilMemberStat[];
+} | null;
+
 type OwnershipCheckItem = {
   id: string;
   sortOrder: number;
@@ -44,6 +65,7 @@ interface Props {
   gap: LegitimacyData;
   resilience: ResilienceData;
   freestand: FreeStandData;
+  rhinoTracker: RhinoTrackerData;
   ownershipChecks: OwnershipCheckItem[];
 }
 
@@ -102,7 +124,75 @@ function PendingPanel({ title, description, blocker }: { title: string; descript
 
 // ─── Zone 1: Legitimacy Gap ───────────────────────────────────────────────────
 
-function ZoneLegitimacy({ gap }: { gap: LegitimacyData }) {
+function CouncilScorecard({ rhino }: { rhino: RhinoTrackerData }) {
+  if (!rhino) {
+    return (
+      <div style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "6px", padding: "0.75rem", fontSize: "0.78rem", color: "rgba(154,176,200,0.7)" }}>
+        Rhino News council tracker unavailable — will populate when rhinocerosmedia.org is reachable.
+      </div>
+    );
+  }
+
+  const MAYOR_RACE = ["Adam Hussain", "Peter Spadafore"];
+
+  return (
+    <div>
+      {/* Headline row */}
+      <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", marginBottom: "1.25rem" }}>
+        {[
+          { value: rhino.totalRollCalls, label: "Roll calls" },
+          { value: rhino.contested, label: "Contested" },
+          { value: rhino.unanimous, label: "Unanimous" },
+          { value: `${rhino.bodySplitRate}%`, label: "Body split rate" },
+        ].map(({ value, label }) => (
+          <div key={label} style={{ textAlign: "center" }}>
+            <p style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-limestone)", lineHeight: 1 }}>{value}</p>
+            <p style={{ fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", marginTop: "0.2rem" }}>{label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Member table */}
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.82rem" }}>
+          <thead>
+            <tr style={{ borderBottom: "1px solid rgba(244,241,232,0.1)" }}>
+              {["Member", "Seat", "Roll calls", "Yes", "No", "Split rate", "Attendance"].map((h) => (
+                <th key={h} style={{ padding: "0.4rem 0.6rem", textAlign: h === "Member" || h === "Seat" ? "left" : "right", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", whiteSpace: "nowrap" }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rhino.members.map((m) => (
+              <tr key={m.name} style={{ borderBottom: "1px solid rgba(244,241,232,0.05)" }}>
+                <td style={{ padding: "0.5rem 0.6rem", color: "var(--color-limestone)", whiteSpace: "nowrap" }}>
+                  {m.name}
+                  {MAYOR_RACE.includes(m.name) && (
+                    <span style={{ marginLeft: "0.4rem", fontSize: "0.62rem", color: "var(--color-dome-gold)", fontWeight: 600 }}>mayor race</span>
+                  )}
+                </td>
+                <td style={{ padding: "0.5rem 0.6rem", color: "var(--color-steel-muted)", fontSize: "0.72rem", whiteSpace: "nowrap" }}>{m.seat}</td>
+                <td style={{ padding: "0.5rem 0.6rem", textAlign: "right", color: "var(--color-steel-muted)" }}>{m.rollCalls}</td>
+                <td style={{ padding: "0.5rem 0.6rem", textAlign: "right", color: "var(--color-teal-accent)" }}>{m.yes}</td>
+                <td style={{ padding: "0.5rem 0.6rem", textAlign: "right", color: m.no > 0 ? "#c0392b" : "var(--color-steel-muted)" }}>{m.no}</td>
+                <td style={{ padding: "0.5rem 0.6rem", textAlign: "right", fontWeight: m.splitRate > 0 ? 600 : 400, color: m.splitRate > 0 ? "#E8C84A" : "var(--color-steel-muted)" }}>{m.splitRate}%</td>
+                <td style={{ padding: "0.5rem 0.6rem", textAlign: "right", color: "var(--color-steel-muted)" }}>{m.attendance}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p style={{ fontSize: "0.7rem", color: "rgba(154,176,200,0.5)", marginTop: "0.75rem" }}>
+        Split rate: % of contested votes where this member voted with the minority. Source:{" "}
+        <a href="https://rhinocerosmedia.org/council-tracker" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(154,176,200,0.7)" }}>Rhino News council tracker</a>.
+        Linking vote positions to resident desires on lansing.love predictions is the next step.
+      </p>
+    </div>
+  );
+}
+
+function ZoneLegitimacy({ gap, rhinoTracker }: { gap: LegitimacyData; rhinoTracker: RhinoTrackerData }) {
   const maxGapPct = gap.byCategory.length > 0 ? Math.max(...gap.byCategory.map((c) => c.pct)) : 100;
 
   if (gap.totalDesires === 0) {
@@ -161,11 +251,9 @@ function ZoneLegitimacy({ gap }: { gap: LegitimacyData }) {
       <div className="card" style={{ padding: "1.5rem" }}>
         <p style={{ fontWeight: 600, marginBottom: "0.5rem", fontSize: "0.9rem" }}>Council Member Scorecard</p>
         <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", marginBottom: "1rem" }}>
-          For each council member: what % of their votes matched what residents wanted? January 2026 council — Kost (W1), Nevarez Martinez (W2), Hussain (W3), Spadafore (W4), Carter (AL), Pehlivanoglu (AL), Garza (AL), Clara Martinez (AL). Hussain and Spadafore are both running for mayor while still voting on council — their scores are live and consequential. Lansing is the first Michigan city council with a Latino majority.
+          Vote record for the January 2026 council. Hussain and Spadafore are both running for mayor while still voting on council — their records are live and consequential. Lansing is the first Michigan city council with a Latino majority.
         </p>
-        <div style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "6px", padding: "0.75rem", fontSize: "0.78rem", color: "rgba(154,176,200,0.7)" }}>
-          Building next — requires linking each resolved prediction to the council member(s) who voted on it. Roster confirmed; data model next.
-        </div>
+        <CouncilScorecard rhino={rhinoTracker} />
       </div>
     </div>
   );
@@ -400,7 +488,7 @@ function ZonePolicy() {
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export default function DashboardTabs({ isAdmin, gap, resilience, freestand, ownershipChecks }: Props) {
+export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhinoTracker, ownershipChecks }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("legitimacy");
 
   return (
@@ -433,7 +521,7 @@ export default function DashboardTabs({ isAdmin, gap, resilience, freestand, own
       </div>
 
       <div role="tabpanel">
-        {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} />}
+        {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} rhinoTracker={rhinoTracker} />}
         {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} />}
         {activeTab === "ownership"  && <ZoneOwnership isAdmin={isAdmin} ownershipChecks={ownershipChecks} />}
         {activeTab === "advocacy"   && <ZoneAdvocacy />}

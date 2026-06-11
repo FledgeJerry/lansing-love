@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import OwnershipCheckEditor from "./OwnershipCheckEditor";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -72,11 +73,12 @@ interface Props {
 // ─── Tab config ───────────────────────────────────────────────────────────────
 
 const TABS = [
-  { id: "legitimacy", label: "Legitimacy Gap" },
-  { id: "network",    label: "Cooperative Network" },
-  { id: "ownership",  label: "Ownership Check" },
-  { id: "advocacy",   label: "Civic Advocacy" },
-  { id: "policy",     label: "Policy Monitor" },
+  { id: "legitimacy",  label: "Legitimacy Gap" },
+  { id: "network",     label: "Cooperative Network" },
+  { id: "ownership",   label: "Ownership Check" },
+  { id: "advocacy",    label: "Civic Advocacy" },
+  { id: "policy",      label: "Policy Monitor" },
+  { id: "governance",  label: "Governance" },
 ] as const;
 
 type TabId = typeof TABS[number]["id"];
@@ -486,6 +488,100 @@ function ZonePolicy() {
   );
 }
 
+// ─── Zone 6: Governance ───────────────────────────────────────────────────────
+
+function ZoneGovernance() {
+  return (
+    <>
+      <p style={{ fontSize: "0.95rem", color: "var(--color-steel-muted)", maxWidth: "640px", marginBottom: "2rem" }}>
+        lansing.love is built on a governance argument: that concentrated power is Lansing&apos;s root problem, that polycentric design is the answer, and that this dashboard — and the cooperative network behind it — are early evidence the design works.
+      </p>
+
+      {/* Monocentric vs Polycentric */}
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>The core problem</p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div className="card" style={{ padding: "1.25rem", borderTop: "2px solid rgba(192,57,43,0.4)" }}>
+            <p style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(192,57,43,0.7)", marginBottom: "0.5rem" }}>Monocentric — today</p>
+            <p style={{ fontSize: "0.85rem", margin: 0 }}>Mayor appoints every board, commission, and department head. One center of power. Every governance failure in Lansing grows from this structure.</p>
+          </div>
+          <div className="card" style={{ padding: "1.25rem", borderTop: "2px solid rgba(74,155,142,0.5)" }}>
+            <p style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-teal-accent)", marginBottom: "0.5rem" }}>Polycentric — the goal</p>
+            <p style={{ fontSize: "0.85rem", margin: 0 }}>Decisions sit close to the people who live with them. Neighborhood councils, expert boards, participatory budgeting, sortition — many centers, not one.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 4 measures */}
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>What polycentric governance produces</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "0.75rem" }}>
+          {[
+            { label: "Responsiveness", desc: "Decisions made by those who live with them" },
+            { label: "Resilience",     desc: "One unit's failure stays contained" },
+            { label: "Legitimacy",     desc: "Built into structure, not dependent on who's in office" },
+            { label: "Local retention", desc: "Value kept in the neighborhoods where it's generated" },
+          ].map(({ label, desc }) => (
+            <div key={label} className="card--accent" style={{ padding: "0.875rem 1rem" }}>
+              <p style={{ fontWeight: 600, color: "var(--color-dome-gold)", fontSize: "0.82rem", marginBottom: "0.2rem" }}>{label}</p>
+              <p style={{ fontSize: "0.75rem", margin: 0 }}>{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 4 reforms */}
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>Four reforms — all doable</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "0.75rem" }}>
+          {[
+            { n: "1", label: "Neighborhood councils", desc: "Binding say in neighborhood decisions. Not advisory only. Los Angeles has 99 of them." },
+            { n: "2", label: "Participatory budgeting", desc: "Residents vote on part of the city budget. Grand Rapids did it by ordinance — no charter change." },
+            { n: "3", label: "Stakeholder & expert boards", desc: "People affected by decisions, and people who understand them, seated as decision-makers." },
+            { n: "4", label: "Citizens' assembly (sortition)", desc: "Panel chosen by lot for capture-prone questions. Can't be campaigned for. Can't be bought." },
+          ].map(({ n, label, desc }) => (
+            <div key={n} className="card" style={{ padding: "1rem" }}>
+              <p style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.1em", color: "var(--color-teal-accent)", marginBottom: "0.3rem" }}>{n}</p>
+              <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.85rem", marginBottom: "0.3rem" }}>{label}</p>
+              <p style={{ fontSize: "0.78rem", margin: 0 }}>{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Roadmap phases */}
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>The roadmap</p>
+        <div style={{ display: "flex", gap: "0.3rem", overflowX: "auto" }}>
+          {[
+            { num: 0, label: "Prove it",            time: "Now",       active: true  },
+            { num: 1, label: "Open the doors",      time: "Years 1–3", active: false },
+            { num: 2, label: "Seat real authority", time: "Years 2–5", active: false },
+            { num: 3, label: "Lock it in",          time: "Years 4–8+", active: false },
+          ].map((phase, i, arr) => (
+            <div key={phase.num} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+              <div style={{ flex: 1, border: `1px solid ${phase.active ? "rgba(74,155,142,0.5)" : "rgba(244,241,232,0.1)"}`, borderRadius: "6px", padding: "0.75rem", background: phase.active ? "rgba(74,155,142,0.05)" : "transparent", minWidth: "90px" }}>
+                <p style={{ fontSize: "0.58rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: phase.active ? "var(--color-teal-accent)" : "var(--color-text-muted)", margin: 0 }}>Phase {phase.num}</p>
+                <p style={{ fontWeight: 600, fontSize: "0.78rem", color: "var(--color-limestone)", margin: "0.2rem 0 0" }}>{phase.label}</p>
+                <p style={{ fontSize: "0.7rem", color: "var(--color-text-muted)", margin: 0 }}>{phase.time}</p>
+              </div>
+              {i < arr.length - 1 && <span style={{ color: "rgba(244,241,232,0.2)", padding: "0 0.2rem", flexShrink: 0, fontSize: "0.8rem" }}>→</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Links */}
+      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", paddingTop: "0.5rem", borderTop: "1px solid rgba(244,241,232,0.08)" }}>
+        <Link href="/governance" className="btn btn--secondary btn--sm">Full explainer →</Link>
+        <Link href="/governance/roadmap" className="btn btn--ghost btn--sm">The roadmap →</Link>
+        <Link href="/governance/dashboard" className="btn btn--ghost btn--sm">Why the dashboard →</Link>
+        <Link href="/predictions" className="btn btn--ghost btn--sm">See predictions →</Link>
+      </div>
+    </>
+  );
+}
+
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhinoTracker, ownershipChecks }: Props) {
@@ -524,8 +620,9 @@ export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhi
         {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} rhinoTracker={rhinoTracker} />}
         {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} />}
         {activeTab === "ownership"  && <ZoneOwnership isAdmin={isAdmin} ownershipChecks={ownershipChecks} />}
-        {activeTab === "advocacy"   && <ZoneAdvocacy />}
-        {activeTab === "policy"     && <ZonePolicy />}
+        {activeTab === "advocacy"    && <ZoneAdvocacy />}
+        {activeTab === "policy"      && <ZonePolicy />}
+        {activeTab === "governance"  && <ZoneGovernance />}
       </div>
     </>
   );

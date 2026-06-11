@@ -10,10 +10,8 @@ export default function Nav() {
 
   const links = (
     <>
-      <li><Link href="/" onClick={() => setOpen(false)}>Predictions</Link></li>
+      <li><Link href="/predictions" onClick={() => setOpen(false)}>Predictions</Link></li>
       <li><Link href="/leaderboard" onClick={() => setOpen(false)}>Leaderboard</Link></li>
-      <li><Link href="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link></li>
-      <li><Link href="/governance" onClick={() => setOpen(false)}>Governance</Link></li>
       <li><Link href="/about" onClick={() => setOpen(false)}>About</Link></li>
       {session?.user.role === "ADMIN" && (
         <li><Link href="/admin" onClick={() => setOpen(false)}>Admin</Link></li>

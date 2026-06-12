@@ -126,16 +126,60 @@ function PendingPanel({ title, description, blocker }: { title: string; descript
 
 // ─── Zone 1: Legitimacy Gap ───────────────────────────────────────────────────
 
+const COUNCIL_ROSTER = [
+  { name: "Ryan Kost",               seat: "Ward 1",   term: "2027", note: "Council President 2025" },
+  { name: "Deyanira Nevarez Martinez", seat: "Ward 2", term: "2029", note: "New Jan 2026; MSU urban planning professor; authored current housing ordinances" },
+  { name: "Adam Hussain",            seat: "Ward 3",   term: "2027", note: "" },
+  { name: "Peter Spadafore",         seat: "Ward 4",   term: "2029", note: "Council President 2026; moved from at-large Nov 2025" },
+  { name: "Tamera Carter",           seat: "At-Large", term: "2027", note: "Council VP 2025" },
+  { name: "Trini Pehlivanoglu",      seat: "At-Large", term: "2027", note: "Council VP 2026" },
+  { name: "Jeremy Garza",            seat: "At-Large", term: "2029", note: "Moved from Ward 2 to at-large Nov 2025" },
+  { name: "Clara Martinez",          seat: "At-Large", term: "2029", note: "New Jan 2026" },
+];
+
 function CouncilScorecard({ rhino }: { rhino: RhinoTrackerData }) {
+  const MAYOR_RACE = ["Adam Hussain", "Peter Spadafore"];
+
   if (!rhino) {
     return (
-      <div style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "6px", padding: "0.75rem", fontSize: "0.78rem", color: "rgba(154,176,200,0.7)" }}>
-        Rhino News council tracker unavailable — will populate when rhinocerosmedia.org is reachable.
+      <div>
+        <p style={{ fontSize: "0.78rem", color: "rgba(154,176,200,0.7)", marginBottom: "0.75rem" }}>
+          Council roster confirmed January 2026. Vote data will populate once Rhino News council tracker is linked — next step is connecting resolved lansing.love predictions to individual member votes.
+        </p>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.82rem" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid rgba(244,241,232,0.1)" }}>
+                {["Member", "Seat", "Term ends", "Roll calls", "Split rate", "Attendance"].map((h) => (
+                  <th key={h} style={{ padding: "0.4rem 0.6rem", textAlign: h === "Member" || h === "Seat" || h === "Term ends" ? "left" : "right", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", whiteSpace: "nowrap" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {COUNCIL_ROSTER.map((m) => (
+                <tr key={m.name} style={{ borderBottom: "1px solid rgba(244,241,232,0.05)" }}>
+                  <td style={{ padding: "0.5rem 0.6rem", color: "var(--color-limestone)", whiteSpace: "nowrap" }}>
+                    {m.name}
+                    {MAYOR_RACE.includes(m.name) && (
+                      <span style={{ marginLeft: "0.4rem", fontSize: "0.62rem", color: "var(--color-dome-gold)", fontWeight: 600 }}>mayor race</span>
+                    )}
+                  </td>
+                  <td style={{ padding: "0.5rem 0.6rem", color: "var(--color-steel-muted)", fontSize: "0.72rem" }}>{m.seat}</td>
+                  <td style={{ padding: "0.5rem 0.6rem", color: "var(--color-steel-muted)", fontSize: "0.72rem" }}>{m.term}</td>
+                  <td style={{ padding: "0.5rem 0.6rem", textAlign: "right", color: "rgba(154,176,200,0.25)" }}>—</td>
+                  <td style={{ padding: "0.5rem 0.6rem", textAlign: "right", color: "rgba(154,176,200,0.25)" }}>—</td>
+                  <td style={{ padding: "0.5rem 0.6rem", textAlign: "right", color: "rgba(154,176,200,0.25)" }}>—</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p style={{ fontSize: "0.7rem", color: "rgba(154,176,200,0.5)", marginTop: "0.75rem" }}>
+          Lansing is the first Michigan city council with a Latino majority (Garza, Pehlivanoglu, Nevarez Martinez, Clara Martinez). Hussain and Spadafore are both running for mayor while still voting on council — their responsiveness scores will be the most consequential numbers here.
+        </p>
       </div>
     );
   }
-
-  const MAYOR_RACE = ["Adam Hussain", "Peter Spadafore"];
 
   return (
     <div>
@@ -404,6 +448,15 @@ function ZoneOwnership({ isAdmin, ownershipChecks }: { isAdmin: boolean; ownersh
 
 // ─── Zone 4: Civic Advocacy ───────────────────────────────────────────────────
 
+const TRACKED_ORDINANCES = [
+  { label: "Neighborhood advisory boards with formal standing", track: "Ordinance", note: "Binding say, not advisory only. Los Angeles has 99 neighborhood councils." },
+  { label: "Participatory budgeting pilot", track: "Ordinance", note: "Grand Rapids precedent: 2022, $2M, no charter change required." },
+  { label: "Proactive disclosure / open records default", track: "Ordinance", note: "Shifts burden: government publishes proactively instead of waiting for requests." },
+  { label: "Conflict-of-interest recusal on appointed boards", track: "Ordinance", note: "Required and on the record. Currently at board members' discretion." },
+  { label: "BWL board reform — elected seats, enforced terms", track: "Charter", note: "Requires public vote. Next charter cycle." },
+  { label: "Independent auditor — mandate and funding", track: "Charter", note: "Partially addressed in 2025 charter; scope and independence need strengthening." },
+];
+
 function ZoneAdvocacy() {
   return (
     <>
@@ -412,22 +465,39 @@ function ZoneAdvocacy() {
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
         {[
-          { label: "Council members engaged", desc: "Active relationships on polycentric reform agenda" },
-          { label: "Ordinances tracked", desc: "Neighborhood councils, PB pilot, open-records default, recusal requirement" },
-          { label: "Testimony appearances", desc: "Public advocacy at council, BWL, and board meetings this year" },
-          { label: "Anchor institution conversations", desc: "Procurement relationships in progress" },
-        ].map(({ label, desc }) => (
+          { value: "—", label: "Council members engaged", desc: "Active relationships on polycentric reform agenda" },
+          { value: "6",  label: "Ordinances tracked", desc: "Neighborhood councils, PB pilot, open-records default, recusal requirement, BWL board reform, independent auditor" },
+          { value: "—", label: "Testimony appearances", desc: "Public advocacy at council, BWL, and board meetings this year" },
+          { value: "—", label: "Anchor institution conversations", desc: "Procurement relationships in progress" },
+        ].map(({ value, label, desc }) => (
           <div key={label} style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "10px", padding: "1rem" }}>
-            <p style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--color-steel-muted)", lineHeight: 1 }}>—</p>
+            <p style={{ fontSize: "1.5rem", fontWeight: 700, color: value === "—" ? "var(--color-steel-muted)" : "var(--color-dome-gold)", lineHeight: 1 }}>{value}</p>
             <p style={{ fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", marginTop: "0.3rem" }}>{label}</p>
             <p style={{ fontSize: "0.7rem", color: "rgba(154,176,200,0.6)", marginTop: "0.2rem" }}>{desc}</p>
           </div>
         ))}
       </div>
+
+      <div style={{ marginBottom: "1.25rem" }}>
+        <p style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>Tracked ordinances & charter items</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {TRACKED_ORDINANCES.map((item) => (
+            <div key={item.label} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(244,241,232,0.07)", borderRadius: "8px", padding: "0.75rem 1rem" }}>
+              <span style={{ fontSize: "0.62rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: item.track === "Charter" ? "#E8C84A" : "var(--color-teal-accent)", flexShrink: 0, marginTop: "0.1rem", minWidth: "60px" }}>{item.track}</span>
+              <div>
+                <p style={{ fontSize: "0.82rem", color: "var(--color-limestone)", marginBottom: "0.1rem" }}>{item.label}</p>
+                <p style={{ fontSize: "0.72rem", color: "rgba(154,176,200,0.6)", margin: 0 }}>{item.note}</p>
+              </div>
+              <span style={{ fontSize: "0.7rem", color: "rgba(154,176,200,0.3)", flexShrink: 0, marginLeft: "auto", alignSelf: "center" }}>○ tracking</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div style={{ background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "10px", padding: "1.25rem" }}>
         <p style={{ fontWeight: 600, color: "var(--color-steel-muted)", marginBottom: "0.35rem", fontSize: "0.875rem" }}>Admin entry interface coming soon</p>
         <p style={{ fontSize: "0.8rem", color: "rgba(154,176,200,0.6)" }}>
-          A simple log — council members engaged, ordinances tracked, testimony given, endorsements made. Updated weekly by staff. No blockers; data model is next.
+          A simple log — council members engaged, testimony given, endorsements made, anchor institution meetings. Updated weekly by staff. No blockers; data model is next.
         </p>
       </div>
     </>

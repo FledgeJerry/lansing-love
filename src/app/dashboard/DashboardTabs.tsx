@@ -466,11 +466,13 @@ function ZonePolicy() {
             items: [
               "All Lansing appointed boards: member, appointment date, term expiration, appointing official",
               "Flag: members serving past expired terms — a documented accountability gap",
-              "One-time build: 20–40 hrs research; ongoing maintenance needed",
-              "MSU urban planning or public policy student partner recommended — not yet confirmed",
+              "First board: Lansing Housing Commission — see full case study",
+              "MSU urban planning or public policy student partner recommended for full build",
             ],
+            link: "/governance/issues/lansing-housing-commission",
+            linkLabel: "LHC case study →",
           },
-        ].map(({ title, items }) => (
+        ].map(({ title, items, link, linkLabel }: { title: string; items: string[]; link?: string; linkLabel?: string }) => (
           <div key={title} style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "10px", padding: "1.25rem" }}>
             <p style={{ fontWeight: 600, color: "var(--color-steel-muted)", marginBottom: "0.75rem", fontSize: "0.85rem" }}>{title}</p>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.4rem" }}>
@@ -481,6 +483,9 @@ function ZonePolicy() {
                 </li>
               ))}
             </ul>
+            {link && linkLabel && (
+              <Link href={link} style={{ fontSize: "0.75rem", color: "var(--color-dome-gold)", display: "inline-block", marginTop: "0.6rem" }}>{linkLabel}</Link>
+            )}
           </div>
         ))}
       </div>

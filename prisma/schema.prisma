@@ -161,6 +161,41 @@ model Outcome {
   option   Option   @relation(fields: [optionId], references: [id])
 }
 
+// Board & Commission Accountability Case Studies
+model BoardCaseStudy {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  boardName String
+  category  String   @default("Other")
+  date      String   @default("")
+  published Boolean  @default(false)
+  summary   String   @default("") @db.Text
+
+  // {value: string, label: string}[]
+  stats       Json @default("[]")
+  // {num: number, name: string, violation: string, evidence: string}[]
+  principles  Json @default("[]")
+  // {question: string, before: string, after: string, assessment: string}[]
+  ownership   Json @default("[]")
+  // {dimension: string, impact: string, description: string}[]
+  bottomLines Json @default("[]")
+  // {eyebrow: string, heading: string, description: string, items: {label: string, desc: string}[]}[]
+  sections    Json @default("[]")
+  // string[]
+  recommendations Json @default("[]")
+  sources         Json @default("[]")
+  sourceUrls      Json @default("[]")
+
+  scoreTransparency      String @default("insufficient")
+  scoreConflicts         String @default("insufficient")
+  scoreMission           String @default("insufficient")
+  scoreDemocraticControl String @default("insufficient")
+  scoreOversight         String @default("insufficient")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // Zone 3 — Ownership Check: 4 standing questions updated quarterly by humans
 model OwnershipCheck {
   id         String   @id @default(cuid())

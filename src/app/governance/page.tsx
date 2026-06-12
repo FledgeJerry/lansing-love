@@ -265,7 +265,8 @@ export default function GovernancePage() {
         <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", marginTop: "1rem", maxWidth: "640px" }}>
           Documented through public reporting by{" "}
           <a href="https://rhinocerosmedia.org" target="_blank" rel="noopener noreferrer">Rhinoceros Media</a>
-          {" "}and the city&apos;s own public records.
+          {" "}and the city&apos;s own public records.{" "}
+          <Link href="/governance/issues" style={{ color: "var(--color-dome-gold)" }}>See all case studies →</Link>
         </p>
       </section>
 

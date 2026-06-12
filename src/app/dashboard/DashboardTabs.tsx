@@ -469,8 +469,8 @@ function ZonePolicy() {
               "First board: Lansing Housing Commission — see full case study",
               "MSU urban planning or public policy student partner recommended for full build",
             ],
-            link: "/governance/issues/lansing-housing-commission",
-            linkLabel: "LHC case study →",
+            link: "/governance/issues",
+            linkLabel: "All board case studies →",
           },
         ].map(({ title, items, link, linkLabel }: { title: string; items: string[]; link?: string; linkLabel?: string }) => (
           <div key={title} style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "10px", padding: "1.25rem" }}>

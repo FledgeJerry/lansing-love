@@ -1,8 +1,16 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import DashboardTabs from "./dashboard/DashboardTabs";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Cooperative Governance",
+  description: "We know we #lovelansing — but does #lansingloveus? Track Lansing's legitimacy gap, the cooperative network, council votes, civic advocacy, and the standing question of whether power is staying where it belongs.",
+  alternates: { canonical: "/" },
+  openGraph: { title: "Cooperative Governance | lansing.love", description: "Tracking Lansing's legitimacy gap, cooperative network, and council vote record.", url: "https://lansing.love" },
+};
 
 async function getLegitimacyData() {
   const resolved = await prisma.question.findMany({

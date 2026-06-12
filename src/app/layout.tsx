@@ -17,22 +17,22 @@ const merriweather = Merriweather({
 });
 
 export const metadata: Metadata = {
-  title: { default: "lansing.love — Civic Predictions", template: "%s | lansing.love" },
-  description: "Make predictions about Lansing, Michigan's future. Track who gets it right. A civic forecasting platform for Lansing residents and community leaders.",
-  keywords: ["Lansing Michigan", "civic predictions", "Lansing forecast", "community predictions", "Lansing future", "civic engagement Lansing"],
+  title: { default: "lansing.love — Cooperative Governance", template: "%s | lansing.love" },
+  description: "We know we #lovelansing — but does #lansingloveus? A cooperative governance dashboard tracking Lansing's legitimacy gap, co-op network, civic advocacy, and city council votes.",
+  keywords: ["Lansing Michigan", "cooperative governance", "polycentric governance", "Lansing city council", "civic predictions", "Lansing housing", "Lansing co-ops", "The Fledge", "community ownership", "civic engagement Lansing"],
   metadataBase: new URL("https://lansing.love"),
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "lansing.love",
-    title: "lansing.love — Civic Predictions",
-    description: "Make predictions about Lansing's future. Track who gets it right.",
+    title: "lansing.love — Cooperative Governance",
+    description: "We know we #lovelansing — but does #lansingloveus? Tracking Lansing's legitimacy gap and the cooperative network building an alternative.",
     url: "https://lansing.love",
   },
   twitter: {
     card: "summary_large_image",
-    title: "lansing.love — Civic Predictions",
-    description: "Make predictions about Lansing's future. Track who gets it right.",
+    title: "lansing.love — Cooperative Governance",
+    description: "We know we #lovelansing — but does #lansingloveus? Tracking Lansing's legitimacy gap and the cooperative network building an alternative.",
   },
 };
 
@@ -47,11 +47,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             "@type": "WebSite",
             name: "lansing.love",
             url: "https://lansing.love",
-            description: "A civic prediction platform for Lansing, Michigan.",
-            potentialAction: {
-              "@type": "SearchAction",
-              target: "https://lansing.love/submit",
-              "query-input": "required name=search_term_string",
+            description: "A cooperative governance dashboard and civic prediction platform for Lansing, Michigan.",
+            publisher: {
+              "@type": "Organization",
+              name: "The Fledge",
+              url: "https://thefledge.com",
+              address: { "@type": "PostalAddress", streetAddress: "1300 Eureka Street", addressLocality: "Lansing", addressRegion: "MI", postalCode: "48912" },
             },
           }) }}
         />

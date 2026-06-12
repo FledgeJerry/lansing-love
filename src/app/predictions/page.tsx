@@ -1,9 +1,17 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-
-export const dynamic = "force-dynamic";
 import QuestionFeed from "@/components/QuestionFeed";
 import Link from "next/link";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Predictions",
+  description: "Make predictions about Lansing City Council votes, zoning decisions, appointments, and local elections. Sourced and resolved by Rhino News — Lansing's independent journalism co-op.",
+  alternates: { canonical: "/predictions" },
+  openGraph: { title: "Predictions | lansing.love", description: "Predict Lansing City Council votes and local government decisions. Track who gets it right.", url: "https://lansing.love/predictions" },
+};
 
 export default async function Home() {
   const session = await auth().catch(() => null);

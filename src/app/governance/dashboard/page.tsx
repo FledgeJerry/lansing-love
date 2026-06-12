@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Why the Dashboard",
+  description: "The predictions dashboard is a governance instrument — not just a game. It makes city council decisions legible, reveals the gap between what officials do and what residents want, and tracks Phase 1 reform milestones.",
+  alternates: { canonical: "/governance/dashboard" },
+  openGraph: { title: "Why the Dashboard | lansing.love", description: "The predictions tracker as a governance instrument — making Lansing's decisions visible.", url: "https://lansing.love/governance/dashboard" },
+};
 
 export default function GovernanceDashboardPage() {
   return (

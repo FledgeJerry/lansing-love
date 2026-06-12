@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Governing Like a Cooperative",
+  description: "Lansing runs from one center — the mayor's office. Polycentric governance is the alternative: decisions close to the people who live with them. Four reforms, all doable. The cooperative network is already proving the model.",
+  alternates: { canonical: "/governance" },
+  openGraph: { title: "Governing Like a Cooperative | lansing.love", description: "Lansing's governance problem and the polycentric alternative. Four reforms, all doable.", url: "https://lansing.love/governance" },
+};
 
 // ─── SVG helpers ──────────────────────────────────────────────────────────────
 

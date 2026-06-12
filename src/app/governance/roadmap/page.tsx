@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "The Roadmap",
+  description: "A phased plan for polycentric Lansing — built around what Michigan law actually allows. Phase 0 needs no one's permission. Phase 3 takes the ballot. Near-term and durable first.",
+  alternates: { canonical: "/governance/roadmap" },
+  openGraph: { title: "The Roadmap | lansing.love", description: "A phased plan for polycentric Lansing. Near-term and durable first.", url: "https://lansing.love/governance/roadmap" },
+};
 
 // ─── Diagram 3: Roadmap Phases ────────────────────────────────────────────────
 

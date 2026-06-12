@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Lansing Housing Commission: Housing Privatization as Wealth Extraction",
+  description: "51 families evicted. $17.7M in public housing sold at $87,600/unit while construction cost $357,000/unit. 85+ children displaced mid-school-year. A cooperative principles analysis of the LHC-SK Investment Group transaction.",
+  alternates: { canonical: "/governance/issues/lansing-housing-commission" },
+  openGraph: { title: "LHC: Housing Privatization as Wealth Extraction | lansing.love", description: "51 families evicted. $17.7M sold. 85+ children displaced. A cooperative principles analysis of the Lansing Housing Commission.", url: "https://lansing.love/governance/issues/lansing-housing-commission" },
+};
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (

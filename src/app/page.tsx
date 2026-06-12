@@ -122,10 +122,10 @@ export default async function HomePage() {
       <div style={{ marginBottom: "2.5rem" }}>
         <span className="eyebrow">Lansing Cooperative Governance</span>
         <h1 style={{ fontSize: "clamp(1.6rem, 4vw, 2.4rem)", marginBottom: "0.5rem", lineHeight: 1.2 }}>
-          The Governance Dashboard
+          Cooperative Governance
         </h1>
         <p style={{ color: "var(--color-steel-muted)", fontSize: "0.95rem", maxWidth: "680px" }}>
-          The standing question, made visible, on a schedule, in public — is power staying where it belongs?
+          We know we #lovelansing, but does #lansingloveus?
         </p>
       </div>
 

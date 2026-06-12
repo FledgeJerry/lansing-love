@@ -73,12 +73,12 @@ interface Props {
 // ─── Tab config ───────────────────────────────────────────────────────────────
 
 const TABS = [
+  { id: "governance",  label: "Governance" },
   { id: "legitimacy",  label: "Legitimacy Gap" },
   { id: "network",     label: "Cooperative Network" },
   { id: "ownership",   label: "Ownership Check" },
   { id: "advocacy",    label: "Civic Advocacy" },
   { id: "policy",      label: "Policy Monitor" },
-  { id: "governance",  label: "Governance" },
 ] as const;
 
 type TabId = typeof TABS[number]["id"];
@@ -585,7 +585,7 @@ function ZoneGovernance() {
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhinoTracker, ownershipChecks }: Props) {
-  const [activeTab, setActiveTab] = useState<TabId>("legitimacy");
+  const [activeTab, setActiveTab] = useState<TabId>("governance");
 
   return (
     <>

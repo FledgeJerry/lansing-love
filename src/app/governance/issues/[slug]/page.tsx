@@ -194,6 +194,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 <div key={j} className="card" style={{ padding: "1.25rem", borderLeft: "3px solid rgba(192,57,43,0.4)" }}>
                   {item.label && <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.875rem", marginBottom: "0.35rem" }}>{item.label}</p>}
                   <p style={{ fontSize: "0.8rem", margin: 0 }}>{item.desc}</p>
+                  {item.url && (
+                    <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.75rem", color: "var(--color-dome-gold)", display: "inline-block", marginTop: "0.4rem" }}>
+                      {item.url.replace("https://", "")} →
+                    </a>
+                  )}
                 </div>
               ))}
             </div>

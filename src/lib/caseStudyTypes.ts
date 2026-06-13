@@ -4,7 +4,7 @@ export interface Stat        { value: string; label: string; }
 export interface Principle   { num: number; name: string; violation: string; evidence: string; }
 export interface OwnershipQ  { question: string; before: string; after: string; assessment: "extractive" | "mixed" | "non-extractive"; }
 export interface BottomLine  { dimension: string; impact: "positive" | "negative" | "mixed"; description: string; }
-export interface SectionItem { label: string; desc: string; }
+export interface SectionItem { label: string; desc: string; url?: string; }
 export interface Section     { eyebrow: string; heading: string; description: string; items: SectionItem[]; }
 
 export interface CaseStudyData {

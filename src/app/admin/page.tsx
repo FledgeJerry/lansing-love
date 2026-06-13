@@ -206,7 +206,10 @@ export default function AdminPage() {
     <div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
         <h1 style={{ margin: 0 }}>Admin</h1>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          <Link href="/admin/case-studies" className="btn btn--ghost btn--sm">
+            Case Studies
+          </Link>
           <Link href="/admin/transcript" className="btn btn--ghost btn--sm">
             Resolve from transcript
           </Link>

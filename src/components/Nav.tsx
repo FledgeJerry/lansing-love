@@ -14,6 +14,7 @@ export default function Nav() {
     <>
       <li><Link href="/governance" onClick={close}>Governance</Link></li>
       <li><Link href="/governance/issues" onClick={close}>Issues</Link></li>
+      <li><Link href="/neighborhoods" onClick={close}>Neighborhoods</Link></li>
       <li><Link href="/predictions" onClick={close}>Predictions</Link></li>
       <li><Link href="/about" onClick={close}>About</Link></li>
       {session?.user.role === "ADMIN" && (

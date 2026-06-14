@@ -284,15 +284,16 @@ export default function GovernancePage() {
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
           {[
-            { num: "1", label: "Neighborhood councils with real authority", desc: "A binding say in decisions that affect the neighborhood — not advisory only. Funded. With a formal line to city hall. Los Angeles has 99 of them." },
-            { num: "2", label: "Participatory budgeting",                   desc: "Residents vote directly on part of the city's spending. Grand Rapids ran a $2 million PB program by ordinary council ordinance — no charter change required." },
-            { num: "3", label: "Stakeholder and expert boards",             desc: "The people affected by a decision, and the people who understand it, seated as decision-makers — not just advisors the mayor can ignore." },
-            { num: "4", label: "Citizens' assembly (sortition)",            desc: "For capture-prone questions: a panel chosen by lot, like a jury. Can't be campaigned for. Can't be bought. Ireland used one to repeal the Eighth Amendment." },
-          ].map(({ num, label, desc }) => (
+            { num: "1", label: "Neighborhood councils with real authority", desc: "A binding say in decisions that affect the neighborhood — not advisory only. Funded. With a formal line to city hall. Los Angeles has 99 of them. Lansing already has 59 registered neighborhood organizations — the infrastructure exists.", link: "/neighborhoods" },
+            { num: "2", label: "Participatory budgeting",                   desc: "Residents vote directly on part of the city's spending. Grand Rapids ran a $2 million PB program by ordinary council ordinance — no charter change required.", link: undefined },
+            { num: "3", label: "Stakeholder and expert boards",             desc: "The people affected by a decision, and the people who understand it, seated as decision-makers — not just advisors the mayor can ignore.", link: undefined },
+            { num: "4", label: "Citizens' assembly (sortition)",            desc: "For capture-prone questions: a panel chosen by lot, like a jury. Can't be campaigned for. Can't be bought. Ireland used one to repeal the Eighth Amendment.", link: undefined },
+          ].map(({ num, label, desc, link }) => (
             <div key={num} className="card" style={{ padding: "1.25rem" }}>
               <p style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", color: "var(--color-teal-accent)", marginBottom: "0.4rem" }}>{num}</p>
               <p style={{ fontWeight: 600, color: "var(--color-limestone)", marginBottom: "0.4rem", fontSize: "0.9rem" }}>{label}</p>
               <p style={{ fontSize: "0.8rem", margin: 0 }}>{desc}</p>
+              {link && <Link href={link} style={{ fontSize: "0.75rem", color: "var(--color-dome-gold)", display: "inline-block", marginTop: "0.5rem" }}>See the directory →</Link>}
             </div>
           ))}
         </div>

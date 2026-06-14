@@ -196,6 +196,24 @@ model BoardCaseStudy {
   updatedAt DateTime @updatedAt
 }
 
+// Lansing neighborhood organizations directory (59 registered + hubs)
+model NeighborhoodOrg {
+  id        String   @id @default(cuid())
+  sortOrder Int      @default(0)
+  name      String
+  area      String?
+  status    String   @default("Registered") // Active, Registered, Dormant, Inactive
+  website   String?
+  facebook  String?
+  email     String?
+  phone     String?
+  address   String?
+  notes     String?
+  isHub     Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // Zone 3 — Ownership Check: 4 standing questions updated quarterly by humans
 model OwnershipCheck {
   id         String   @id @default(cuid())

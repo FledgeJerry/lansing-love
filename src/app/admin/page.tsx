@@ -204,29 +204,37 @@ export default function AdminPage() {
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
-        <h1 style={{ margin: 0 }}>Admin</h1>
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-          <Link href="/admin/advocacy" className="btn btn--ghost btn--sm">
-            Advocacy Log
-          </Link>
-          <Link href="/admin/boards" className="btn btn--ghost btn--sm">
-            Boards
-          </Link>
-          <Link href="/admin/neighborhoods" className="btn btn--ghost btn--sm">
-            Neighborhoods
-          </Link>
-          <Link href="/admin/case-studies" className="btn btn--ghost btn--sm">
-            Case Studies
-          </Link>
-          <Link href="/admin/transcript" className="btn btn--ghost btn--sm">
-            Resolve from transcript
-          </Link>
-          <Link href="/admin/agenda" className="btn btn--primary btn--sm">
-            Import from agenda
-          </Link>
+      <h1 style={{ marginBottom: "1.5rem" }}>Admin</h1>
+
+      {/* ── Content management ── */}
+      <section style={{ marginBottom: "2rem" }}>
+        <p style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>Content</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "0.5rem" }}>
+          {[
+            { href: "/admin/advocacy",      label: "Civic Advocacy Log",      desc: "Log council contacts, testimony, endorsements, anchor meetings" },
+            { href: "/admin/boards",         label: "Boards & Commissions",    desc: "44 boards — members, terms, vacancies" },
+            { href: "/admin/neighborhoods",  label: "Neighborhood Orgs",       desc: "59 registered neighborhood organizations" },
+            { href: "/admin/case-studies",   label: "Case Studies",            desc: "Board accountability reports" },
+          ].map(({ href, label, desc }) => (
+            <Link key={href} href={href} style={{ textDecoration: "none" }}>
+              <div className="card" style={{ padding: "0.875rem 1rem", height: "100%", cursor: "pointer" }}>
+                <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.85rem", margin: 0 }}>{label}</p>
+                <p style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", margin: "0.2rem 0 0" }}>{desc}</p>
+              </div>
+            </Link>
+          ))}
         </div>
-      </div>
+      </section>
+
+      {/* ── Predictions platform ── */}
+      <section>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem", flexWrap: "wrap", gap: "0.5rem" }}>
+          <p style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-steel-muted)", margin: 0 }}>Predictions platform</p>
+          <div style={{ display: "flex", gap: "0.5rem" }}>
+            <Link href="/admin/transcript" className="btn btn--ghost btn--sm">Resolve from transcript</Link>
+            <Link href="/admin/agenda" className="btn btn--primary btn--sm">Import from agenda</Link>
+          </div>
+        </div>
 
       <div className="tabs">
         <button className={`tab-btn${tab === "pending" ? " active" : ""}`} onClick={() => setTab("pending")}>Pending</button>
@@ -439,6 +447,7 @@ export default function AdminPage() {
           <DemographicReport users={users} />
         </div>
       )}
+      </section>
     </div>
   );
 }

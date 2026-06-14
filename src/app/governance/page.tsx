@@ -320,7 +320,7 @@ export default function GovernancePage() {
             What cooperatives do is prove it. Every cooperative that runs with one member, one vote, open books, and a standing question — &ldquo;is power staying distributed, or starting to concentrate?&rdquo; — is a working unit of polycentric governance. The city-scale argument is just that pattern, repeated and connected.
           </p>
           <p>
-            <strong>[MOVEMENT_NAME]</strong> builds the network. Organizes the community. Backs aligned candidates. Carries the charter changes to the ballot when the political conditions are ready.
+            <strong>Polycentric Governance</strong> builds the network. Organizes the community. Backs aligned candidates. The charter reforms are now Phase 3 work — the structural changes that lock the gains in — waiting on political conditions the earlier phases are designed to create.
           </p>
           <p>
             The reformed city is still the chartered government — it keeps police, taxation, lawmaking, and the enforcement of rights, because only a body accountable to everyone should hold those. What changes is whether it&apos;s run from one center or many.
@@ -328,6 +328,7 @@ export default function GovernancePage() {
         </div>
         <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1.5rem" }}>
           <Link href="/governance/roadmap" className="btn btn--secondary btn--sm">Learn about the roadmap →</Link>
+          <Link href="/governance/charter" className="btn btn--ghost btn--sm">The new charter →</Link>
           <Link href="/governance/dashboard" className="btn btn--ghost btn--sm">See the predictions dashboard →</Link>
         </div>
       </section>

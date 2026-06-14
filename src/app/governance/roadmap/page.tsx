@@ -121,7 +121,8 @@ export default function RoadmapPage() {
             Grand Rapids ran a $2 million participatory budgeting program as an ordinary appropriation — one council majority, no charter vote. This dividing line is the most useful fact for sequencing: it tells you what needs only a council majority (a lot) and what needs the ballot (the structural core).
           </p>
           <p style={{ color: "var(--color-steel-muted)", fontSize: "0.875rem" }}>
-            One Lansing-specific note: the 2025 charter rewrite reaffirmed the strong-mayor structure with roughly 66% of the vote, effective January 2026. The deep structural changes wait on political conditions the city doesn&apos;t yet have. That&apos;s not a reason to stop — it&apos;s a reason to start with what doesn&apos;t require it.
+            One Lansing-specific note: Lansing voters passed a new city charter on November 4, 2025, effective January 1, 2026. The new charter reaffirmed the strong-mayor structure — and added real accountability tools: an independent internal auditor, a mandatory mayoral three-year strategic plan with measurable benchmarks, a public tax-and-debt dashboard, and procurement reform that allows &ldquo;best value&rdquo; contracts rather than lowest bidder only. Those are footholds, not victories. The deep structural reforms — neighborhood councils with binding authority, participatory budgeting, ward-level governance — weren&apos;t in the charter. They&apos;re still Phase 1 and 2 work. The next charter revision question goes to voters in 2041.{" "}
+            <Link href="/governance/charter" style={{ color: "var(--color-dome-gold)" }}>Full charter analysis →</Link>
           </p>
         </div>
       </section>
@@ -182,7 +183,7 @@ export default function RoadmapPage() {
           <strong>Why this is last:</strong> Each phase is reversible until the next one locks it in. Ordinance wins can be repealed by a future council. Charter changes survive that. Phase 3 is what makes the gains permanent.
         </p>
         <p style={{ color: "var(--color-steel-muted)", fontSize: "0.875rem" }}>
-          The 2025 charter rewrite shows the current political appetite. A 66% vote to reaffirm the strong-mayor structure is a sober signal. Phase 3 waits on a different political moment — one that Phases 0–2 are designed to build.
+          The 2025 charter passed and is now the floor, not the ceiling. It created accountability structures we can use — the independent auditor&apos;s public reports, the mayoral strategic plan&apos;s measurable benchmarks — but it didn&apos;t decentralize governance. Phase 3 waits on a different political moment — one that Phases 0–2 are designed to build. The next opportunity to open the charter is 2041 unless a citizen petition forces it sooner (5% of registered electors).
         </p>
       </PhaseCard>
 
@@ -202,19 +203,22 @@ export default function RoadmapPage() {
             </thead>
             <tbody>
               {[
-                { phase: 0, item: "First cooperative operating 12+ months, open books, no demutualization" },
-                { phase: 0, item: "Federation tier providing shared coaching, legal templates, pooled resources" },
-                { phase: 1, item: "Participatory budgeting ordinance passed" },
-                { phase: 1, item: "At least one proactive disclosure ordinance in effect" },
-                { phase: 1, item: "Two or more council members elected on small-donor, reform-aligned campaigns" },
-                { phase: 2, item: "Neighborhood council with binding authority (not advisory only)" },
-                { phase: 2, item: "Citizens' assembly pilot completed and publicly reported" },
-                { phase: 2, item: "Money-out disclosure ordinance in effect" },
-                { phase: 3, item: "Charter proposal passed by three-fifths council vote or voter petition" },
-                { phase: 3, item: "Charter reform ratified at the ballot" },
+                { phase: "0",       item: "First cooperative operating 12+ months, open books, no demutualization" },
+                { phase: "0",       item: "Federation tier providing shared coaching, legal templates, pooled resources" },
+                { phase: "Charter", item: "New charter in effect (Jan 1, 2026) — independent auditor, mayoral strategic plan with measurable benchmarks, public financial dashboard, best-value procurement" },
+                { phase: "1",       item: "Participatory budgeting ordinance passed" },
+                { phase: "1",       item: "At least one proactive disclosure ordinance in effect" },
+                { phase: "1",       item: "Two or more council members elected on small-donor, reform-aligned campaigns" },
+                { phase: "2",       item: "Neighborhood council with binding authority (not advisory only)" },
+                { phase: "2",       item: "Citizens' assembly pilot completed and publicly reported" },
+                { phase: "2",       item: "Money-out disclosure ordinance in effect" },
+                { phase: "3",       item: "Charter proposal passed by three-fifths council vote or voter petition" },
+                { phase: "3",       item: "Charter reform ratified at the ballot" },
               ].map(({ phase, item }) => (
                 <tr key={item} style={{ borderBottom: "1px solid rgba(244,241,232,0.05)" }}>
-                  <td style={{ padding: "0.5rem 0.75rem", color: phase === 0 ? "var(--color-teal-accent)" : "var(--color-steel-muted)", fontWeight: 600, fontSize: "0.8rem", whiteSpace: "nowrap" }}>Phase {phase}</td>
+                  <td style={{ padding: "0.5rem 0.75rem", color: phase === "Charter" ? "var(--color-dome-gold)" : phase === "0" ? "var(--color-teal-accent)" : "var(--color-steel-muted)", fontWeight: 600, fontSize: "0.8rem", whiteSpace: "nowrap" }}>
+                    {phase === "Charter" ? "Charter" : `Phase ${phase}`}
+                  </td>
                   <td style={{ padding: "0.5rem 0.75rem", color: "var(--color-text-secondary)" }}>{item}</td>
                 </tr>
               ))}

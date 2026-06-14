@@ -207,6 +207,9 @@ export default function AdminPage() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
         <h1 style={{ margin: 0 }}>Admin</h1>
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          <Link href="/admin/advocacy" className="btn btn--ghost btn--sm">
+            Advocacy Log
+          </Link>
           <Link href="/admin/boards" className="btn btn--ghost btn--sm">
             Boards
           </Link>

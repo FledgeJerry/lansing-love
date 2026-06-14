@@ -114,13 +114,14 @@ async function getRhinoTrackerData() {
 }
 
 export default async function HomePage() {
-  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks] = await Promise.all([
+  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries] = await Promise.all([
     auth(),
     getLegitimacyData(),
     getResiliencePulse(),
     getFreeStandData(),
     getRhinoTrackerData(),
     prisma.ownershipCheck.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.advocacyEntry.findMany({ where: { published: true }, orderBy: { date: "desc" } }),
   ]);
 
   const isAdmin = session?.user?.role === "ADMIN";
@@ -143,6 +144,13 @@ export default async function HomePage() {
         resilience={resilience}
         freestand={freestand}
         rhinoTracker={rhinoTracker}
+        advocacyEntries={advocacyEntries.map(e => ({
+          id: e.id,
+          entryType: e.entryType,
+          summary: e.summary,
+          who: e.who ?? "",
+          date: e.date.toISOString(),
+        }))}
         ownershipChecks={ownershipChecks.map((c) => ({
           id: c.id,
           sortOrder: c.sortOrder,

@@ -240,6 +240,19 @@ model NeighborhoodOrg {
   updatedAt DateTime @updatedAt
 }
 
+// Civic Advocacy log — council contacts, testimony, endorsements, anchor meetings
+model AdvocacyEntry {
+  id        String   @id @default(cuid())
+  entryType String   // council_contact | testimony | endorsement | anchor_meeting
+  summary   String   // one-line shown publicly
+  detail    String?  // admin-only context
+  who       String?  // council member, institution, candidate, body
+  date      DateTime
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // Zone 3 — Ownership Check: 4 standing questions updated quarterly by humans
 model OwnershipCheck {
   id         String   @id @default(cuid())

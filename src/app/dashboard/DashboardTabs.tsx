@@ -61,12 +61,21 @@ type OwnershipCheckItem = {
   updatedBy: string;
 };
 
+type AdvocacyEntry = {
+  id: string;
+  entryType: string;
+  summary: string;
+  who: string;
+  date: string;
+};
+
 interface Props {
   isAdmin: boolean;
   gap: LegitimacyData;
   resilience: ResilienceData;
   freestand: FreeStandData;
   rhinoTracker: RhinoTrackerData;
+  advocacyEntries: AdvocacyEntry[];
   ownershipChecks: OwnershipCheckItem[];
 }
 
@@ -457,26 +466,67 @@ const TRACKED_ORDINANCES = [
   { label: "Independent auditor — mandate and funding", track: "Charter", note: "Partially addressed in 2025 charter; scope and independence need strengthening." },
 ];
 
-function ZoneAdvocacy() {
+const ENTRY_TYPE_COLOR: Record<string, string> = {
+  council_contact: "var(--color-teal-accent)",
+  testimony:       "var(--color-dome-gold)",
+  endorsement:     "#a78bfa",
+  anchor_meeting:  "var(--color-steel-muted)",
+};
+
+const ENTRY_TYPE_LABEL: Record<string, string> = {
+  council_contact: "Council",
+  testimony:       "Testimony",
+  endorsement:     "Endorsement",
+  anchor_meeting:  "Anchor",
+};
+
+function ZoneAdvocacy({ entries }: { entries: AdvocacyEntry[] }) {
+  const councilMembers = new Set(entries.filter(e => e.entryType === "council_contact").map(e => e.who).filter(Boolean)).size;
+  const testimony      = entries.filter(e => e.entryType === "testimony").length;
+  const anchors        = new Set(entries.filter(e => e.entryType === "anchor_meeting").map(e => e.who).filter(Boolean)).size;
+
   return (
     <>
       <p style={{ fontSize: "0.85rem", color: "var(--color-steel-muted)", marginBottom: "1.25rem", maxWidth: "680px" }}>
-        The &ldquo;transform, not seize&rdquo; track — what the network is doing to reform city government from outside. A human-maintained log, updated weekly, showing the work is real and accountable.
+        The &ldquo;transform, not seize&rdquo; track — what the network is doing to reform city government from outside. Updated weekly by staff.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1rem", marginBottom: "1.5rem" }}>
         {[
-          { value: "—", label: "Council members engaged", desc: "Active relationships on polycentric reform agenda" },
-          { value: "6",  label: "Ordinances tracked", desc: "Neighborhood councils, PB pilot, open-records default, recusal requirement, BWL board reform, independent auditor" },
-          { value: "—", label: "Testimony appearances", desc: "Public advocacy at council, BWL, and board meetings this year" },
-          { value: "—", label: "Anchor institution conversations", desc: "Procurement relationships in progress" },
+          { value: councilMembers || "—", label: "Council members engaged", desc: "Active relationships on polycentric reform agenda" },
+          { value: 6,                     label: "Ordinances tracked",       desc: "Neighborhood councils, PB pilot, open-records default, recusal requirement, BWL board reform, independent auditor" },
+          { value: testimony      || "—", label: "Testimony appearances",    desc: "Public advocacy at council, BWL, and board meetings this year" },
+          { value: anchors        || "—", label: "Anchor institutions",      desc: "Procurement relationships in progress" },
         ].map(({ value, label, desc }) => (
-          <div key={label} style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "10px", padding: "1rem" }}>
-            <p style={{ fontSize: "1.5rem", fontWeight: 700, color: value === "—" ? "var(--color-steel-muted)" : "var(--color-dome-gold)", lineHeight: 1 }}>{value}</p>
+          <div key={label} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(244,241,232,0.1)", borderRadius: "10px", padding: "1rem" }}>
+            <p style={{ fontSize: "1.5rem", fontWeight: 700, color: value === "—" ? "rgba(154,176,200,0.3)" : "var(--color-dome-gold)", lineHeight: 1 }}>{value}</p>
             <p style={{ fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", marginTop: "0.3rem" }}>{label}</p>
             <p style={{ fontSize: "0.7rem", color: "rgba(154,176,200,0.6)", marginTop: "0.2rem" }}>{desc}</p>
           </div>
         ))}
       </div>
+
+      {/* Activity log */}
+      {entries.length > 0 && (
+        <div style={{ marginBottom: "1.5rem" }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>Recent activity</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            {entries.slice(0, 10).map((entry) => (
+              <div key={entry.id} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", padding: "0.6rem 0.875rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(244,241,232,0.07)", borderRadius: "8px" }}>
+                <span style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: ENTRY_TYPE_COLOR[entry.entryType] ?? "var(--color-steel-muted)", flexShrink: 0, marginTop: "0.15rem", minWidth: "68px" }}>
+                  {ENTRY_TYPE_LABEL[entry.entryType] ?? entry.entryType}
+                </span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  {entry.who && <span style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--color-limestone)" }}>{entry.who} — </span>}
+                  <span style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)" }}>{entry.summary}</span>
+                </div>
+                <span style={{ fontSize: "0.68rem", color: "rgba(154,176,200,0.4)", flexShrink: 0, whiteSpace: "nowrap" }}>
+                  {new Date(entry.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div style={{ marginBottom: "1.25rem" }}>
         <p style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>Tracked ordinances & charter items</p>
@@ -492,13 +542,6 @@ function ZoneAdvocacy() {
             </div>
           ))}
         </div>
-      </div>
-
-      <div style={{ background: "rgba(255,255,255,0.02)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "10px", padding: "1.25rem" }}>
-        <p style={{ fontWeight: 600, color: "var(--color-steel-muted)", marginBottom: "0.35rem", fontSize: "0.875rem" }}>Admin entry interface coming soon</p>
-        <p style={{ fontSize: "0.8rem", color: "rgba(154,176,200,0.6)" }}>
-          A simple log — council members engaged, testimony given, endorsements made, anchor institution meetings. Updated weekly by staff. No blockers; data model is next.
-        </p>
       </div>
     </>
   );
@@ -659,7 +702,7 @@ function ZoneGovernance() {
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhinoTracker, ownershipChecks }: Props) {
+export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhinoTracker, advocacyEntries, ownershipChecks }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("governance");
 
   return (
@@ -695,7 +738,7 @@ export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhi
         {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} rhinoTracker={rhinoTracker} />}
         {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} />}
         {activeTab === "ownership"  && <ZoneOwnership isAdmin={isAdmin} ownershipChecks={ownershipChecks} />}
-        {activeTab === "advocacy"    && <ZoneAdvocacy />}
+        {activeTab === "advocacy"    && <ZoneAdvocacy entries={advocacyEntries} />}
         {activeTab === "policy"      && <ZonePolicy />}
         {activeTab === "governance"  && <ZoneGovernance />}
       </div>

@@ -268,6 +268,9 @@ export default function GovernancePage() {
           {" "}and the city&apos;s own public records.{" "}
           <Link href="/governance/issues" style={{ color: "var(--color-dome-gold)" }}>See all case studies →</Link>
         </p>
+        <div style={{ marginTop: "1.25rem" }}>
+          <Link href="/governance/alternatives/chamber" className="btn btn--ghost btn--sm">How to build an alternative to a chamber →</Link>
+        </div>
       </section>
 
       <hr className="divider" />

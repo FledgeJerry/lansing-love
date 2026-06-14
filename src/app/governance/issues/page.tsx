@@ -148,6 +148,19 @@ export default async function IssuesIndexPage() {
         </div>
       </section>
 
+      <hr className="divider" />
+
+      <section style={{ marginBottom: "2rem" }}>
+        <span className="eyebrow">Alternatives</span>
+        <h2 style={{ marginBottom: "0.75rem", fontSize: "1.1rem" }}>Not just accountability — building something better</h2>
+        <p style={{ fontSize: "0.875rem", color: "var(--color-steel-muted)", maxWidth: "600px", marginBottom: "1rem" }}>
+          Documenting failures matters. So does building the alternative. The Chamber case study comes with a two-track action plan: file the complaints, and launch the cooperative that serves the businesses the Chamber never has.
+        </p>
+        <Link href="/governance/alternatives/chamber" className="btn btn--secondary btn--sm">
+          How to build an alternative to a chamber →
+        </Link>
+      </section>
+
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
         <Link href="/governance" className="btn btn--ghost btn--sm">← Back to Governance</Link>
         <Link href="/predictions" className="btn btn--secondary btn--sm">Track council votes →</Link>

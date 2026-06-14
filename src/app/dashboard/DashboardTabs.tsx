@@ -549,58 +549,127 @@ function ZoneAdvocacy({ entries }: { entries: AdvocacyEntry[] }) {
 
 // ─── Zone 5: Policy Monitor ───────────────────────────────────────────────────
 
+function StatusBadge({ status }: { status: "live" | "tracking" | "pending" | "clarification" }) {
+  const cfg = {
+    live:          { label: "Live",          color: "var(--color-teal-accent)",   bg: "rgba(74,155,142,0.12)"  },
+    tracking:      { label: "Tracking",      color: "var(--color-dome-gold)",     bg: "rgba(232,200,74,0.1)"   },
+    pending:       { label: "Pending",       color: "rgba(154,176,200,0.5)",      bg: "rgba(154,176,200,0.06)" },
+    clarification: { label: "Note",          color: "#a78bfa",                    bg: "rgba(167,139,250,0.08)" },
+  }[status];
+  return (
+    <span style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: cfg.color, background: cfg.bg, borderRadius: "4px", padding: "0.15rem 0.4rem", flexShrink: 0 }}>
+      {cfg.label}
+    </span>
+  );
+}
+
 function ZonePolicy() {
   return (
     <>
-      <p style={{ fontSize: "0.85rem", color: "var(--color-steel-muted)", marginBottom: "1.25rem", maxWidth: "680px" }}>
-        What Lansing&apos;s government is actually doing on the issues the network cares about — tracked across City Council, BWL board, and the Michigan legislature (state preemption risk: the Ann Arbor/AG situation on public financing is the warning sign).
+      <p style={{ fontSize: "0.85rem", color: "var(--color-steel-muted)", marginBottom: "1.5rem", maxWidth: "680px" }}>
+        What the network is tracking, building, and clarifying — across city council, boards, and the public record.
       </p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1rem" }}>
-        {[
-          {
-            title: "Ordinance Track (No ballot needed)",
-            items: [
-              "Neighborhood advisory boards with formal standing and required response mechanism",
-              "Participatory budgeting pilot — Grand Rapids precedent: 2022, $2M, no charter change",
-              "Proactive disclosure / open records default",
-              "Conflict-of-interest recusal required on record for appointed boards",
-            ],
-          },
-          {
-            title: "Charter Track (Requires public vote)",
-            items: [
-              "BWL board reform — elected seats, enforced terms",
-              "Independent auditor — mandate and funding",
-              "Stakeholder/expert seats on development and housing boards with balanced composition",
-            ],
-          },
-          {
-            title: "Board Composition Database",
-            items: [
-              "All Lansing appointed boards: member, appointment date, term expiration, appointing official",
-              "Flag: members serving past expired terms — a documented accountability gap",
-              "First board: Lansing Housing Commission — see full case study",
-              "MSU urban planning or public policy student partner recommended for full build",
-            ],
-            link: "/governance/issues",
-            linkLabel: "All board case studies →",
-          },
-        ].map(({ title, items, link, linkLabel }: { title: string; items: string[]; link?: string; linkLabel?: string }) => (
-          <div key={title} style={{ background: "rgba(255,255,255,0.03)", border: "1px dashed rgba(244,241,232,0.15)", borderRadius: "10px", padding: "1.25rem" }}>
-            <p style={{ fontWeight: 600, color: "var(--color-steel-muted)", marginBottom: "0.75rem", fontSize: "0.85rem" }}>{title}</p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-              {items.map((item) => (
-                <li key={item} style={{ fontSize: "0.78rem", color: "rgba(154,176,200,0.7)", display: "flex", gap: "0.4rem" }}>
-                  <span style={{ color: "rgba(154,176,200,0.3)", flexShrink: 0 }}>○</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            {link && linkLabel && (
-              <Link href={link} style={{ fontSize: "0.75rem", color: "var(--color-dome-gold)", display: "inline-block", marginTop: "0.6rem" }}>{linkLabel}</Link>
-            )}
-          </div>
-        ))}
+
+      {/* What's built */}
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-teal-accent)", marginBottom: "0.75rem" }}>Recently built</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {[
+            { label: "Board Composition Database",            note: "44 boards, all members, expired terms flagged — boards where members are serving 5–13 years past expiration are surfaced.", link: "/boards",                       linkLabel: "View /boards →" },
+            { label: "Neighborhood Organizations Directory",  note: "59 registered neighborhood organizations — the existing infrastructure for neighborhood councils with real authority.",  link: "/neighborhoods",                linkLabel: "View /neighborhoods →" },
+            { label: "Board accountability case studies",     note: "7 sourced case studies: LHC, Land Bank, Flock, Chamber PAC, Board of Ethics, BWL, Development & Planning.",           link: "/governance/issues",            linkLabel: "View all →" },
+            { label: "Chamber accountability + alternative",  note: "8 documented findings. 7 complaint filings. Cooperative alternative plan with legal structure and governance provisions.", link: "/governance/alternatives/chamber", linkLabel: "View plan →" },
+          ].map(({ label, note, link, linkLabel }) => (
+            <div key={label} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", background: "rgba(74,155,142,0.04)", border: "1px solid rgba(74,155,142,0.15)", borderRadius: "8px", padding: "0.875rem 1rem" }}>
+              <StatusBadge status="live" />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.85rem", margin: 0 }}>{label}</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-steel-muted)", margin: "0.15rem 0 0" }}>{note}</p>
+              </div>
+              <Link href={link} style={{ fontSize: "0.72rem", color: "var(--color-dome-gold)", flexShrink: 0, whiteSpace: "nowrap" }}>{linkLabel}</Link>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Ordinance track */}
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>Ordinance track — no ballot needed</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {[
+            {
+              status: "pending" as const,
+              label: "Neighborhood advisory boards with formal standing",
+              note: "Binding say, not advisory only. Los Angeles has 99 neighborhood councils. Lansing's 59 registered neighborhood orgs are the infrastructure — they need formal authority.",
+              link: "/neighborhoods", linkLabel: "See the orgs →",
+            },
+            {
+              status: "clarification" as const,
+              label: "Participatory budgeting pilot",
+              note: "Lansing's 'Participatory Budget Nights' are public hearings with better facilitation — not real PB. No binding vote, no delegates, no dollar allocation. Grand Rapids did real PB by council ordinance in 2022: $2M, no charter change. Kelsea Hector proposed Lansing's 'first PB program' in the 2025 race — which tells you what the current format is.",
+              link: "/governance/policy/participatory-budgeting", linkLabel: "Full analysis →",
+            },
+            {
+              status: "pending" as const,
+              label: "Proactive disclosure / open records default",
+              note: "Publish meeting communications before being FOIA'd. Makes manufactured consent visible in real time.",
+            },
+            {
+              status: "pending" as const,
+              label: "Conflict-of-interest recusal required on record for appointed boards",
+              note: "Currently at board members' discretion. Board of Ethics case study shows what happens without enforcement.",
+              link: "/governance/issues/board-of-ethics", linkLabel: "Case study →",
+            },
+          ].map(({ status, label, note, link, linkLabel }) => (
+            <div key={label} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", background: "rgba(255,255,255,0.02)", border: `1px solid ${status === "clarification" ? "rgba(167,139,250,0.2)" : "rgba(244,241,232,0.08)"}`, borderRadius: "8px", padding: "0.875rem 1rem" }}>
+              <StatusBadge status={status} />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.85rem", margin: 0 }}>{label}</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-steel-muted)", margin: "0.15rem 0 0" }}>{note}</p>
+              </div>
+              {link && linkLabel && (
+                <Link href={link} style={{ fontSize: "0.72rem", color: "var(--color-dome-gold)", flexShrink: 0, whiteSpace: "nowrap" }}>{linkLabel}</Link>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Charter track */}
+      <div>
+        <p style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>Charter track — requires public vote</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {[
+            {
+              status: "tracking" as const,
+              label: "BWL board reform — elected seats, enforced terms",
+              note: "9 BWL employees donated $6K to LRC-PAC in 48 hours; CFO on Chamber board testified for Deep Green. All seats mayoral-appointed. Charter reform is the fix.",
+              link: "/governance/issues/bwl", linkLabel: "Case study →",
+            },
+            {
+              status: "pending" as const,
+              label: "Independent auditor — mandate and funding",
+              note: "Partially addressed in 2025 charter. Scope and independence need strengthening.",
+            },
+            {
+              status: "pending" as const,
+              label: "Stakeholder and expert seats on development and housing boards",
+              note: "People affected by decisions, and people who understand them, seated as decision-makers — not just advisors the mayor can ignore.",
+              link: "/governance/issues/development-planning", linkLabel: "Case study →",
+            },
+          ].map(({ status, label, note, link, linkLabel }) => (
+            <div key={label} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(244,241,232,0.08)", borderRadius: "8px", padding: "0.875rem 1rem" }}>
+              <StatusBadge status={status} />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.85rem", margin: 0 }}>{label}</p>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-steel-muted)", margin: "0.15rem 0 0" }}>{note}</p>
+              </div>
+              {link && linkLabel && (
+                <Link href={link} style={{ fontSize: "0.72rem", color: "var(--color-dome-gold)", flexShrink: 0, whiteSpace: "nowrap" }}>{linkLabel}</Link>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

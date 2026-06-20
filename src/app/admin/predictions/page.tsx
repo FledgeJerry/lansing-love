@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 type Option   = { id: string; label: string };
@@ -15,11 +15,24 @@ type Question = {
 };
 type Tab = "pending" | "resolve" | "all";
 const STATUS_OPTIONS = ["PENDING", "ACTIVE", "CLOSED", "RESOLVED", "ARCHIVED"] as const;
+const VALID_TABS: Tab[] = ["pending", "resolve", "all"];
 
 export default function AdminPredictionsPage() {
+  return (
+    <Suspense fallback={<p style={{ color: "var(--color-text-muted)" }}>Loading…</p>}>
+      <AdminPredictionsContent />
+    </Suspense>
+  );
+}
+
+function AdminPredictionsContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>("pending");
+  const searchParams = useSearchParams();
+  const initialTab = VALID_TABS.includes(searchParams.get("tab") as Tab)
+    ? (searchParams.get("tab") as Tab)
+    : "pending";
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);

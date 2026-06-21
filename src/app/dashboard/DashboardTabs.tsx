@@ -1,9 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+import type { Feature, Geometry } from "geojson";
 import OwnershipCheckEditor from "./OwnershipCheckEditor";
 import { ALICE_SNAPSHOT } from "./aliceData";
+import type { TractProps } from "@/components/TractChoroplethMap";
+
+const TractChoroplethMap = dynamic(() => import("@/components/TractChoroplethMap"), { ssr: false });
+
+type TractData = Feature<Geometry, TractProps>[] | null;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -103,6 +110,7 @@ interface Props {
   freestand: FreeStandData;
   fledgeEvents: FledgeEvents;
   urbandale: UrbandaleData;
+  tractData: TractData;
   rhinoTracker: RhinoTrackerData;
   advocacyEntries: AdvocacyEntry[];
   ownershipChecks: OwnershipCheckItem[];
@@ -365,7 +373,7 @@ function ZoneLegitimacy({ gap, rhinoTracker }: { gap: LegitimacyData; rhinoTrack
 
 // ─── Zone 2: Cooperative Network ─────────────────────────────────────────────
 
-function ZoneNetwork({ resilience, freestand, fledgeEvents, urbandale }: { resilience: ResilienceData; freestand: FreeStandData; fledgeEvents: FledgeEvents; urbandale: UrbandaleData }) {
+function ZoneNetwork({ resilience, freestand, fledgeEvents, urbandale, tractData }: { resilience: ResilienceData; freestand: FreeStandData; fledgeEvents: FledgeEvents; urbandale: UrbandaleData; tractData: TractData }) {
   const freestandDays = freestand?.daily_interactions ?? [];
   const maxDayCount = freestandDays.length > 0 ? Math.max(...freestandDays.map((d) => d.count)) : 1;
 
@@ -520,11 +528,27 @@ function ZoneNetwork({ resilience, freestand, fledgeEvents, urbandale }: { resil
         />
       )}
 
-      <PendingPanel
-        title="Geographic Reach — Equity Map"
-        description="Lansing is ~23% Black, ~13% Hispanic/Latino, concentrated south and west — a legacy of HOLC redlining and the 1960s I-496 construction, which displaced 890 dwellings from Lansing's main Black neighborhood. The cooperative network's current gravity is east and north. This map will make that gap visible, not hide it."
-        blocker="Waiting on member location data at zip code or neighborhood level. A map showing only co-op locations would be misleading and will not be built until member data exists."
-      />
+      {tractData && tractData.length > 0 ? (
+        <div className="card" style={{ padding: "1.5rem" }}>
+          <p style={{ fontWeight: 600, marginBottom: "0.25rem", fontSize: "0.9rem" }}>Geographic Reach — Equity Map</p>
+          <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", marginBottom: "1rem", maxWidth: "720px" }}>
+            Census tracts shaded by how many cooperative-network locations (businesses, co-ops, housing projects, entrepreneurs)
+            fall within them — aggregate counts only, no individual addresses. Tracts outlined in red were graded
+            &quot;D — Hazardous&quot; by the federal Home Owners&apos; Loan Corporation in the 1930s, the historic redlining
+            that shaped where investment did and didn&apos;t flow in Lansing. If the darkest tracts and the red outlines
+            don&apos;t overlap, that gap is the point of this panel.
+          </p>
+          <div style={{ height: "420px", borderRadius: "8px", overflow: "hidden" }}>
+            <TractChoroplethMap features={tractData} />
+          </div>
+          <p style={{ fontSize: "0.68rem", color: "var(--color-steel-muted)", marginTop: "0.5rem" }}>
+            HOLC grade data: Nelson, R. et al., <em>Mapping Inequality</em>, University of Richmond Digital Scholarship Lab,
+            via GeoDaCenter (CC BY-NC-SA 4.0). Location counts from resilience.foundation.
+          </p>
+        </div>
+      ) : (
+        <PlaceholderPanel title="Geographic Reach — Equity Map" reason="resilience.foundation tract data unavailable." />
+      )}
 
       {eventCategoryCounts && eventCategoryCounts.length > 0 ? (
         <div className="card" style={{ padding: "1.5rem" }}>
@@ -1046,7 +1070,7 @@ function ZoneGovernance() {
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fledgeEvents, urbandale, rhinoTracker, advocacyEntries, ownershipChecks }: Props) {
+export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fledgeEvents, urbandale, tractData, rhinoTracker, advocacyEntries, ownershipChecks }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("governance");
 
   return (
@@ -1080,7 +1104,7 @@ export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fle
 
       <div role="tabpanel">
         {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} rhinoTracker={rhinoTracker} />}
-        {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} fledgeEvents={fledgeEvents} urbandale={urbandale} />}
+        {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} fledgeEvents={fledgeEvents} urbandale={urbandale} tractData={tractData} />}
         {activeTab === "needs"      && <ZoneNeeds resilience={resilience} freestand={freestand} urbandale={urbandale} fledgeEvents={fledgeEvents} />}
         {activeTab === "ownership"  && <ZoneOwnership isAdmin={isAdmin} ownershipChecks={ownershipChecks} />}
         {activeTab === "advocacy"    && <ZoneAdvocacy entries={advocacyEntries} />}

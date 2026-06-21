@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import type { Feature, Geometry } from "geojson";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import DashboardTabs from "./dashboard/DashboardTabs";
 import AliceSnapshot from "./dashboard/AliceSnapshot";
+import type { TractProps } from "@/components/TractChoroplethMap";
 
 export const dynamic = "force-dynamic";
 
@@ -70,6 +72,28 @@ async function getResiliencePulse() {
   } catch { return null; }
 }
 
+async function getTractData() {
+  try {
+    const res = await fetch("https://resilience.foundation/api/tracts", { cache: "no-store" });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const countsByGeoid: Record<string, { entrepreneur: number; business: number; house: number; coop: number; total: number }> =
+      Object.fromEntries(data.tracts.map((t: { geoid: string }) => [t.geoid, t]));
+
+    // Local copy of the same tract boundaries + 1930s HOLC grade data used by
+    // resilience.foundation's /api/tracts to compute these counts in the first
+    // place — see src/data/inghamTractsHolc.json for provenance/license notes.
+    const tractGeo = (await import("@/data/inghamTractsHolc.json")).default as unknown as {
+      features: { type: "Feature"; properties: { geoid: string; name: string; holc_grade: string }; geometry: Geometry }[];
+    };
+
+    return tractGeo.features.map((f) => {
+      const counts = countsByGeoid[f.properties.geoid] ?? { entrepreneur: 0, business: 0, house: 0, coop: 0, total: 0 };
+      return { ...f, properties: { ...f.properties, ...counts } } as Feature<Geometry, TractProps>;
+    });
+  } catch { return null; }
+}
+
 async function getFreeStandData() {
   try {
     const res = await fetch("https://freestand.thefledge.com/api/v1/admin/metrics/stand", { cache: "no-store" });
@@ -132,7 +156,7 @@ async function getRhinoTrackerData() {
 }
 
 export default async function HomePage() {
-  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries, fledgeEvents, urbandale] = await Promise.all([
+  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries, fledgeEvents, urbandale, tractData] = await Promise.all([
     auth(),
     getLegitimacyData(),
     getResiliencePulse(),
@@ -142,6 +166,7 @@ export default async function HomePage() {
     prisma.advocacyEntry.findMany({ where: { published: true }, orderBy: { date: "desc" } }),
     getFledgeEvents(2026),
     getUrbandaleData(),
+    getTractData(),
   ]);
 
   const isAdmin = session?.user?.role === "ADMIN";
@@ -167,6 +192,7 @@ export default async function HomePage() {
         freestand={freestand}
         fledgeEvents={fledgeEvents}
         urbandale={urbandale}
+        tractData={tractData}
         rhinoTracker={rhinoTracker}
         advocacyEntries={advocacyEntries.map(e => ({
           id: e.id,

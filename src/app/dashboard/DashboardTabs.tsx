@@ -20,7 +20,11 @@ type ResilienceData = {
   coops: { total: number; activelyBuildingHandbook: number };
   housing: { projects: number };
   handbook: { fieldsFilled: number; uniqueFieldIds: number };
+  governance: { proposalsVoted: number; coopsWithVoteData: number; avgParticipationPct: number | null };
 } | null;
+
+type FledgeEvent = { id: string; title: string; slug: string; date: string; space: string; category: string | null };
+type FledgeEvents = FledgeEvent[] | null;
 
 type FreeStandDay = { day: string; count: number; morning?: number; afternoon?: number; evening?: number; night?: number };
 
@@ -74,6 +78,7 @@ interface Props {
   gap: LegitimacyData;
   resilience: ResilienceData;
   freestand: FreeStandData;
+  fledgeEvents: FledgeEvents;
   rhinoTracker: RhinoTrackerData;
   advocacyEntries: AdvocacyEntry[];
   ownershipChecks: OwnershipCheckItem[];
@@ -316,9 +321,26 @@ function ZoneLegitimacy({ gap, rhinoTracker }: { gap: LegitimacyData; rhinoTrack
 
 // ─── Zone 2: Cooperative Network ─────────────────────────────────────────────
 
-function ZoneNetwork({ resilience, freestand }: { resilience: ResilienceData; freestand: FreeStandData }) {
+function ZoneNetwork({ resilience, freestand, fledgeEvents }: { resilience: ResilienceData; freestand: FreeStandData; fledgeEvents: FledgeEvents }) {
   const freestandDays = freestand?.daily_interactions ?? [];
   const maxDayCount = freestandDays.length > 0 ? Math.max(...freestandDays.map((d) => d.count)) : 1;
+
+  const eventCategoryCounts = (() => {
+    if (!fledgeEvents) return null;
+    const counts: Record<string, number> = {};
+    for (const e of fledgeEvents) {
+      const cat = e.category?.trim() || "Uncategorized";
+      counts[cat] = (counts[cat] ?? 0) + 1;
+    }
+    return Object.entries(counts)
+      .map(([category, count]) => ({ category, count }))
+      .sort((a, b) => b.count - a.count);
+  })();
+  const maxEventCount = eventCategoryCounts && eventCategoryCounts.length > 0
+    ? Math.max(...eventCategoryCounts.map((c) => c.count)) : 1;
+  const now = new Date();
+  const pastEventCount = fledgeEvents?.filter((e) => new Date(e.date) < now).length ?? 0;
+  const futureEventCount = fledgeEvents ? fledgeEvents.length - pastEventCount : 0;
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1.5rem" }}>
@@ -383,11 +405,31 @@ function ZoneNetwork({ resilience, freestand }: { resilience: ResilienceData; fr
         <PlaceholderPanel title="Free Food Stand" reason="FreeStand API unavailable — will populate when freestand.thefledge.com is reachable." />
       )}
 
-      <PendingPanel
-        title="Co-op Governance Participation"
-        description="Target: 80% of worker-owners participating in major governance votes per quarter. Flag threshold: below 60% for two consecutive quarters. Co-ops will submit standardized quarterly reports: participation rate, votes held, Five Compass Questions run (Y/N), facilitation rotated (Y/N)."
-        blocker="Reporting workflow under development. This panel will not show estimates — only verified reports."
-      />
+      {resilience && resilience.governance.proposalsVoted > 0 ? (
+        <div className="card" style={{ padding: "1.5rem" }}>
+          <p style={{ fontWeight: 600, marginBottom: "0.25rem", fontSize: "0.9rem" }}>Co-op Governance Participation</p>
+          <p style={{ fontSize: "0.75rem", color: "var(--color-steel-muted)", marginBottom: "1rem" }}>
+            Target: 80% of worker-owners participating in major governance votes per quarter. Only counts proposals that actually closed for a vote — no estimates.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
+            <StatBox
+              value={resilience.governance.avgParticipationPct !== null ? `${resilience.governance.avgParticipationPct}%` : "—"}
+              label="Avg participation rate"
+              color={resilience.governance.avgParticipationPct !== null && resilience.governance.avgParticipationPct < 60 ? "#e0654d" : "var(--color-teal-accent)"}
+            />
+            <StatBox value={resilience.governance.proposalsVoted} label="Proposals voted on" />
+          </div>
+          <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)" }}>
+            Across {resilience.governance.coopsWithVoteData} co-op{resilience.governance.coopsWithVoteData !== 1 ? "s" : ""} with verified vote data. Aggregated — not broken out by co-op.
+          </p>
+        </div>
+      ) : (
+        <PendingPanel
+          title="Co-op Governance Participation"
+          description="Target: 80% of worker-owners participating in major governance votes per quarter. Flag threshold: below 60% for two consecutive quarters."
+          blocker="No co-ops have closed a proposal for a vote yet. This panel will not show estimates — only verified reports."
+        />
+      )}
 
       <PendingPanel
         title="Geographic Reach — Equity Map"
@@ -395,11 +437,25 @@ function ZoneNetwork({ resilience, freestand }: { resilience: ResilienceData; fr
         blocker="Waiting on member location data at zip code or neighborhood level. A map showing only co-op locations would be misleading and will not be built until member data exists."
       />
 
-      <PendingPanel
-        title="Upcoming Co-op & Governance Events"
-        description="Fledge events relevant to the cooperative network — co-op workshops, governance meetings, public advocacy events — pulled live from thefledge.com's events system."
-        blocker="Confirming thefledge.com events API endpoint before building."
-      />
+      {eventCategoryCounts && eventCategoryCounts.length > 0 ? (
+        <div className="card" style={{ padding: "1.5rem" }}>
+          <p style={{ fontWeight: 600, marginBottom: "0.25rem", fontSize: "0.9rem" }}>Upcoming Co-op &amp; Governance Events</p>
+          <p style={{ fontSize: "0.75rem", color: "var(--color-steel-muted)", marginBottom: "1rem" }}>
+            All Fledge events in 2026 by category — {pastEventCount} happened, {futureEventCount} upcoming.
+          </p>
+          {eventCategoryCounts.map(({ category, count }) => (
+            <div key={category} style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.4rem" }}>
+              <span style={{ width: "150px", fontSize: "0.78rem", color: "var(--color-steel-muted)", flexShrink: 0, textAlign: "right", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{category}</span>
+              <div style={{ flex: 1, background: "var(--color-border)", borderRadius: "4px", height: "16px", overflow: "hidden" }}>
+                <div style={{ width: `${Math.max(4, Math.round((count / maxEventCount) * 100))}%`, background: "var(--color-teal-accent)", height: "100%", borderRadius: "4px" }} />
+              </div>
+              <span style={{ width: "24px", fontSize: "0.78rem", color: "var(--color-limestone)", flexShrink: 0 }}>{count}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <PlaceholderPanel title="Upcoming Co-op & Governance Events" reason="thefledge.com events API unavailable, or no published events found for 2026." />
+      )}
 
       <PendingPanel
         title="FLDG Token — Cooperative Economy"
@@ -771,7 +827,7 @@ function ZoneGovernance() {
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhinoTracker, advocacyEntries, ownershipChecks }: Props) {
+export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fledgeEvents, rhinoTracker, advocacyEntries, ownershipChecks }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("governance");
 
   return (
@@ -805,7 +861,7 @@ export default function DashboardTabs({ isAdmin, gap, resilience, freestand, rhi
 
       <div role="tabpanel">
         {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} rhinoTracker={rhinoTracker} />}
-        {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} />}
+        {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} fledgeEvents={fledgeEvents} />}
         {activeTab === "ownership"  && <ZoneOwnership isAdmin={isAdmin} ownershipChecks={ownershipChecks} />}
         {activeTab === "advocacy"    && <ZoneAdvocacy entries={advocacyEntries} />}
         {activeTab === "policy"      && <ZonePolicy />}

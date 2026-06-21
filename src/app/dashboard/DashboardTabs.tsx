@@ -35,6 +35,16 @@ type ResilienceData = {
 type FledgeEvent = { id: string; title: string; slug: string; date: string; space: string; category: string | null };
 type FledgeEvents = FledgeEvent[] | null;
 
+type UrbandaleData = {
+  active_plots: number;
+  active_plantings: number;
+  total_harvest_lbs: number;
+  workers: number;
+  members: number;
+  battery_pct: number | null;
+  solar_watts: number | null;
+} | null;
+
 type FreeStandDay = { day: string; count: number; morning?: number; afternoon?: number; evening?: number; night?: number };
 
 type FreeStandData = {
@@ -88,6 +98,7 @@ interface Props {
   resilience: ResilienceData;
   freestand: FreeStandData;
   fledgeEvents: FledgeEvents;
+  urbandale: UrbandaleData;
   rhinoTracker: RhinoTrackerData;
   advocacyEntries: AdvocacyEntry[];
   ownershipChecks: OwnershipCheckItem[];
@@ -349,7 +360,7 @@ function ZoneLegitimacy({ gap, rhinoTracker }: { gap: LegitimacyData; rhinoTrack
 
 // ─── Zone 2: Cooperative Network ─────────────────────────────────────────────
 
-function ZoneNetwork({ resilience, freestand, fledgeEvents }: { resilience: ResilienceData; freestand: FreeStandData; fledgeEvents: FledgeEvents }) {
+function ZoneNetwork({ resilience, freestand, fledgeEvents, urbandale }: { resilience: ResilienceData; freestand: FreeStandData; fledgeEvents: FledgeEvents; urbandale: UrbandaleData }) {
   const freestandDays = freestand?.daily_interactions ?? [];
   const maxDayCount = freestandDays.length > 0 ? Math.max(...freestandDays.map((d) => d.count)) : 1;
 
@@ -457,6 +468,25 @@ function ZoneNetwork({ resilience, freestand, fledgeEvents }: { resilience: Resi
         </div>
       ) : (
         <PlaceholderPanel title="Free Food Stand" reason="FreeStand API unavailable — will populate when freestand.thefledge.com is reachable." />
+      )}
+
+      {urbandale ? (
+        <div className="card" style={{ padding: "1.5rem" }}>
+          <p style={{ fontWeight: 600, marginBottom: "1rem", fontSize: "0.9rem" }}>Urbandale Farm — Co-op in Formation</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "1rem" }}>
+            <StatBox value={urbandale.active_plots} label="Active plots" />
+            <StatBox value={urbandale.active_plantings} label="Active plantings" />
+            <StatBox value={urbandale.workers} label="Workers" />
+            <StatBox value={Math.round(urbandale.total_harvest_lbs)} label="Lbs harvested" color="var(--color-teal-accent)" />
+          </div>
+          {urbandale.battery_pct !== null && (
+            <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)" }}>
+              Solar: {urbandale.battery_pct}% battery, {urbandale.solar_watts ?? 0}W generating
+            </p>
+          )}
+        </div>
+      ) : (
+        <PlaceholderPanel title="Urbandale Farm — Co-op in Formation" reason="Not yet deployed publicly — Pi hardware isn't on-site at the farm yet. Will populate once urbandale.thefledge.com is reachable." />
       )}
 
       {resilience && resilience.governance.proposalsVoted > 0 ? (
@@ -881,7 +911,7 @@ function ZoneGovernance() {
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fledgeEvents, rhinoTracker, advocacyEntries, ownershipChecks }: Props) {
+export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fledgeEvents, urbandale, rhinoTracker, advocacyEntries, ownershipChecks }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("governance");
 
   return (
@@ -915,7 +945,7 @@ export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fle
 
       <div role="tabpanel">
         {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} rhinoTracker={rhinoTracker} />}
-        {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} fledgeEvents={fledgeEvents} />}
+        {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} fledgeEvents={fledgeEvents} urbandale={urbandale} />}
         {activeTab === "ownership"  && <ZoneOwnership isAdmin={isAdmin} ownershipChecks={ownershipChecks} />}
         {activeTab === "advocacy"    && <ZoneAdvocacy entries={advocacyEntries} />}
         {activeTab === "policy"      && <ZonePolicy />}

@@ -86,6 +86,15 @@ async function getFledgeEvents(year: number) {
   } catch { return null; }
 }
 
+async function getUrbandaleData() {
+  try {
+    const res = await fetch("https://urbandale.thefledge.com/api/v1/pulse", { cache: "no-store" });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.ok ? data.farm : null;
+  } catch { return null; }
+}
+
 async function getRhinoTrackerData() {
   try {
     const res = await fetch("https://rhinocerosmedia.org/council-tracker", {
@@ -122,7 +131,7 @@ async function getRhinoTrackerData() {
 }
 
 export default async function HomePage() {
-  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries, fledgeEvents] = await Promise.all([
+  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries, fledgeEvents, urbandale] = await Promise.all([
     auth(),
     getLegitimacyData(),
     getResiliencePulse(),
@@ -131,6 +140,7 @@ export default async function HomePage() {
     prisma.ownershipCheck.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.advocacyEntry.findMany({ where: { published: true }, orderBy: { date: "desc" } }),
     getFledgeEvents(2026),
+    getUrbandaleData(),
   ]);
 
   const isAdmin = session?.user?.role === "ADMIN";
@@ -153,6 +163,7 @@ export default async function HomePage() {
         resilience={resilience}
         freestand={freestand}
         fledgeEvents={fledgeEvents}
+        urbandale={urbandale}
         rhinoTracker={rhinoTracker}
         advocacyEntries={advocacyEntries.map(e => ({
           id: e.id,

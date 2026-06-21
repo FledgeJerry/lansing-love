@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import OwnershipCheckEditor from "./OwnershipCheckEditor";
+import { ALICE_SNAPSHOT } from "./aliceData";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,6 +40,9 @@ type UrbandaleData = {
   active_plots: number;
   active_plantings: number;
   total_harvest_lbs: number;
+  harvest_lbs_this_year: number;
+  projected_harvest_lbs: number;
+  crops_missing_yield: number;
   workers: number;
   members: number;
   battery_pct: number | null;
@@ -566,8 +570,17 @@ function NeedCard({ title, children }: { title: string; children: React.ReactNod
   );
 }
 
+function eventCountFor(fledgeEvents: FledgeEvents, category: string): number {
+  return fledgeEvents?.filter((e) => e.category === category).length ?? 0;
+}
+
 function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents }: { resilience: ResilienceData; freestand: FreeStandData; urbandale: UrbandaleData; fledgeEvents: FledgeEvents }) {
-  const foodEventCount = fledgeEvents?.filter((e) => e.category === "Food & Agriculture").length ?? 0;
+  const foodEventCount = eventCountFor(fledgeEvents, "Food & Agriculture");
+  const housingEventCount = eventCountFor(fledgeEvents, "Housing & Homelessness");
+  const techEventCount = eventCountFor(fledgeEvents, "Technology Access");
+  const transportEventCount = eventCountFor(fledgeEvents, "Transportation");
+  const healthcareEventCount = eventCountFor(fledgeEvents, "Healthcare");
+  const childcareEventCount = eventCountFor(fledgeEvents, "Child Care and Family Fun");
   const housing = resilience?.housing;
   const occupancyNote = housing && housing.shareholdersWithOccupancyData < housing.activeShareholders
     ? `based on ${housing.shareholdersWithOccupancyData} of ${housing.activeShareholders} households with occupancy reported — likely an undercount`
@@ -581,11 +594,37 @@ function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents }: { resilie
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
               {freestand && <StatBox value={freestand.interactions_total.toLocaleString()} label="Free Stand visits, all-time" color="var(--color-teal-accent)" />}
               {freestand && <StatBox value={freestand.interactions_week} label="This week" />}
-              {urbandale && <StatBox value={Math.round(urbandale.total_harvest_lbs)} label="Urbandale harvest (lbs)" />}
               {foodEventCount > 0 && <StatBox value={foodEventCount} label="Food & Ag events, 2026" />}
             </div>
+            {urbandale && (
+              <div style={{ marginBottom: "0.75rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.78rem", marginBottom: "0.35rem" }}>
+                  <span>Urbandale harvest, this season</span>
+                  <span style={{ fontWeight: 600, color: "var(--color-limestone)" }}>
+                    {urbandale.harvest_lbs_this_year} lbs
+                    {urbandale.projected_harvest_lbs > 0 && ` of ~${Math.round(urbandale.projected_harvest_lbs)} projected`}
+                  </span>
+                </div>
+                {urbandale.projected_harvest_lbs > 0 && (
+                  <div style={{ height: "8px", background: "rgba(255,255,255,0.08)", borderRadius: "4px", overflow: "hidden" }}>
+                    <div style={{
+                      width: `${Math.min(100, Math.round((urbandale.harvest_lbs_this_year / urbandale.projected_harvest_lbs) * 100))}%`,
+                      height: "100%", background: "var(--color-teal-accent)", borderRadius: "4px", transition: "width 0.4s",
+                    }} />
+                  </div>
+                )}
+                <p style={{ fontSize: "0.68rem", color: "var(--color-steel-muted)", marginTop: "0.3rem" }}>
+                  Projection is directional — based on active plantings only, and {urbandale.crops_missing_yield > 0
+                    ? `${urbandale.crops_missing_yield} of the crops currently in the ground don't have a yield estimate yet, so it's an undercount.`
+                    : "every active crop has a yield estimate set."}
+                </p>
+              </div>
+            )}
             <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>
               Free Stand visit counts are a proxy for people served, not unique individuals.
+            </p>
+            <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)", marginTop: "0.4rem", paddingTop: "0.5rem", borderTop: "1px solid rgba(244,241,232,0.08)" }}>
+              Scale of need: ~{ALICE_SNAPSHOT.foodInsecureCount.toLocaleString()} people food insecure in Ingham County ({ALICE_SNAPSHOT.foodInsecurePct}%, {ALICE_SNAPSHOT.foodInsecureYear} — Feeding America).
             </p>
           </>
         ) : (
@@ -600,6 +639,7 @@ function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents }: { resilie
               <StatBox value={housing.projects} label="Co-op housing projects" />
               <StatBox value={housing.activeShareholders} label="Active households" />
               <StatBox value={housing.totalOccupants} label="People housed" color="var(--color-teal-accent)" />
+              {housingEventCount > 0 && <StatBox value={housingEventCount} label="Events at The Fledge, 2026" />}
             </div>
             <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>
               People-housed count is {occupancyNote}.
@@ -614,14 +654,33 @@ function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents }: { resilie
         <p style={{ fontSize: "0.85rem", marginBottom: "0.5rem" }}>
           FLDG Token — 25 FLDG = 1 hour of cooperative work. Token: 0x5118aec3afcca3f1e21733ee9c88bb800afe6f7b (Polygon).
         </p>
+        {techEventCount > 0 && (
+          <p style={{ fontSize: "0.78rem", marginBottom: "0.5rem" }}>
+            <strong>{techEventCount}</strong> Technology Access event{techEventCount === 1 ? "" : "s"} at The Fledge, 2026.
+          </p>
+        )}
         <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>
           Descriptive only for now — no people-served metric yet. Circulation/transaction data blocked on confirming Polygon query access (see Cooperative Network tab).
         </p>
       </NeedCard>
 
-      <PlaceholderPanel title="🚌 Transportation" reason="No tracked program or data source for this category yet." />
-      <PlaceholderPanel title="🏥 Healthcare" reason="No tracked program or data source for this category yet — Fitness & Wellness events exist but aren't the same thing as healthcare access." />
-      <PlaceholderPanel title="🧸 Childcare" reason="No tracked program or data source for this category yet." />
+      <NeedCard title="🚌 Transportation">
+        <p style={{ fontSize: "1.6rem", fontWeight: 700, color: transportEventCount > 0 ? "var(--color-limestone)" : "var(--color-steel-muted)" }}>{transportEventCount}</p>
+        <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", marginBottom: "0.5rem" }}>Transportation events at The Fledge, 2026</p>
+        <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>No tracked program or data source for this category beyond events.</p>
+      </NeedCard>
+
+      <NeedCard title="🏥 Healthcare">
+        <p style={{ fontSize: "1.6rem", fontWeight: 700, color: healthcareEventCount > 0 ? "var(--color-limestone)" : "var(--color-steel-muted)" }}>{healthcareEventCount}</p>
+        <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", marginBottom: "0.5rem" }}>Healthcare events at The Fledge, 2026</p>
+        <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>No tracked program or data source for this category beyond events — Fitness & Wellness events exist separately and aren't the same thing as healthcare access.</p>
+      </NeedCard>
+
+      <NeedCard title="🧸 Child Care">
+        <p style={{ fontSize: "1.6rem", fontWeight: 700, color: childcareEventCount > 0 ? "var(--color-limestone)" : "var(--color-steel-muted)" }}>{childcareEventCount}</p>
+        <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", marginBottom: "0.5rem" }}>Child Care and Family Fun events at The Fledge, 2026</p>
+        <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>No tracked program or data source for this category beyond events.</p>
+      </NeedCard>
     </div>
   );
 }

@@ -18,7 +18,7 @@ type LegitimacyData = {
 type ResilienceData = {
   entrepreneurs: { total: number; addedLast90Days: number; minorityOwned: number; womanOwned: number; veteranOwned: number; disabilityOwned: number };
   coops: { total: number; activelyBuildingHandbook: number };
-  housing: { projects: number };
+  housing: { projects: number; activeShareholders: number; totalOccupants: number; shareholdersWithOccupancyData: number };
   handbook: { fieldsFilled: number; uniqueFieldIds: number };
   governance: { proposalsVoted: number; coopsWithVoteData: number; avgParticipationPct: number | null };
   lansingComparison: {
@@ -110,6 +110,7 @@ const TABS = [
   { id: "governance",  label: "Governance" },
   { id: "legitimacy",  label: "Legitimacy Gap" },
   { id: "network",     label: "Cooperative Network" },
+  { id: "needs",       label: "Basic Needs" },
   { id: "ownership",   label: "Ownership Check" },
   { id: "advocacy",    label: "Civic Advocacy" },
   { id: "policy",      label: "Policy Monitor" },
@@ -550,6 +551,81 @@ function ZoneNetwork({ resilience, freestand, fledgeEvents, urbandale }: { resil
   );
 }
 
+// ─── Zone 2.5: Basic Needs (ALICE categories) ────────────────────────────────
+// What the network actually provides, organized by the basic-need categories
+// ALICE tracks (Food, Housing, Technology, Transportation, Healthcare,
+// Childcare) — not new data sources, mostly the same numbers shown elsewhere
+// on this dashboard, re-sliced by need instead of by program.
+
+function NeedCard({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="card" style={{ padding: "1.5rem" }}>
+      <p style={{ fontWeight: 600, marginBottom: "1rem", fontSize: "0.9rem" }}>{title}</p>
+      {children}
+    </div>
+  );
+}
+
+function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents }: { resilience: ResilienceData; freestand: FreeStandData; urbandale: UrbandaleData; fledgeEvents: FledgeEvents }) {
+  const foodEventCount = fledgeEvents?.filter((e) => e.category === "Food & Agriculture").length ?? 0;
+  const housing = resilience?.housing;
+  const occupancyNote = housing && housing.shareholdersWithOccupancyData < housing.activeShareholders
+    ? `based on ${housing.shareholdersWithOccupancyData} of ${housing.activeShareholders} households with occupancy reported — likely an undercount`
+    : "across all active households";
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "1.5rem" }}>
+      <NeedCard title="🍎 Food">
+        {freestand || urbandale ? (
+          <>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
+              {freestand && <StatBox value={freestand.interactions_total.toLocaleString()} label="Free Stand visits, all-time" color="var(--color-teal-accent)" />}
+              {freestand && <StatBox value={freestand.interactions_week} label="This week" />}
+              {urbandale && <StatBox value={Math.round(urbandale.total_harvest_lbs)} label="Urbandale harvest (lbs)" />}
+              {foodEventCount > 0 && <StatBox value={foodEventCount} label="Food & Ag events, 2026" />}
+            </div>
+            <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>
+              Free Stand visit counts are a proxy for people served, not unique individuals.
+            </p>
+          </>
+        ) : (
+          <p style={{ color: "var(--color-steel-muted)", fontSize: "0.85rem" }}>FreeStand and Urbandale data unavailable.</p>
+        )}
+      </NeedCard>
+
+      <NeedCard title="🏠 Housing">
+        {housing ? (
+          <>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
+              <StatBox value={housing.projects} label="Co-op housing projects" />
+              <StatBox value={housing.activeShareholders} label="Active households" />
+              <StatBox value={housing.totalOccupants} label="People housed" color="var(--color-teal-accent)" />
+            </div>
+            <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>
+              People-housed count is {occupancyNote}.
+            </p>
+          </>
+        ) : (
+          <p style={{ color: "var(--color-steel-muted)", fontSize: "0.85rem" }}>resilience.foundation data unavailable.</p>
+        )}
+      </NeedCard>
+
+      <NeedCard title="💻 Technology">
+        <p style={{ fontSize: "0.85rem", marginBottom: "0.5rem" }}>
+          FLDG Token — 25 FLDG = 1 hour of cooperative work. Token: 0x5118aec3afcca3f1e21733ee9c88bb800afe6f7b (Polygon).
+        </p>
+        <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>
+          Descriptive only for now — no people-served metric yet. Circulation/transaction data blocked on confirming Polygon query access (see Cooperative Network tab).
+        </p>
+      </NeedCard>
+
+      <PlaceholderPanel title="🚌 Transportation" reason="No tracked program or data source for this category yet." />
+      <PlaceholderPanel title="🏥 Healthcare" reason="No tracked program or data source for this category yet — Fitness & Wellness events exist but aren't the same thing as healthcare access." />
+      <PlaceholderPanel title="🧸 Childcare" reason="No tracked program or data source for this category yet." />
+    </div>
+  );
+}
+
 // ─── Zone 3: Ownership Check ──────────────────────────────────────────────────
 
 function ZoneOwnership({ isAdmin, ownershipChecks }: { isAdmin: boolean; ownershipChecks: OwnershipCheckItem[] }) {
@@ -946,6 +1022,7 @@ export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fle
       <div role="tabpanel">
         {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} rhinoTracker={rhinoTracker} />}
         {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} fledgeEvents={fledgeEvents} urbandale={urbandale} />}
+        {activeTab === "needs"      && <ZoneNeeds resilience={resilience} freestand={freestand} urbandale={urbandale} fledgeEvents={fledgeEvents} />}
         {activeTab === "ownership"  && <ZoneOwnership isAdmin={isAdmin} ownershipChecks={ownershipChecks} />}
         {activeTab === "advocacy"    && <ZoneAdvocacy entries={advocacyEntries} />}
         {activeTab === "policy"      && <ZonePolicy />}

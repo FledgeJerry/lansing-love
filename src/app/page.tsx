@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import DashboardTabs from "./dashboard/DashboardTabs";
+import AliceSnapshot from "./dashboard/AliceSnapshot";
 
 export const dynamic = "force-dynamic";
 
@@ -156,6 +157,8 @@ export default async function HomePage() {
           We know we #lovelansing, but does #lansingloveus?
         </p>
       </div>
+
+      <AliceSnapshot />
 
       <DashboardTabs
         isAdmin={isAdmin}

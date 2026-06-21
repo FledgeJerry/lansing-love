@@ -23,6 +23,7 @@ export default function AliceSnapshot() {
         <Stat value={`${A.lansingAlicePct}%`} label="Below ALICE threshold" sub={`Lansing city, ${A.lansingAlicePctYear}`} />
         <Stat value={`${A.inghamPovertyPct}%`} label="In poverty" sub={`Ingham County, ${A.inghamYear}`} />
         <Stat value={A.homelessCount.toLocaleString()} label="People homeless" sub={`Ingham Co. PIT count, ${A.homelessCountDate}`} />
+        <Stat value={`${A.foodInsecurePct}%`} label="Food insecure" sub={`~${A.foodInsecureCount.toLocaleString()} people, Ingham Co. ${A.foodInsecureYear}`} />
         <Stat value={`+${A.utilityElectricIncreasePct}%`} label="Electric rate increase" sub={`BWL, effective ${A.utilityIncreaseEffective}`} />
         <Stat value={`+${A.utilityWaterIncreasePct}%`} label="Water rate increase" sub={`BWL, effective ${A.utilityIncreaseEffective}`} />
       </div>

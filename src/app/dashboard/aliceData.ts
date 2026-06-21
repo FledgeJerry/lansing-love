@@ -14,6 +14,13 @@
 //   Ingham County), night of 1/28/2025 — capitalregionhousing.org
 // - Utility rate increases: Lansing Board of Water & Light, approved Aug 2024,
 //   residential rates effective Oct 1, 2025 — lbwl.com / WKAR
+// - Food insecurity: Feeding America "Map the Meal Gap," Ingham County, 2021
+//   data (most recent figure confirmable via secondary source — their 2023-data
+//   report exists but the updated county number wasn't extractable from their
+//   JS-rendered interactive map; re-check map.feedingamerica.org directly for
+//   a fresher figure before relying on this). Child rate is a different scope
+//   (Greater Lansing Food Bank's 7-county service region, 2023 annual report),
+//   not Ingham-specific — don't combine the two as if they were comparable.
 export const ALICE_SNAPSHOT = {
   lansingAlicePct: 50,
   lansingAlicePctYear: 2023,
@@ -27,4 +34,9 @@ export const ALICE_SNAPSHOT = {
   utilityElectricIncreasePct: 6.8,
   utilityWaterIncreasePct: 9.2,
   utilityIncreaseEffective: "2025-10-01",
+  foodInsecurePct: 12.4,
+  foodInsecureCount: 35360,
+  foodInsecureYear: 2021,
+  childFoodInsecurePctRegional: 11,
+  childFoodInsecureRegionalYear: 2023,
 };

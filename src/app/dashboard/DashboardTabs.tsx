@@ -21,6 +21,15 @@ type ResilienceData = {
   housing: { projects: number };
   handbook: { fieldsFilled: number; uniqueFieldIds: number };
   governance: { proposalsVoted: number; coopsWithVoteData: number; avgParticipationPct: number | null };
+  lansingComparison: {
+    source: string;
+    population: number;
+    pctMinority: number;
+    pctBlack: number;
+    pctHispanic: number;
+    pctAsian: number;
+    pctFemale: number | null;
+  } | null;
 } | null;
 
 type FledgeEvent = { id: string; title: string; slug: string; date: string; space: string; category: string | null };
@@ -115,6 +124,25 @@ function StatBox({ value, label, sub, color }: { value: string | number; label: 
       <p style={{ fontSize: "2rem", fontWeight: 700, color: color ?? "var(--color-limestone)", lineHeight: 1 }}>{value}</p>
       <p style={{ fontSize: "0.68rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", marginTop: "0.3rem" }}>{label}</p>
       {sub && <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)", marginTop: "0.15rem" }}>{sub}</p>}
+    </div>
+  );
+}
+
+function ComparisonBar({
+  label, entrepreneurPct, cityPct, cityLabel,
+}: { label: string; entrepreneurPct: number; cityPct: number | null; cityLabel: string }) {
+  return (
+    <div style={{ marginBottom: "0.6rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.78rem", color: "var(--color-steel-muted)", marginBottom: "0.2rem" }}>
+        <span>{label}</span>
+        <span>{entrepreneurPct}% TREK vs. {cityPct !== null ? `${cityPct}%` : "—"} {cityLabel}</span>
+      </div>
+      <div style={{ position: "relative", height: "16px", background: "var(--color-border)", borderRadius: "4px", overflow: "hidden" }}>
+        <div style={{ width: `${Math.min(100, entrepreneurPct)}%`, height: "100%", background: "var(--color-teal-accent)", borderRadius: "4px" }} />
+        {cityPct !== null && (
+          <div style={{ position: "absolute", top: 0, left: `${Math.min(100, cityPct)}%`, width: "2px", height: "100%", background: "var(--color-dome-gold)" }} title={`${cityLabel}: ${cityPct}%`} />
+        )}
+      </div>
     </div>
   );
 }
@@ -365,6 +393,32 @@ function ZoneNetwork({ resilience, freestand, fledgeEvents }: { resilience: Resi
         </div>
       ) : (
         <PlaceholderPanel title="TREK Entrepreneur Pipeline" reason="resilience.foundation data unavailable — will populate when site is reachable." />
+      )}
+
+      {resilience && resilience.lansingComparison ? (
+        <div className="card" style={{ padding: "1.5rem" }}>
+          <p style={{ fontWeight: 600, marginBottom: "0.25rem", fontSize: "0.9rem" }}>Entrepreneur Reach vs. City of Lansing</p>
+          <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)", marginBottom: "1rem" }}>
+            {resilience.lansingComparison.source}. Compares the share of TREK businesses flagged minority-/woman-owned to Lansing&apos;s citywide composition — not who runs each business, just whether the network&apos;s reach matches the city it serves.
+          </p>
+          <ComparisonBar
+            label="Minority-owned"
+            entrepreneurPct={resilience.entrepreneurs.total > 0 ? Math.round((resilience.entrepreneurs.minorityOwned / resilience.entrepreneurs.total) * 100) : 0}
+            cityPct={resilience.lansingComparison.pctMinority}
+            cityLabel="Lansing pop."
+          />
+          <ComparisonBar
+            label="Woman-owned"
+            entrepreneurPct={resilience.entrepreneurs.total > 0 ? Math.round((resilience.entrepreneurs.womanOwned / resilience.entrepreneurs.total) * 100) : 0}
+            cityPct={resilience.lansingComparison.pctFemale}
+            cityLabel="Lansing pop."
+          />
+          <p style={{ fontSize: "0.7rem", color: "var(--color-steel-muted)", marginTop: "0.75rem" }}>
+            City breakdown: {resilience.lansingComparison.pctBlack}% Black, {resilience.lansingComparison.pctHispanic}% Hispanic/Latino, {resilience.lansingComparison.pctAsian}% Asian (non-Hispanic). Age/veteran/disability comparison not included — no reliable entrepreneur-level data for those yet.
+          </p>
+        </div>
+      ) : (
+        <PlaceholderPanel title="Entrepreneur Reach vs. City of Lansing" reason="resilience.foundation data or Census API unavailable." />
       )}
 
       {resilience ? (

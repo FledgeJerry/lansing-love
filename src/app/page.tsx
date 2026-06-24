@@ -94,6 +94,42 @@ async function getTractData() {
   } catch { return null; }
 }
 
+// Live Census ACS pulls for the ALICE snapshot — same Census Reporter API
+// resilience.foundation's /api/pulse uses for its city comparison. Cached a
+// week since these are annual ACS estimates that don't change often.
+const LANSING_GEOID = "16000US2646000";
+
+async function getAliceCensusStats() {
+  try {
+    const url = `https://api.censusreporter.org/1.0/data/show/latest?table_ids=B25070,B08201&geo_ids=${LANSING_GEOID}`;
+    const res = await fetch(url, { next: { revalidate: 60 * 60 * 24 * 7 } });
+    if (!res.ok) return null;
+    const json = await res.json();
+    const d = json.data?.[LANSING_GEOID];
+    if (!d) return null;
+
+    const rent = d.B25070?.estimate;
+    const vehicles = d.B08201?.estimate;
+    if (!rent || !vehicles) return null;
+
+    const renterTotal = rent.B25070001 ?? 0;
+    const notComputed = rent.B25070011 ?? 0;
+    const costBurdened = (rent.B25070007 ?? 0) + (rent.B25070008 ?? 0) + (rent.B25070009 ?? 0) + (rent.B25070010 ?? 0);
+    const renterDenominator = renterTotal - notComputed;
+
+    const householdsTotal = vehicles.B08201001 ?? 0;
+    const noVehicle = vehicles.B08201002 ?? 0;
+
+    if (renterDenominator <= 0 || householdsTotal <= 0) return null;
+
+    return {
+      source: `${json.release?.name ?? "U.S. Census ACS"} — Lansing city, MI`,
+      rentBurdenedPct: Math.round((costBurdened / renterDenominator) * 1000) / 10,
+      noVehiclePct: Math.round((noVehicle / householdsTotal) * 1000) / 10,
+    };
+  } catch { return null; }
+}
+
 async function getFreeStandData() {
   try {
     const res = await fetch("https://freestand.thefledge.com/api/v1/admin/metrics/stand", { cache: "no-store" });
@@ -156,7 +192,7 @@ async function getRhinoTrackerData() {
 }
 
 export default async function HomePage() {
-  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries, fledgeEvents, urbandale, tractData] = await Promise.all([
+  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries, fledgeEvents, urbandale, tractData, aliceCensus] = await Promise.all([
     auth(),
     getLegitimacyData(),
     getResiliencePulse(),
@@ -167,6 +203,7 @@ export default async function HomePage() {
     getFledgeEvents(2026),
     getUrbandaleData(),
     getTractData(),
+    getAliceCensusStats(),
   ]);
 
   const isAdmin = session?.user?.role === "ADMIN";
@@ -183,7 +220,7 @@ export default async function HomePage() {
         </p>
       </div>
 
-      <AliceSnapshot />
+      <AliceSnapshot live={aliceCensus} />
 
       <DashboardTabs
         isAdmin={isAdmin}

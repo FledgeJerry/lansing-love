@@ -10,7 +10,9 @@ function Stat({ value, label, sub }: { value: string; label: string; sub?: strin
   );
 }
 
-export default function AliceSnapshot() {
+type LiveStats = { source: string; rentBurdenedPct: number; noVehiclePct: number } | null;
+
+export default function AliceSnapshot({ live }: { live?: LiveStats }) {
   return (
     <div className="card" style={{ padding: "1.5rem", marginBottom: "2rem" }}>
       <p style={{ fontWeight: 600, marginBottom: "0.25rem", fontSize: "0.95rem" }}>ALICE in Lansing</p>
@@ -26,9 +28,16 @@ export default function AliceSnapshot() {
         <Stat value={`${A.foodInsecurePct}%`} label="Food insecure" sub={`~${A.foodInsecureCount.toLocaleString()} people, Ingham Co. ${A.foodInsecureYear}`} />
         <Stat value={`+${A.utilityElectricIncreasePct}%`} label="Electric rate increase" sub={`BWL, effective ${A.utilityIncreaseEffective}`} />
         <Stat value={`+${A.utilityWaterIncreasePct}%`} label="Water rate increase" sub={`BWL, effective ${A.utilityIncreaseEffective}`} />
+        {live && (
+          <>
+            <Stat value={`${live.rentBurdenedPct}%`} label="Rent-burdened renters" sub="Spending 30%+ of income on rent · live Census" />
+            <Stat value={`${live.noVehiclePct}%`} label="No vehicle access" sub="Households with no car · live Census" />
+          </>
+        )}
       </div>
       <p style={{ fontSize: "0.68rem", color: "var(--color-steel-muted)", marginTop: "0.75rem" }}>
-        City and county figures are from different report years and won&apos;t perfectly reconcile — see source notes in code. Annual reports, not live data; due for a refresh when new reports publish.
+        City and county figures are from different report years and won&apos;t perfectly reconcile — see source notes in code. Most figures are annual reports, not live data, due for a refresh when new reports publish
+        {live && " (rent burden and vehicle access pull live from the Census ACS)"}.
       </p>
     </div>
   );

@@ -665,13 +665,14 @@ function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents }: { resilie
               <StatBox value={housing.totalOccupants} label="People housed" color="var(--color-teal-accent)" />
               {housingEventCount > 0 && <StatBox value={housingEventCount} label="Events at The Fledge, 2026" />}
             </div>
-            <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>
+            <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>
               People-housed count is {occupancyNote}.
             </p>
           </>
         ) : (
-          <p style={{ color: "var(--color-steel-muted)", fontSize: "0.85rem" }}>resilience.foundation data unavailable.</p>
+          <p style={{ color: "var(--color-steel-muted)", fontSize: "0.85rem", marginBottom: "0.75rem" }}>resilience.foundation data unavailable.</p>
         )}
+        <Link href="/unhoused-cost-calculator" className="btn btn--ghost btn--sm">What does homelessness cost? →</Link>
       </NeedCard>
 
       <NeedCard title="💻 Technology">

@@ -16,6 +16,7 @@ export default function Nav() {
       <li><Link href="/governance/charter" onClick={close}>Charter</Link></li>
       <li><Link href="/governance/issues" onClick={close}>Issues</Link></li>
       <li><Link href="/neighborhoods" onClick={close}>Neighborhoods</Link></li>
+      <li><Link href="/directory" onClick={close}>Co-op Directory</Link></li>
       <li><Link href="/boards" onClick={close}>Boards</Link></li>
       <li><Link href="/predictions" onClick={close}>Predictions</Link></li>
       <li><Link href="/about" onClick={close}>About</Link></li>

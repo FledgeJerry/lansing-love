@@ -240,6 +240,31 @@ model NeighborhoodOrg {
   updatedAt DateTime @updatedAt
 }
 
+// Independent co-ops, unions, and living-wage employers not in resilience.foundation's
+// TREK pipeline — added manually (often via AI-extracted paste) so they still count
+// toward the cooperative-network/housing/worker-power stats and public directory.
+model ExternalOrg {
+  id               String   @id @default(cuid())
+  name             String
+  website          String?
+  email            String?
+  phone            String?
+  rawInput         String   // original pasted text this entry was created from — kept for audit/re-extraction
+  notes            String?  // admin-edited description, shown publicly if published
+
+  isCoop           Boolean  @default(false)
+  isUnion          Boolean  @default(false)
+  isWorkerOwned    Boolean  @default(false)
+  offersLivingWage Boolean  @default(false)
+  ownsHousing      Boolean  @default(false)
+  occupantCount    Int?     // only meaningful if ownsHousing
+  employeeCount    Int?
+
+  published        Boolean  @default(false) // draft until reviewed — only published orgs count toward public stats/directory
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
 // Civic Advocacy log — council contacts, testimony, endorsements, anchor meetings
 model AdvocacyEntry {
   id        String   @id @default(cuid())

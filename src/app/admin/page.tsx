@@ -72,6 +72,7 @@ export default function AdminPage() {
             { href: "/admin/advocacy",      label: "Civic Advocacy Log",   desc: "Log council contacts, testimony, endorsements, anchor meetings" },
             { href: "/admin/boards",        label: "Boards & Commissions", desc: "44 boards — members, terms, vacancies" },
             { href: "/admin/neighborhoods", label: "Neighborhood Orgs",    desc: "59 registered neighborhood organizations" },
+            { href: "/admin/external-orgs", label: "Independent Co-ops & Unions", desc: "Co-ops, unions, living-wage employers not in our software" },
             { href: "/admin/case-studies",  label: "Case Studies",        desc: "Board accountability reports" },
             { href: "/admin/predictions",   label: "Predictions",         desc: "Review, resolve, and edit prediction questions" },
             { href: "/admin/agenda",        label: "Import from Agenda",  desc: "Generate questions from a council agenda" },

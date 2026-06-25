@@ -103,6 +103,16 @@ type AdvocacyEntry = {
   date: string;
 };
 
+type ExternalOrgStats = {
+  total: number;
+  coopCount: number;
+  unionCount: number;
+  workerOwnedCount: number;
+  livingWageCount: number;
+  housingOrgCount: number;
+  housingOccupants: number;
+};
+
 interface Props {
   isAdmin: boolean;
   gap: LegitimacyData;
@@ -114,6 +124,7 @@ interface Props {
   rhinoTracker: RhinoTrackerData;
   advocacyEntries: AdvocacyEntry[];
   ownershipChecks: OwnershipCheckItem[];
+  externalOrgs: ExternalOrgStats;
 }
 
 // ─── Tab config ───────────────────────────────────────────────────────────────
@@ -373,7 +384,7 @@ function ZoneLegitimacy({ gap, rhinoTracker }: { gap: LegitimacyData; rhinoTrack
 
 // ─── Zone 2: Cooperative Network ─────────────────────────────────────────────
 
-function ZoneNetwork({ resilience, freestand, fledgeEvents, urbandale, tractData }: { resilience: ResilienceData; freestand: FreeStandData; fledgeEvents: FledgeEvents; urbandale: UrbandaleData; tractData: TractData }) {
+function ZoneNetwork({ resilience, freestand, fledgeEvents, urbandale, tractData, externalOrgs }: { resilience: ResilienceData; freestand: FreeStandData; fledgeEvents: FledgeEvents; urbandale: UrbandaleData; tractData: TractData; externalOrgs: ExternalOrgStats }) {
   const freestandDays = freestand?.daily_interactions ?? [];
   const maxDayCount = freestandDays.length > 0 ? Math.max(...freestandDays.map((d) => d.count)) : 1;
 
@@ -418,6 +429,24 @@ function ZoneNetwork({ resilience, freestand, fledgeEvents, urbandale, tractData
       ) : (
         <PlaceholderPanel title="TREK Entrepreneur Pipeline" reason="resilience.foundation data unavailable — will populate when site is reachable." />
       )}
+
+      <div className="card" style={{ padding: "1.5rem" }}>
+        <p style={{ fontWeight: 600, marginBottom: "0.5rem", fontSize: "0.9rem" }}>Independent Co-ops &amp; Unions</p>
+        <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)", marginBottom: "1rem" }}>
+          Co-ops, unions, and living-wage employers outside the TREK pipeline — added manually, not run through our software.
+        </p>
+        {externalOrgs.total > 0 ? (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
+            <StatBox value={externalOrgs.coopCount} label="Co-ops" />
+            <StatBox value={externalOrgs.unionCount} label="Unionized workplaces" />
+            <StatBox value={externalOrgs.livingWageCount} label="Living-wage employers" color="var(--color-teal-accent)" />
+            <StatBox value={externalOrgs.total} label="Total tracked" />
+          </div>
+        ) : (
+          <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>None published yet.</p>
+        )}
+        <Link href="/directory" className="btn btn--ghost btn--sm">View directory →</Link>
+      </div>
 
       {resilience && resilience.lansingComparison ? (
         <div className="card" style={{ padding: "1.5rem" }}>
@@ -598,7 +627,7 @@ function eventCountFor(fledgeEvents: FledgeEvents, category: string): number {
   return fledgeEvents?.filter((e) => e.category === category).length ?? 0;
 }
 
-function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents }: { resilience: ResilienceData; freestand: FreeStandData; urbandale: UrbandaleData; fledgeEvents: FledgeEvents }) {
+function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents, externalOrgs }: { resilience: ResilienceData; freestand: FreeStandData; urbandale: UrbandaleData; fledgeEvents: FledgeEvents; externalOrgs: ExternalOrgStats }) {
   const foodEventCount = eventCountFor(fledgeEvents, "Food & Agriculture");
   const housingEventCount = eventCountFor(fledgeEvents, "Housing & Homelessness");
   const techEventCount = eventCountFor(fledgeEvents, "Technology Access");
@@ -660,19 +689,32 @@ function ZoneNeeds({ resilience, freestand, urbandale, fledgeEvents }: { resilie
         {housing ? (
           <>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
-              <StatBox value={housing.projects} label="Co-op housing projects" />
+              <StatBox value={housing.projects + externalOrgs.housingOrgCount} label="Co-op housing projects" />
               <StatBox value={housing.activeShareholders} label="Active households" />
-              <StatBox value={housing.totalOccupants} label="People housed" color="var(--color-teal-accent)" />
+              <StatBox value={housing.totalOccupants + externalOrgs.housingOccupants} label="People housed" color="var(--color-teal-accent)" />
               {housingEventCount > 0 && <StatBox value={housingEventCount} label="Events at The Fledge, 2026" />}
             </div>
             <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>
-              People-housed count is {occupancyNote}.
+              People-housed count is {occupancyNote}
+              {externalOrgs.housingOrgCount > 0 && ` — plus ${externalOrgs.housingOccupants} from ${externalOrgs.housingOrgCount} independent housing co-op${externalOrgs.housingOrgCount === 1 ? "" : "s"} not in our software`}.
             </p>
           </>
         ) : (
           <p style={{ color: "var(--color-steel-muted)", fontSize: "0.85rem", marginBottom: "0.75rem" }}>resilience.foundation data unavailable.</p>
         )}
         <Link href="/unhoused-cost-calculator" className="btn btn--ghost btn--sm">What does homelessness cost? →</Link>
+      </NeedCard>
+
+      <NeedCard title="💪 Worker Power">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "0.75rem" }}>
+          <StatBox value={externalOrgs.unionCount} label="Unionized workplaces tracked" />
+          <StatBox value={externalOrgs.livingWageCount} label="Living-wage employers" color="var(--color-teal-accent)" />
+          <StatBox value={externalOrgs.workerOwnedCount} label="Worker-owned co-ops" />
+        </div>
+        <p style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>
+          Independent organizations — unions, worker-owned co-ops, and verified living-wage employers — not run through our software, added manually as we confirm them.
+        </p>
+        <Link href="/directory" className="btn btn--ghost btn--sm">View directory →</Link>
       </NeedCard>
 
       <NeedCard title="💻 Technology">
@@ -1071,7 +1113,7 @@ function ZoneGovernance() {
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
-export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fledgeEvents, urbandale, tractData, rhinoTracker, advocacyEntries, ownershipChecks }: Props) {
+export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fledgeEvents, urbandale, tractData, rhinoTracker, advocacyEntries, ownershipChecks, externalOrgs }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>("governance");
 
   return (
@@ -1105,8 +1147,8 @@ export default function DashboardTabs({ isAdmin, gap, resilience, freestand, fle
 
       <div role="tabpanel">
         {activeTab === "legitimacy" && <ZoneLegitimacy gap={gap} rhinoTracker={rhinoTracker} />}
-        {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} fledgeEvents={fledgeEvents} urbandale={urbandale} tractData={tractData} />}
-        {activeTab === "needs"      && <ZoneNeeds resilience={resilience} freestand={freestand} urbandale={urbandale} fledgeEvents={fledgeEvents} />}
+        {activeTab === "network"    && <ZoneNetwork resilience={resilience} freestand={freestand} fledgeEvents={fledgeEvents} urbandale={urbandale} tractData={tractData} externalOrgs={externalOrgs} />}
+        {activeTab === "needs"      && <ZoneNeeds resilience={resilience} freestand={freestand} urbandale={urbandale} fledgeEvents={fledgeEvents} externalOrgs={externalOrgs} />}
         {activeTab === "ownership"  && <ZoneOwnership isAdmin={isAdmin} ownershipChecks={ownershipChecks} />}
         {activeTab === "advocacy"    && <ZoneAdvocacy entries={advocacyEntries} />}
         {activeTab === "policy"      && <ZonePolicy />}

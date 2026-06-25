@@ -94,6 +94,22 @@ async function getTractData() {
   } catch { return null; }
 }
 
+// Independent co-ops/unions/living-wage employers not run through resilience.foundation's
+// TREK pipeline — added manually via /admin/external-orgs. Only published rows count.
+async function getExternalOrgStats() {
+  const orgs = await prisma.externalOrg.findMany({ where: { published: true } });
+  const housingOrgs = orgs.filter((o) => o.ownsHousing);
+  return {
+    total: orgs.length,
+    coopCount: orgs.filter((o) => o.isCoop).length,
+    unionCount: orgs.filter((o) => o.isUnion).length,
+    workerOwnedCount: orgs.filter((o) => o.isWorkerOwned).length,
+    livingWageCount: orgs.filter((o) => o.offersLivingWage).length,
+    housingOrgCount: housingOrgs.length,
+    housingOccupants: housingOrgs.reduce((sum, o) => sum + (o.occupantCount ?? 0), 0),
+  };
+}
+
 // Live Census ACS pulls for the ALICE snapshot — same Census Reporter API
 // resilience.foundation's /api/pulse uses for its city comparison. Cached a
 // week since these are annual ACS estimates that don't change often.
@@ -192,7 +208,7 @@ async function getRhinoTrackerData() {
 }
 
 export default async function HomePage() {
-  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries, fledgeEvents, urbandale, tractData, aliceCensus] = await Promise.all([
+  const [session, gap, resilience, freestand, rhinoTracker, ownershipChecks, advocacyEntries, fledgeEvents, urbandale, tractData, aliceCensus, externalOrgs] = await Promise.all([
     auth(),
     getLegitimacyData(),
     getResiliencePulse(),
@@ -204,6 +220,7 @@ export default async function HomePage() {
     getUrbandaleData(),
     getTractData(),
     getAliceCensusStats(),
+    getExternalOrgStats(),
   ]);
 
   const isAdmin = session?.user?.role === "ADMIN";
@@ -231,6 +248,7 @@ export default async function HomePage() {
         urbandale={urbandale}
         tractData={tractData}
         rhinoTracker={rhinoTracker}
+        externalOrgs={externalOrgs}
         advocacyEntries={advocacyEntries.map(e => ({
           id: e.id,
           entryType: e.entryType,

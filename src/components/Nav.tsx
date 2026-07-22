@@ -12,6 +12,7 @@ export default function Nav() {
 
   const links = (
     <>
+      <li><Link href="/history" onClick={close}>History</Link></li>
       <li><Link href="/governance" onClick={close}>Governance</Link></li>
       <li><Link href="/governance/charter" onClick={close}>Charter</Link></li>
       <li><Link href="/governance/issues" onClick={close}>Issues</Link></li>

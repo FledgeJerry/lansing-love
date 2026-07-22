@@ -278,6 +278,264 @@ model AdvocacyEntry {
   updatedAt DateTime @updatedAt
 }
 
+// ============================================================
+// LANSING RAISED ME — History / Map / Timeline / Relationship
+// ============================================================
+
+// Master node: every person, org, property, institution, media outlet
+model Entity {
+  id          Int      @id @default(autoincrement())
+  entityType  String   // person | organization | property | institution | media
+
+  name        String
+  altNames    String[] // alternative / former names
+
+  description String?
+
+  // Geographic
+  address     String?
+  city        String?
+  state       String?
+  zip         String?
+  lat         Decimal? @db.Decimal(9, 6)
+  lng         Decimal? @db.Decimal(9, 6)
+  geoSource   String?  // google_geocode | manual | approximate
+
+  // Temporal
+  activeStart DateTime?
+  activeEnd   DateTime?
+
+  // Source
+  sourceTier  String   @default("RC") // S | FM | RC | RHN
+  sourceNote  String?
+  sourceUrl   String?
+
+  // Domain tags (housing, food, governance, etc.)
+  domains     String[]
+
+  // Narrative / visualization
+  bookChapter    String?
+  timelineEntry  Boolean @default(false)
+  mapPin         Boolean @default(true)
+  familyStory    Boolean @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  fromRelations  EntityRelation[] @relation("FromEntity")
+  toRelations    EntityRelation[] @relation("ToEntity")
+  entityEvents   EntityEvent[]
+  fromFlows      DollarFlow[]     @relation("FromEntity")
+  toFlows        DollarFlow[]     @relation("ToEntity")
+  docs           SourceDoc[]      @relation("EntityDocs")
+
+  @@map("entities")
+}
+
+// Every datestamped occurrence — vote, sale, birth, death, strike, opening
+model HistoryEvent {
+  id          Int      @id @default(autoincrement())
+
+  title       String
+  description String?
+
+  eventType   String   // civic | family | national | environmental | labor | legal | financial | political | physical
+
+  // Temporal
+  eventDate     DateTime?
+  eventDateEnd  DateTime?
+  datePrecision String   @default("day") // day | month | year | decade | approximate
+
+  // Geographic
+  address     String?
+  city        String?
+  state       String?
+  lat         Decimal? @db.Decimal(9, 6)
+  lng         Decimal? @db.Decimal(9, 6)
+
+  // Financial
+  dollarAmount BigInt?  // in cents
+  dollarNote   String?
+
+  // Source
+  sourceTier  String   @default("RC")
+  sourceNote  String?
+  sourceUrl   String?
+
+  // Domain tags
+  domains     String[]
+
+  // Visualization
+  timelineVisible Boolean @default(true)
+  mapVisible      Boolean @default(true)
+  significance    Int     @default(3) // 1=minor … 5=defining
+
+  // Narrative
+  bookChapter  String?
+  familyStory  Boolean @default(false)
+  era          String? // colonial | industrial_rise | labor | highway | deindustrial | repackaging | current
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  entityEvents   EntityEvent[]
+  eventContexts  EventContext[]
+  flowEvents     DollarFlow[]
+  docs           SourceDoc[]    @relation("EventDocs")
+
+  @@map("events")
+}
+
+// Edge between any two entities, or between entity and event
+model EntityRelation {
+  id              Int      @id @default(autoincrement())
+
+  fromEntityId    Int?
+  fromEntity      Entity?      @relation("FromEntity", fields: [fromEntityId], references: [id])
+
+  toEntityId      Int?
+  toEntity        Entity?      @relation("ToEntity", fields: [toEntityId], references: [id])
+
+  relationshipType String   // parent_of | employed_by | board_member_of | sold_to | … (see spec)
+
+  description     String?
+
+  // Temporal
+  startDate       DateTime?
+  endDate         DateTime?
+
+  // Source
+  sourceTier      String   @default("RC")
+  sourceNote      String?
+  sourceUrl       String?
+
+  // Conflict flag
+  isConflict      Boolean  @default(false)
+  conflictNote    String?
+
+  // Visualization
+  weight          Int      @default(1) // 1-5
+  visibleOnMap    Boolean  @default(true)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("relationships")
+}
+
+// Background bands — Great Depression, labor era, deindustrialization, etc.
+model ContextLayer {
+  id          Int      @id @default(autoincrement())
+
+  name        String
+  description String?
+
+  layerType   String   // national | state | local | family | economic | labor | racial
+
+  startDate   DateTime
+  endDate     DateTime?
+
+  scope       String   @default("lansing") // national | michigan | lansing | neighborhood | family
+
+  // Source
+  sourceTier  String   @default("S")
+  sourceNote  String?
+  sourceUrl   String?
+
+  // Visualization
+  colorCode   String?  // hex, e.g. '#8B0000'
+  opacity     Decimal? @db.Decimal(3, 2)
+
+  createdAt   DateTime @default(now())
+
+  eventContexts EventContext[]
+
+  @@map("context_layers")
+}
+
+// Junction: events ↔ context layers
+model EventContext {
+  eventId     Int
+  event       HistoryEvent @relation(fields: [eventId], references: [id])
+  contextId   Int
+  context     ContextLayer @relation(fields: [contextId], references: [id])
+
+  @@id([eventId, contextId])
+  @@map("event_context")
+}
+
+// Junction: entities ↔ events (with role)
+model EntityEvent {
+  entityId    Int
+  entity      Entity       @relation(fields: [entityId], references: [id])
+  eventId     Int
+  event       HistoryEvent @relation(fields: [eventId], references: [id])
+  role        String       // victim | owner | buyer | seller | mayor | employee | family_member | etc.
+
+  @@id([entityId, eventId, role])
+  @@map("entity_events")
+}
+
+// Source documents — obituaries, news articles, FOIA responses, court decisions
+model SourceDoc {
+  id              Int      @id @default(autoincrement())
+
+  title           String
+  docType         String?  // obituary | property_record | newspaper | court_decision | foia_response | investigation | photo | map | video
+
+  sourceName      String?
+  sourceUrl       String?
+  publicationDate DateTime?
+
+  sourceTier      String   @default("S")
+
+  entityId        Int?
+  entity          Entity?       @relation("EntityDocs", fields: [entityId], references: [id])
+  eventId         Int?
+  event           HistoryEvent? @relation("EventDocs", fields: [eventId], references: [id])
+
+  excerpt         String?
+  notes           String?
+
+  createdAt       DateTime @default(now())
+
+  @@map("documents")
+}
+
+// Financial transactions — public investment, private extraction, tax abatements, etc.
+model DollarFlow {
+  id            Int      @id @default(autoincrement())
+
+  description   String
+
+  flowType      String?  // public_investment | private_extraction | public_cleanup | sale | subsidy | tax_abatement | developer_fee | eminent_domain | remediation | grant | penalty
+
+  amountCents   BigInt?
+
+  fromEntityId  Int?
+  fromEntity    Entity?      @relation("FromEntity", fields: [fromEntityId], references: [id])
+  toEntityId    Int?
+  toEntity      Entity?      @relation("ToEntity", fields: [toEntityId], references: [id])
+  eventId       Int?
+  event         HistoryEvent? @relation(fields: [eventId], references: [id])
+
+  flowDate      DateTime?
+  flowDateEnd   DateTime?
+
+  isPublicCost  Boolean  @default(false)
+  isPrivateGain Boolean  @default(false)
+
+  sourceTier    String   @default("RC")
+  sourceNote    String?
+  sourceUrl     String?
+
+  createdAt     DateTime @default(now())
+
+  @@map("dollar_flows")
+}
+
 // Zone 3 — Ownership Check: 4 standing questions updated quarterly by humans
 model OwnershipCheck {
   id         String   @id @default(cuid())

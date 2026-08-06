@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import AddressLookup from "./AddressLookup";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,17 @@ export default async function NeighborhoodsPage() {
   const hubs = all.filter(o => o.isHub);
   const orgs = all.filter(o => !o.isHub);
 
+  const orgsForLookup = all.map(o => ({
+    id: o.id,
+    name: o.name,
+    area: o.area,
+    status: o.status,
+    website: o.website ?? null,
+    email: o.email ?? null,
+    facebook: o.facebook ?? null,
+    notes: o.notes ?? null,
+  }));
+
   const statusCounts = orgs.reduce<Record<string, number>>((acc, o) => {
     acc[o.status] = (acc[o.status] ?? 0) + 1;
     return acc;
@@ -38,6 +50,8 @@ export default async function NeighborhoodsPage() {
         <span style={{ margin: "0 0.4rem", opacity: 0.4 }}>→</span>
         Neighborhood Organizations
       </p>
+
+      <AddressLookup orgs={orgsForLookup} />
 
       <section style={{ marginBottom: "2.5rem" }}>
         <span className="eyebrow">Lansing Neighborhood Organizations</span>
@@ -92,59 +106,6 @@ export default async function NeighborhoodsPage() {
         </section>
       )}
 
-      <hr className="divider" />
-
-      {/* Directory table */}
-      <section style={{ marginBottom: "2rem" }}>
-        <p style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>All organizations</p>
-        <div style={{ overflowX: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.82rem" }}>
-            <thead>
-              <tr style={{ borderBottom: "1px solid rgba(244,241,232,0.1)" }}>
-                {["Organization", "Area", "Status", "Links / Contact"].map(h => (
-                  <th key={h} style={{ padding: "0.4rem 0.75rem", textAlign: "left", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)", whiteSpace: "nowrap" }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {orgs.map(org => (
-                <tr key={org.id} style={{ borderBottom: "1px solid rgba(244,241,232,0.05)" }}>
-                  <td style={{ padding: "0.6rem 0.75rem" }}>
-                    <p style={{ fontWeight: 600, color: "var(--color-limestone)", margin: 0 }}>{org.name}</p>
-                    {org.notes && <p style={{ fontSize: "0.72rem", color: "var(--color-text-muted)", margin: "0.15rem 0 0" }}>{org.notes}</p>}
-                  </td>
-                  <td style={{ padding: "0.6rem 0.75rem", color: "var(--color-steel-muted)", fontSize: "0.78rem", whiteSpace: "nowrap" }}>{org.area ?? "—"}</td>
-                  <td style={{ padding: "0.6rem 0.75rem", whiteSpace: "nowrap" }}>
-                    <span style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.06em", color: STATUS_COLOR[org.status] ?? "var(--color-steel-muted)" }}>
-                      {org.status}
-                    </span>
-                  </td>
-                  <td style={{ padding: "0.6rem 0.75rem" }}>
-                    <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
-                      {org.website && (
-                        <a href={org.website} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.72rem", color: "var(--color-dome-gold)" }}>
-                          Website →
-                        </a>
-                      )}
-                      {org.facebook && (
-                        <a href={org.facebook} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>
-                          Facebook →
-                        </a>
-                      )}
-                      {org.email && (
-                        <a href={`mailto:${org.email}`} style={{ fontSize: "0.72rem", color: "var(--color-steel-muted)" }}>{org.email}</a>
-                      )}
-                      {!org.website && !org.facebook && !org.email && (
-                        <span style={{ fontSize: "0.72rem", color: "rgba(154,176,200,0.4)" }}>Via DNCE: (517) 483-4141</span>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
 
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", borderTop: "1px solid rgba(244,241,232,0.08)", paddingTop: "1.5rem" }}>
         <Link href="/governance" className="btn btn--ghost btn--sm">← Governance</Link>

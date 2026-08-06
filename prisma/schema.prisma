@@ -186,6 +186,9 @@ model BoardCaseStudy {
   sources         Json @default("[]")
   sourceUrls      Json @default("[]")
 
+  // key entities, boards, commissions, and players involved
+  players String[] @default([])
+
   scoreTransparency      String @default("insufficient")
   scoreConflicts         String @default("insufficient")
   scoreMission           String @default("insufficient")

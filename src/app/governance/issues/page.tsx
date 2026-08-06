@@ -30,6 +30,7 @@ export default async function IssuesIndexPage() {
       date: true,
       summary: true,
       stats: true,
+      players: true,
       scoreTransparency: true,
       scoreConflicts: true,
       scoreMission: true,
@@ -39,7 +40,7 @@ export default async function IssuesIndexPage() {
   });
 
   return (
-    <div style={{ maxWidth: "900px", paddingBottom: "5rem" }}>
+    <div style={{ maxWidth: "960px", paddingBottom: "5rem" }}>
 
       <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", marginBottom: "1.5rem" }}>
         <Link href="/governance" style={{ color: "var(--color-steel-muted)" }}>Governance</Link>
@@ -67,7 +68,8 @@ export default async function IssuesIndexPage() {
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid rgba(244,241,232,0.1)" }}>
-                <th style={{ padding: "0.5rem 0.75rem", textAlign: "left", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)" }}>Board / Commission</th>
+                <th style={{ padding: "0.5rem 0.75rem", textAlign: "left", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)" }}>Issue</th>
+                <th style={{ padding: "0.5rem 0.75rem", textAlign: "left", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)" }}>Players</th>
                 {DIMENSIONS.map(d => (
                   <th key={d} style={{ padding: "0.5rem 0.5rem", textAlign: "center", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--color-steel-muted)", whiteSpace: "nowrap" }}>{d}</th>
                 ))}
@@ -83,11 +85,23 @@ export default async function IssuesIndexPage() {
                   board.scoreDemocraticControl,
                   board.scoreOversight,
                 ] as Score[];
+                const displayPlayers = board.players.slice(0, 3);
+                const extraCount = board.players.length - 3;
                 return (
                   <tr key={board.slug} style={{ borderBottom: "1px solid rgba(244,241,232,0.05)" }}>
-                    <td style={{ padding: "0.6rem 0.75rem" }}>
+                    <td style={{ padding: "0.6rem 0.75rem", minWidth: "180px" }}>
                       <p style={{ fontWeight: 600, color: "var(--color-limestone)", margin: 0, fontSize: "0.82rem" }}>{board.boardName}</p>
                       <p style={{ fontSize: "0.7rem", color: "rgba(154,176,200,0.5)", margin: 0, marginTop: "0.1rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>{board.category}{board.date ? ` · ${board.date}` : ""}</p>
+                    </td>
+                    <td style={{ padding: "0.6rem 0.75rem", minWidth: "160px", maxWidth: "220px" }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.1rem" }}>
+                        {displayPlayers.map((p, i) => (
+                          <span key={i} style={{ fontSize: "0.7rem", color: "var(--color-steel-muted)", lineHeight: 1.3 }}>{p}</span>
+                        ))}
+                        {extraCount > 0 && (
+                          <span style={{ fontSize: "0.68rem", color: "rgba(154,176,200,0.4)" }}>+{extraCount} more</span>
+                        )}
+                      </div>
                     </td>
                     {scores.map((s, i) => (
                       <td key={i} style={{ padding: "0.6rem 0.5rem", textAlign: "center" }}>
@@ -115,45 +129,6 @@ export default async function IssuesIndexPage() {
 
       <hr className="divider" />
 
-      {/* Case study cards */}
-      <section style={{ marginBottom: "3rem" }}>
-        <p style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-steel-muted)", marginBottom: "1rem" }}>Case studies</p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          {boards.map(board => {
-            const scores = [
-              board.scoreTransparency,
-              board.scoreConflicts,
-              board.scoreMission,
-              board.scoreDemocraticControl,
-              board.scoreOversight,
-            ] as Score[];
-            const firstStat = (board.stats as { value: string; label: string }[] | null)?.[0];
-            return (
-              <Link key={board.slug} href={`/governance/issues/${board.slug}`} style={{ textDecoration: "none" }}>
-                <div className="card" style={{ padding: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem", cursor: "pointer" }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", marginBottom: "0.25rem", flexWrap: "wrap" }}>
-                      <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.9rem", margin: 0 }}>{board.boardName}</p>
-                      {board.date && <span style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", fontVariantNumeric: "tabular-nums" }}>{board.date}</span>}
-                    </div>
-                    {firstStat && (
-                      <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", margin: 0 }}>
-                        <strong style={{ color: "var(--color-limestone)" }}>{firstStat.value}</strong>{" "}{firstStat.label}
-                      </p>
-                    )}
-                  </div>
-                  <div style={{ display: "flex", gap: "0.3rem", flexShrink: 0 }}>
-                    {scores.map((s, i) => <Dot key={i} score={s} />)}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      <hr className="divider" />
-
       <section style={{ marginBottom: "2rem" }}>
         <span className="eyebrow">Alternatives</span>
         <h2 style={{ marginBottom: "0.75rem", fontSize: "1.1rem" }}>Not just accountability — building something better</h2>
@@ -167,6 +142,7 @@ export default async function IssuesIndexPage() {
 
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
         <Link href="/governance" className="btn btn--ghost btn--sm">← Back to Governance</Link>
+        <Link href="/patterns" className="btn btn--ghost btn--sm">Pattern Language →</Link>
         <Link href="/predictions" className="btn btn--secondary btn--sm">Track council votes →</Link>
       </div>
     </div>

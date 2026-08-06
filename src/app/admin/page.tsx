@@ -79,6 +79,7 @@ export default function AdminPage() {
             { href: "/admin/transcript",    label: "Resolve from Transcript", desc: "Resolve questions from a meeting transcript" },
             { href: "/admin/users",         label: "Users",               desc: "Roles, subscriptions, demographics" },
             { href: "/admin/stats",         label: "Stats",               desc: "Engagement, accuracy, signups" },
+            { href: "/admin/ask-lansing",   label: "Ask Lansing.love",    desc: "Chat log — flagged gaps, admin corrections baked into prompt" },
           ].map(({ href, label, desc }) => (
             <Link key={href} href={href} style={{ textDecoration: "none" }}>
               <div className="card" style={{ padding: "0.875rem 1rem", height: "100%", cursor: "pointer" }}>

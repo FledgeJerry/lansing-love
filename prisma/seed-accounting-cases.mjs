@@ -1,4 +1,4 @@
-// Seed the 9 Full Accounting cases into BoardCaseStudy
+// Seed the 10 Full Accounting cases into BoardCaseStudy
 // Run from repo root: node prisma/seed-accounting-cases.mjs
 
 import { PrismaClient } from "../node_modules/.prisma/client/index.js";
@@ -781,6 +781,99 @@ const cases = [
     scoreMission: "high-risk",
     scoreDemocraticControl: "high-risk",
     scoreOversight: "high-risk",
+  },
+
+  {
+    slug: "ingham-medical-sparrow",
+    boardName: "Ingham Medical / Sparrow Hospital",
+    category: "Healthcare & Public Assets",
+    date: "1913–2026 (ONGOING)",
+    published: true,
+    summary: "A county-owned hospital built in 1913 and a private nonprofit hospital founded in 1896 — both anchors of Lansing healthcare for over a century — have ended up governed by out-of-region institutions (McLaren in Grand Blanc, UM Board of Regents in Ann Arbor) through two separate transitions with no public vote on either. The 1996 AG intervention that blocked Columbia/HCA is a genuine public win. The 2023 UM-Sparrow zero-dollar merger and the subsequent 2025 wind-down of UM Health Plan (64,000 Lansing-area members) show the costs of governance without local accountability.",
+    stats: [
+      { value: "1992", label: "Year public county ownership ended — no public vote" },
+      { value: "64,000", label: "Lansing-area members who lost UM Health Plan (2025)" },
+      { value: "$800M", label: "UM pledged capital investment in Sparrow over 8 years" },
+      { value: "113 years", label: "Continuous Ingham Medical hospital care (1913–2026)" },
+      { value: "$0", label: "Disclosed purchase price on 2023 UM-Sparrow merger" },
+    ],
+    sections: [
+      {
+        eyebrow: "What the community genuinely received",
+        heading: "The real benefits",
+        description: "Unlike most cases in this document, this one doesn't have a clean villain. Several benefits were genuine.",
+        items: [
+          { label: "113 and 129 years of continuous hospital care", desc: "Ingham Medical (county-built 1913) and Sparrow (private nonprofit 1896) provided over a century of hospital care each. That continuity, through industrial decline and deindustrialization, is a genuine public good." },
+          { label: "A blocked predatory takeover", desc: "In 1996, Michigan AG Frank Kelley sued to stop Columbia/HCA — which later pled guilty to 14 federal felonies and paid $1.7B in the largest healthcare fraud settlement in U.S. history — from buying 50% of the merged Lansing system. The suit succeeded. Lansing's hospital joined Michigan-based nonprofit McLaren instead. This is a real case of state government protecting a charitable asset against extraction." },
+          { label: "$800M in pledged UM capital investment", desc: "University of Michigan pledged $800 million in Sparrow facility upgrades over eight years — funding a stand-alone regional system likely could not have afforded. The money is real." },
+          { label: "New academic affiliations", desc: "MSU medicine programs at McLaren and UM Health-Michigan Medicine's research depth at Sparrow arguably improved clinical capability beyond what either standalone Lansing system could offer." },
+        ],
+      },
+      {
+        eyebrow: "What it actually cost",
+        heading: "The real costs",
+        description: "The throughline holds even when the individual actors aren't villains: public capacity was affirmatively transferred, sale by sale, merger by merger, into private and now non-local hands.",
+        items: [
+          { label: "Public ownership ended in 1992 with no public vote", desc: "Ingham County sold Ingham Medical Center — built and owned since 1913 with public money — to form Michigan Capital Healthcare. No ballot question. No documented public benefit requirement attached, as far as the record shows so far." },
+          { label: "Governance moved out of the county, twice", desc: "1997: to McLaren, headquartered in Grand Blanc/Flint. 2023: Sparrow's ultimate corporate authority moved to the University of Michigan Board of Regents in Ann Arbor. Neither of Lansing's two hospital systems is now governed by anyone accountable to a Lansing or Ingham County ballot." },
+          { label: "The physical evidence is being erased", desc: "The 1930 building — literally constructed with Ingham County public funds as the TB sanitorium's flagship structure — is currently being demolished (2024) to make way for 'greenspace and future redevelopment.' The public origin of the institution is disappearing from the built landscape at the same time it's disappearing from institutional memory." },
+          { label: "64,000 Lansing-area members lost their health plan", desc: "UM Health Plan (formerly Sparrow's Physicians Health Plan) was wound down in 2025 after UM failed to find a buyer. This is a direct, quantifiable harm to local coverage access following the merger — distinct from the 'no purchase price disclosed' framing UM and Sparrow leadership used publicly." },
+          { label: "The zero-dollar merger structure", desc: "Sparrow's 2023 deal with UM was structured with no purchase price — a known technique nonprofit-to-nonprofit mergers use partly to avoid the closer regulatory and public-disclosure scrutiny an actual sale would trigger. Worth checking whether Michigan's AG conducted the kind of charitable-conversion review it applied in 1996 against Columbia/HCA, or whether the 'no money changes hands' structure sidestepped that entirely." },
+        ],
+      },
+      {
+        eyebrow: "The accounting gap",
+        heading: "Public institution, private accountability",
+        description: "An asset built and owned by county government in 1913, funded by public dollars for half a century, has ended up — through two separate, decades-apart transactions — controlled by out-of-region institutions with no local electorate able to hold either accountable the way voters could once hold county commissioners accountable for hospital decisions.",
+        items: [
+          { label: "The 1996 block proves the AG's office can intervene", desc: "The Columbia/HCA case shows the Michigan AG's office can and will protect a charitable asset when it wants to — which raises the question of why no comparable public review appears to have accompanied either the quieter 1992 county sale or the 2023 UM merger's zero-dollar structure." },
+          { label: "Governance note", desc: "This is the clearest example in the Full Accounting of the 'starve the failing systems' pattern working in reverse — public capacity was not starved by neglect, but affirmatively transferred, sale by sale, merger by merger, into private and now non-local hands, each time framed publicly as growth and improved care rather than loss of public control." },
+          { label: "Open research threads", desc: "Full text of the 1992 Reorganization Agreement (likely in county archives). The Giddings opinion in Kelley v. Michigan Affiliated Healthcare System (Ingham County Circuit Court, Jan. 3, 1997). Whether Michigan's AG reviewed the 2023 UM-Sparrow merger. What became of the 64,000 former UM Health Plan members. Exact terms of the Child and Family Charities repurposing at the old Greenlawn campus." },
+        ],
+      },
+    ],
+    principles: [
+      { num: 2, name: "Democratic Member Control", violation: "No public vote on either the 1992 county sale or the 2023 UM merger — community had no binding mechanism to contest either transition", evidence: "1992 Reorganization Agreement executed without ballot question; 2023 UM-Sparrow merger used zero-dollar 'member substitution' structure that avoided public sale scrutiny." },
+      { num: 4, name: "Autonomy and Independence", violation: "Institution founded with county public funds now governed by out-of-region bodies (McLaren/Grand Blanc, UM Regents/Ann Arbor) with no accountability to Lansing or Ingham County voters", evidence: "Neither hospital system is now governed by anyone accountable to a Lansing or Ingham County ballot; UM Health Plan wind-down made without local input." },
+    ],
+    ownership: [
+      { question: "Who owned it?", before: "Ingham County (Ingham Medical, 1913–1992); private nonprofit (Sparrow, 1896–2023)", after: "McLaren Health Care, Grand Blanc (Ingham Medical side); University of Michigan Board of Regents, Ann Arbor (Sparrow side)", assessment: "extractive" },
+      { question: "Who has power?", before: "Ingham County Commissioners (elected, locally accountable)", after: "McLaren board (Grand Blanc/Flint) + UM Board of Regents (Ann Arbor) — neither accountable to Lansing voters", assessment: "extractive" },
+      { question: "Who benefits?", before: "Ingham County residents (public hospital, county-funded)", after: "Academic medical institutions (research, training), regional patients (some clinical benefits), UM Health (system expansion)", assessment: "mixed" },
+      { question: "Who bears the cost?", before: "County taxpayers funded the institution", after: "64,000 Lansing-area residents who lost their health plan; community that lost locally-accountable hospital governance; the 1930 building being demolished", assessment: "extractive" },
+      { question: "Who makes the rules?", before: "County Commissioners (elected) + State AG oversight of charitable assets", after: "UM Board of Regents + McLaren board — no local elected body with binding authority over hospital governance decisions", assessment: "extractive" },
+    ],
+    bottomLines: [
+      { dimension: "People", impact: "mixed", description: "$800M capital investment and academic affiliations improved clinical capacity. But 64,000 people lost their health plan post-merger, and governance accountability to Lansing residents was permanently severed across two transactions." },
+      { dimension: "Planet", impact: "neutral", description: "Healthcare facility transitions have minimal direct environmental impact. The demolition of the 1930 county-built structure is a loss of embodied public capital." },
+      { dimension: "Prosperity", impact: "mixed", description: "$800M in committed UM investment is real economic activity. But the zero-dollar merger structure and the UM Health Plan wind-down represent a net loss of locally-controlled institutional prosperity — capital that flows to Ann Arbor and Grand Blanc, not Lansing." },
+      { dimension: "Purpose", impact: "negative", description: "A county-built public health institution's purpose was to serve Ingham County residents under local democratic accountability. That accountability no longer exists. The purpose has drifted to academic health system priorities set in Ann Arbor." },
+    ],
+    recommendations: [
+      "File a formal Community Benefit Agreement request to City Council before any additional public benefit (tax abatement, zoning approval, public infrastructure) is extended to UMH-Sparrow expansion projects.",
+      "FOIA the 1992 Reorganization Agreement from Ingham County archives to document what, if any, public benefit requirements were attached to the county sale.",
+      "Request that Michigan's AG office confirm whether a charitable-conversion review was conducted for the 2023 UM-Sparrow merger, and if not, why the zero-dollar structure was deemed exempt.",
+      "Track and document what happened to the 64,000 former UM Health Plan members — coverage alternatives, cost changes, coverage gaps.",
+    ],
+    sources: [
+      "Asylum Projects (Ingham County Tuberculosis Sanitorium history)",
+      "ProQuest trade press (Ingham Regional Medical Center consolidation, Dennis Litos interview)",
+      "Health Affairs Journal (Kelley v. Michigan Affiliated Healthcare System, 16(2), 1997)",
+      "Ingham County Board of Commissioners resolutions archive",
+      "Lansing State Journal (McLaren Greenlawn demolition reporting)",
+      "Regents of the University of Michigan (Sparrow affiliation communication, Dec. 2022)",
+      "Crain's Detroit Business",
+      "Fierce Healthcare",
+      "Chief Healthcare Executive",
+      "Bridge Michigan (UM Health-Sparrow merger and UM Health Plan wind-down reporting)",
+    ],
+    sourceUrls: [],
+    players: ["McLaren Health Care", "University of Michigan Board of Regents", "Ingham County (former owner)", "Michigan Attorney General (Frank Kelley, 1996)", "Columbia/HCA", "Sparrow Health System", "UM Health Plan (wound down 2025)"],
+    scoreTransparency: "concerning",
+    scoreConflicts: "concerning",
+    scoreMission: "concerning",
+    scoreDemocraticControl: "high-risk",
+    scoreOversight: "concerning",
   },
 ];
 

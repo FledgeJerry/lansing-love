@@ -560,6 +560,23 @@ model Pattern {
   updatedAt   DateTime @updatedAt
 }
 
+// Ask Lansing.love — chat log and site config
+model ChatLog {
+  id          String   @id @default(cuid())
+  userMessage String
+  botResponse String   @db.Text
+  flagged     Boolean  @default(false)
+  adminNote   String?
+  promoted    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model SiteConfig {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
 // Zone 3 — Ownership Check: 4 standing questions updated quarterly by humans
 model OwnershipCheck {
   id         String   @id @default(cuid())

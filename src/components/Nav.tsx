@@ -2,13 +2,31 @@
 
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Nav() {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQ, setSearchQ] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const close = () => setOpen(false);
+
+  function openSearch() {
+    setSearchOpen(true);
+    setTimeout(() => searchRef.current?.focus(), 50);
+  }
+
+  function submitSearch() {
+    if (searchQ.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQ.trim())}`);
+      setSearchOpen(false);
+      setSearchQ("");
+    }
+  }
 
   const links = (
     <>
@@ -47,30 +65,59 @@ export default function Nav() {
   );
 
   return (
-    <nav className="site-nav">
-      <Link href="/" className="site-nav__logo">
-        lansing<span>.</span>love
-      </Link>
+    <>
+      <nav className="site-nav">
+        <Link href="/" className="site-nav__logo">
+          lansing<span>.</span>love
+        </Link>
 
-      <ul className="site-nav__links">
-        {links}
-      </ul>
-
-      <button
-        className="site-nav__hamburger"
-        aria-label={open ? "Close menu" : "Open menu"}
-        onClick={() => setOpen((o) => !o)}
-      >
-        <span className={`hamburger-bar${open ? " open" : ""}`} />
-        <span className={`hamburger-bar${open ? " open" : ""}`} />
-        <span className={`hamburger-bar${open ? " open" : ""}`} />
-      </button>
-
-      {open && (
-        <ul className="site-nav__drawer">
+        <ul className="site-nav__links">
           {links}
         </ul>
+
+        <button
+          aria-label="Search"
+          onClick={openSearch}
+          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-limestone, #F4F1E8)", padding: "0.3rem 0.5rem", lineHeight: 1, fontSize: "1.1rem", opacity: 0.7, flexShrink: 0 }}
+        >
+          🔍
+        </button>
+
+        <button
+          className="site-nav__hamburger"
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <span className={`hamburger-bar${open ? " open" : ""}`} />
+          <span className={`hamburger-bar${open ? " open" : ""}`} />
+          <span className={`hamburger-bar${open ? " open" : ""}`} />
+        </button>
+
+        {open && (
+          <ul className="site-nav__drawer">
+            {links}
+          </ul>
+        )}
+      </nav>
+
+      {searchOpen && (
+        <div
+          onClick={(e) => { if (e.target === e.currentTarget) { setSearchOpen(false); setSearchQ(""); } }}
+          style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)", display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: "5rem" }}
+        >
+          <form onSubmit={(e) => { e.preventDefault(); submitSearch(); }} style={{ width: "min(560px, 90vw)", display: "flex", gap: "0.5rem" }}>
+            <input
+              ref={searchRef}
+              value={searchQ}
+              onChange={(e) => setSearchQ(e.target.value)}
+              placeholder="Search cases, patterns, boards…"
+              style={{ flex: 1, fontSize: "1rem", padding: "0.7rem 1rem" }}
+              onKeyDown={(e) => { if (e.key === "Escape") { setSearchOpen(false); setSearchQ(""); } }}
+            />
+            <button type="submit" className="btn btn--primary" style={{ flexShrink: 0 }}>Go</button>
+          </form>
+        </div>
       )}
-    </nav>
+    </>
   );
 }

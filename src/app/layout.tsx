@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, Merriweather } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import SessionProvider from "@/components/SessionProvider";
+import AskLansing from "@/components/AskLansing";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-sans",
@@ -67,6 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a href="/about">about</a>
             </p>
           </footer>
+          <AskLansing />
         </SessionProvider>
       </body>
     </html>

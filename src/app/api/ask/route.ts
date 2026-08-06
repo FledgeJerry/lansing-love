@@ -42,8 +42,9 @@ ${predictionsContext}
 ${communityKnowledge ? `## Community Knowledge (verified by lansing.love team)
 ${communityKnowledge}` : ""}
 
-${adminNotes.length > 0 ? `## Recent Corrections (under review)
-${adminNotes.map((n) => `- Topic: "${n.userMessage}"\n  Answer: ${n.adminNote}`).join("\n")}` : ""}`;
+${adminNotes.length > 0 ? `## Verified Answers (use these — they override "I don't know")
+The lansing.love team has verified the following answers. When a user asks about these topics, use this information directly rather than saying you don't have it:
+${adminNotes.map((n) => `- Question/topic: "${n.userMessage}"\n  Verified answer: ${n.adminNote}`).join("\n\n")}` : ""}`;
 }
 
 export async function POST(req: Request) {

@@ -536,6 +536,27 @@ model DollarFlow {
   @@map("dollar_flows")
 }
 
+// Pattern Language for Polycentric Governance — 28 patterns across 4 scales
+model Pattern {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  number      Int
+  name        String
+  scale       String   // movement | domain | institution | practice
+  problem     String   @db.Text
+  forces      String   @db.Text
+  solution    String   @db.Text
+  linksUp     String[] // slugs of patterns this one completes
+  linksDown   String[] // slugs of patterns that complete this one
+  caseRefs    String[] // BoardCaseStudy slugs this pattern evidences
+  // [{label, url, note}]
+  externalLinks Json   @default("[]")
+  status      String   @default("tested") // tested | untested | partial
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 // Zone 3 — Ownership Check: 4 standing questions updated quarterly by humans
 model OwnershipCheck {
   id         String   @id @default(cuid())

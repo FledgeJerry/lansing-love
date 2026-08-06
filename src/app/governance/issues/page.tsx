@@ -6,8 +6,8 @@ import { type Score, SCORE_COLORS, SCORE_LABELS } from "@/lib/caseStudyTypes";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Issues — Lansing Board & Commission Accountability",
-  description: "Documented governance failures across Lansing's appointed boards and commissions. Sourced from Rhinoceros Media public records reporting.",
+  title: "Issues — Lansing Institutional Accountability",
+  description: "The full accounting: who received the benefit, who bore the cost, across Lansing institutions from 1901 to present. Sourced from Rhinoceros Media and public records.",
   alternates: { canonical: "/governance/issues" },
 };
 
@@ -27,6 +27,7 @@ export default async function IssuesIndexPage() {
       slug: true,
       boardName: true,
       category: true,
+      date: true,
       summary: true,
       stats: true,
       scoreTransparency: true,
@@ -47,15 +48,15 @@ export default async function IssuesIndexPage() {
       </p>
 
       <section style={{ marginBottom: "2.5rem" }}>
-        <span className="eyebrow">Board & Commission Accountability</span>
-        <h1 style={{ fontSize: "clamp(1.5rem, 4vw, 2.2rem)", marginBottom: "0.75rem" }}>Documented in Lansing</h1>
+        <span className="eyebrow">The Full Accounting</span>
+        <h1 style={{ fontSize: "clamp(1.5rem, 4vw, 2.2rem)", marginBottom: "0.75rem" }}>Who Got the Benefit. Who Paid the Cost.</h1>
         <p style={{ maxWidth: "640px", color: "var(--color-steel-muted)" }}>
-          Concentrated power in the mayor&apos;s office produces predictable results in the appointed bodies beneath it. These are not isolated incidents — they are the same structural failure appearing across every board that lacks democratic control, competitive processes, or meaningful external oversight.
+          From 1901 to the present, the same pattern repeats: a decision was made by one center of power, without a binding mechanism for the affected community to contest it, and the cost landed on people with no institutional recourse. These cases document that pattern — and what accountability looks like.
         </p>
         <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", maxWidth: "640px", marginTop: "0.5rem" }}>
-          All findings sourced from public records reporting by{" "}
+          Findings sourced from{" "}
           <a href="https://rhinocerosmedia.org" target="_blank" rel="noopener noreferrer">Rhinoceros Media</a>
-          {" "}and city, county, state, and federal public records.
+          {" "}public records reporting and city, county, state, and federal records.
         </p>
       </section>
 
@@ -86,7 +87,7 @@ export default async function IssuesIndexPage() {
                   <tr key={board.slug} style={{ borderBottom: "1px solid rgba(244,241,232,0.05)" }}>
                     <td style={{ padding: "0.6rem 0.75rem" }}>
                       <p style={{ fontWeight: 600, color: "var(--color-limestone)", margin: 0, fontSize: "0.82rem" }}>{board.boardName}</p>
-                      <p style={{ fontSize: "0.7rem", color: "rgba(154,176,200,0.5)", margin: 0, marginTop: "0.1rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>{board.category}</p>
+                      <p style={{ fontSize: "0.7rem", color: "rgba(154,176,200,0.5)", margin: 0, marginTop: "0.1rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>{board.category}{board.date ? ` · ${board.date}` : ""}</p>
                     </td>
                     {scores.map((s, i) => (
                       <td key={i} style={{ padding: "0.6rem 0.5rem", textAlign: "center" }}>
@@ -131,7 +132,10 @@ export default async function IssuesIndexPage() {
               <Link key={board.slug} href={`/governance/issues/${board.slug}`} style={{ textDecoration: "none" }}>
                 <div className="card" style={{ padding: "1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem", cursor: "pointer" }}>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.9rem", margin: 0, marginBottom: "0.25rem" }}>{board.boardName}</p>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", marginBottom: "0.25rem", flexWrap: "wrap" }}>
+                      <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.9rem", margin: 0 }}>{board.boardName}</p>
+                      {board.date && <span style={{ fontSize: "0.68rem", color: "var(--color-text-muted)", fontVariantNumeric: "tabular-nums" }}>{board.date}</span>}
+                    </div>
                     {firstStat && (
                       <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", margin: 0 }}>
                         <strong style={{ color: "var(--color-limestone)" }}>{firstStat.value}</strong>{" "}{firstStat.label}

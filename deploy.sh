@@ -11,9 +11,6 @@ npm run build
 echo "==> Syncing .next to Pi..."
 rsync -az --delete --exclude='node_modules' .next/ "$PI:$PI_PATH/.next/"
 
-echo "==> Syncing .next/node_modules to Pi..."
-rsync -az .next/node_modules/ "$PI:$PI_PATH/.next/node_modules/"
-
 echo "==> Restarting on Pi..."
 ssh "$PI" "source ~/.nvm/nvm.sh && pm2 restart lansing-love --update-env"
 

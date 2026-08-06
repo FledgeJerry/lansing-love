@@ -5,6 +5,14 @@ import { cast, SCORE_COLORS, SCORE_LABELS, type CaseStudyData, type Score, type 
 
 export const dynamic = "force-dynamic";
 
+async function getRelatedPatterns(caseSlug: string) {
+  return prisma.pattern.findMany({
+    where: { caseRefs: { has: caseSlug }, published: true },
+    select: { slug: true, number: true, name: true, scale: true },
+    orderBy: { number: "asc" },
+  });
+}
+
 async function getCaseStudy(slug: string): Promise<CaseStudyData | null> {
   const row = await prisma.boardCaseStudy.findUnique({ where: { slug } });
   if (!row || !row.published) return null;
@@ -47,7 +55,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const cs = await getCaseStudy(slug);
+  const [cs, relatedPatterns] = await Promise.all([getCaseStudy(slug), getRelatedPatterns(slug)]);
   if (!cs) notFound();
 
   const scorecard = [
@@ -230,8 +238,35 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         </div>
       )}
 
+      {/* Related patterns */}
+      {relatedPatterns.length > 0 && (
+        <section style={{ marginBottom: "2.5rem" }}>
+          <hr className="divider" />
+          <span className="eyebrow">Pattern Language</span>
+          <h2 style={{ marginBottom: "0.5rem", fontSize: "1.1rem" }}>Patterns this case evidences</h2>
+          <p style={{ fontSize: "0.8rem", color: "var(--color-text-muted)", maxWidth: "600px", marginBottom: "1.25rem" }}>
+            These patterns name the structural problem this case is an instance of — and describe what a working fix looks like.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", maxWidth: "680px" }}>
+            {relatedPatterns.map(p => (
+              <Link key={p.slug} href={`/patterns/${p.slug}`} style={{ textDecoration: "none" }}>
+                <div className="card" style={{ padding: "0.75rem 1.1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "var(--color-steel-muted)", minWidth: "1.8rem", textAlign: "right" }}>{p.number}</span>
+                  <span style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.85rem", flex: 1 }}>{p.name}</span>
+                  <span style={{ fontSize: "0.65rem", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.07em" }}>
+                    {p.scale === "movement" ? "Movement" : p.scale === "domain" ? "Domain" : p.scale === "institution" ? "Institution" : "Practice"} scale
+                  </span>
+                  <span style={{ color: "var(--color-dome-gold)", fontSize: "0.8rem" }}>→</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
         <Link href="/governance/issues" className="btn btn--ghost btn--sm">← All issues</Link>
+        <Link href="/patterns" className="btn btn--ghost btn--sm">Pattern Language →</Link>
         <Link href="/predictions" className="btn btn--secondary btn--sm">Track related votes →</Link>
       </div>
     </div>

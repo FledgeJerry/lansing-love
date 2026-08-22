@@ -13,7 +13,7 @@ const MapView = dynamic(() => import("./MapView"), { ssr: false, loading: () => 
   </div>
 ) });
 
-const TABS = ["Timeline", "Map", "Relationships", "Accounting"] as const;
+const TABS = ["Accounting", "Map", "Relationships", "Timeline"] as const;
 type Tab = typeof TABS[number];
 
 type Props = {
@@ -26,7 +26,7 @@ type Props = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function HistoryTabs({ entities, events, relationships, contextLayers, dollarFlows }: any) {
-  const [active, setActive] = useState<Tab>("Timeline");
+  const [active, setActive] = useState<Tab>("Accounting");
 
   return (
     <div>
@@ -54,8 +54,8 @@ export default function HistoryTabs({ entities, events, relationships, contextLa
         ))}
       </div>
 
-      {active === "Timeline" && (
-        <TimelineView events={events} contextLayers={contextLayers} />
+      {active === "Accounting" && (
+        <AccountingView dollarFlows={dollarFlows} />
       )}
       {active === "Map" && (
         <MapView entities={entities} events={events} />
@@ -63,8 +63,8 @@ export default function HistoryTabs({ entities, events, relationships, contextLa
       {active === "Relationships" && (
         <RelationshipView entities={entities} relationships={relationships} />
       )}
-      {active === "Accounting" && (
-        <AccountingView dollarFlows={dollarFlows} />
+      {active === "Timeline" && (
+        <TimelineView events={events} contextLayers={contextLayers} />
       )}
     </div>
   );

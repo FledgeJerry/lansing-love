@@ -237,6 +237,27 @@ export default async function HomePage() {
         </p>
       </div>
 
+      <section
+        style={{
+          marginBottom: "2.5rem",
+          padding: "1.75rem 2rem",
+          background: "var(--color-surface, rgba(255,255,255,0.03))",
+          border: "1px solid var(--color-border-strong, rgba(255,255,255,0.12))",
+          borderLeft: "3px solid var(--color-dome-gold, #C8A550)",
+          borderRadius: "8px",
+        }}
+      >
+        <span className="eyebrow">The Core Argument</span>
+        <div style={{ marginTop: "0.75rem", display: "flex", flexDirection: "column", gap: "1rem", color: "var(--color-steel-muted)", fontSize: "0.95rem", lineHeight: 1.75, maxWidth: "760px" }}>
+          <p>The question is not whether Lansing should have had an auto industry, a power utility, a housing commission, or a city market. The question is whether those institutions should have been governed in a way that gave affected communities a binding seat at the table before the decisions that harmed them were made.</p>
+          <p>The accounting above shows that across 125 years, the answer was consistently no — and the documented cost of that no is at minimum $365M+ in public cleanup and infrastructure remediation, plus unquantified generational wealth destruction, health burdens, and displacement harm concentrated on the communities with the least power to prevent it.</p>
+          <p>Polycentric governance doesn&apos;t claim that all of those harms were avoidable. It claims that a governance structure with binding neighborhood councils, community land trusts, cooperative ownership mechanisms, and participatory budgeting would have distributed both the benefits and the costs more equitably — and would have created institutional checks that made the most egregious decisions (the I-496 routing, the LHC dual-signature deals, the Shuffle purchase option) harder to execute without community knowledge and consent.</p>
+          <p>The plan forward is not a revolution. It is a patient, sequential build: one cooperative, one council vote, one policy change, one community land trust at a time — using each proof of concept to fund and justify the next, until the governance structure of this city reflects the people who actually live here rather than the network of boards and donors who currently decide for them.</p>
+          <p>That is what The Fledge is building. That is what lansing.love is documenting. That is what Rhinoceros Media is making impossible to ignore.</p>
+          <p style={{ fontWeight: 600, color: "var(--color-limestone, #E8E4DA)" }}>The loop only breaks when the community has a binding seat at the table before the deal is signed.</p>
+        </div>
+      </section>
+
       <AliceSnapshot live={aliceCensus} />
 
       <DashboardTabs

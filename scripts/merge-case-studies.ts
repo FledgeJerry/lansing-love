@@ -39,6 +39,16 @@ async function mergeOne(tx: Tx, opts: {
   console.log(`  --- end audit log for ${opts.deleteSlug} ---\n`);
 
   const updated = await tx.boardCaseStudy.update({ where: { slug: opts.keepSlug }, data });
+
+  // Pattern.caseRefs stores BoardCaseStudy slugs — remap any pattern referencing the
+  // slug about to be deleted so "Patterns this case evidences" doesn't silently break.
+  const affectedPatterns = await tx.pattern.findMany({ where: { caseRefs: { has: opts.deleteSlug } } });
+  for (const pat of affectedPatterns) {
+    const newRefs = Array.from(new Set(pat.caseRefs.map(r => r === opts.deleteSlug ? opts.keepSlug : r)));
+    await tx.pattern.update({ where: { id: pat.id }, data: { caseRefs: newRefs } });
+  }
+  if (affectedPatterns.length) console.log(`    remapped caseRefs on ${affectedPatterns.length} pattern(s): ${affectedPatterns.map(p => p.slug).join(", ")}`);
+
   await tx.boardCaseStudy.delete({ where: { slug: opts.deleteSlug } });
 
   const after = { stats: arr(updated.stats).length, sections: arr(updated.sections).length, sources: arr(updated.sources).length, players: updated.players.length };

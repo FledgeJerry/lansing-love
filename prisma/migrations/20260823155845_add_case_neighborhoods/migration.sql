@@ -1,8 +1,2 @@
 -- AlterTable
 ALTER TABLE "BoardCaseStudy" ADD COLUMN     "neighborhoods" TEXT[] DEFAULT ARRAY[]::TEXT[];
-
--- AlterTable
-ALTER TABLE "Pattern" ALTER COLUMN "linksUp" DROP DEFAULT,
-ALTER COLUMN "linksDown" DROP DEFAULT,
-ALTER COLUMN "caseRefs" DROP DEFAULT,
-ALTER COLUMN "updatedAt" DROP DEFAULT;

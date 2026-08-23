@@ -37,6 +37,7 @@ export default function Nav() {
       <li><Link href="/boards" onClick={close}>Boards</Link></li>
       <li><Link href="/neighborhoods" onClick={close}>Neighborhoods</Link></li>
       <li><Link href="/directory" onClick={close}>Co-op Directory</Link></li>
+      <li><Link href="/patterns" onClick={close}>Patterns</Link></li>
       <li><Link href="/about" onClick={close}>About</Link></li>
       {session?.user.role === "ADMIN" && (
         <li><Link href="/admin" onClick={close}>Admin</Link></li>

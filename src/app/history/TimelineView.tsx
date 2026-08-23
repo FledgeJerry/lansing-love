@@ -187,6 +187,11 @@ export default function TimelineView({ events, contextLayers }: { events: any[];
                               family
                             </span>
                           )}
+                          {event.isPublic === false && (
+                            <span style={{ fontSize: "0.65rem", padding: "1px 6px", borderRadius: "3px", background: "rgba(192,57,43,0.15)", color: "#c0392b", whiteSpace: "nowrap" }}>
+                              Private
+                            </span>
+                          )}
                           <span style={{
                             fontSize: "0.65rem",
                             padding: "1px 6px",
@@ -223,9 +228,9 @@ export default function TimelineView({ events, contextLayers }: { events: any[];
                             {event.entityEvents?.length > 0 && (
                               <div style={{ marginTop: "0.5rem" }}>
                                 <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>People & orgs: </span>
-                                {event.entityEvents.map((ee: { entity: { name: string }; role: string }, i: number) => (
-                                  <span key={i} style={{ fontSize: "0.75rem", color: "var(--color-steel-muted)" }}>
-                                    {i > 0 ? ", " : ""}{ee.entity.name} <em style={{ color: "var(--color-text-muted)", fontStyle: "italic" }}>({ee.role})</em>
+                                {event.entityEvents.map((ee: { entity: { name: string; isPublic?: boolean }; role: string }, i: number) => (
+                                  <span key={i} style={{ fontSize: "0.75rem", color: ee.entity.isPublic === false ? "#c0392b" : "var(--color-steel-muted)" }}>
+                                    {i > 0 ? ", " : ""}{ee.entity.name}{ee.entity.isPublic === false ? " (private)" : ""} <em style={{ color: "var(--color-text-muted)", fontStyle: "italic" }}>({ee.role})</em>
                                   </span>
                                 ))}
                               </div>

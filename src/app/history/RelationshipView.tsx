@@ -117,6 +117,12 @@ export default function RelationshipView({ entities, relationships }: { entities
           <span style={{ width: 24, height: 2, background: "rgba(255,255,255,0.25)", display: "inline-block" }} />
           relationship
         </span>
+        {entities.some((e) => e.isPublic === false) && (
+          <span style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.75rem", color: "#E87070" }}>
+            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "transparent", border: "2px dashed #c0392b" }} />
+            hidden (admin only)
+          </span>
+        )}
       </div>
 
       {/* SVG Network */}
@@ -174,18 +180,19 @@ export default function RelationshipView({ entities, relationships }: { entities
                   cx={pos.x} cy={pos.y} r={r}
                   fill={color}
                   fillOpacity={0.85}
-                  stroke={isSelected ? "white" : "rgba(255,255,255,0.3)"}
-                  strokeWidth={isSelected ? 2 : 1}
+                  stroke={entity.isPublic === false ? "#c0392b" : isSelected ? "white" : "rgba(255,255,255,0.3)"}
+                  strokeWidth={entity.isPublic === false ? 2.5 : isSelected ? 2 : 1}
+                  strokeDasharray={entity.isPublic === false ? "3 2" : undefined}
                 />
                 <text
                   x={pos.x}
                   y={pos.y - r - 5}
                   textAnchor="middle"
                   fontSize="9"
-                  fill="rgba(244,241,232,0.75)"
+                  fill={entity.isPublic === false ? "#E87070" : "rgba(244,241,232,0.75)"}
                   style={{ pointerEvents: "none", userSelect: "none" }}
                 >
-                  {entity.name.split(/\s+/).slice(0, 2).join(" ")}
+                  {entity.name.split(/\s+/).slice(0, 2).join(" ")}{entity.isPublic === false ? " 🔒" : ""}
                 </text>
               </g>
             );

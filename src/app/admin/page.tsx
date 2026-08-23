@@ -74,6 +74,7 @@ export default function AdminPage() {
             { href: "/admin/neighborhoods", label: "Neighborhood Orgs",    desc: "59 registered neighborhood organizations" },
             { href: "/admin/external-orgs", label: "Independent Co-ops & Unions", desc: "Co-ops, unions, living-wage employers not in our software" },
             { href: "/admin/case-studies",  label: "Case Studies",        desc: "Board accountability reports" },
+            { href: "/admin/history",       label: "History Data",       desc: "Entities, events, and dollar flows behind /history" },
             { href: "/admin/predictions",   label: "Predictions",         desc: "Review, resolve, and edit prediction questions" },
             { href: "/admin/agenda",        label: "Import from Agenda",  desc: "Generate questions from a council agenda" },
             { href: "/admin/transcript",    label: "Resolve from Transcript", desc: "Resolve questions from a meeting transcript" },

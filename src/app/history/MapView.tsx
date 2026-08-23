@@ -112,8 +112,9 @@ export default function MapView({ entities, events }: { entities: any[]; events:
               center={[entity.lat, entity.lng]}
               radius={entity.familyStory ? 8 : 6}
               pathOptions={{
-                color: "rgba(255,255,255,0.4)",
-                weight: entity.familyStory ? 2 : 1,
+                color: entity.isPublic === false ? "#c0392b" : "rgba(255,255,255,0.4)",
+                weight: entity.isPublic === false ? 2.5 : entity.familyStory ? 2 : 1,
+                dashArray: entity.isPublic === false ? "3,2" : undefined,
                 fillColor: ENTITY_COLORS[entity.entityType] ?? "#888",
                 fillOpacity: 0.85,
               }}
@@ -144,6 +145,11 @@ export default function MapView({ entities, events }: { entities: any[]; events:
                         family
                       </span>
                     )}
+                    {entity.isPublic === false && (
+                      <span style={{ fontSize: "0.65rem", padding: "1px 5px", borderRadius: "3px", background: "rgba(192,57,43,0.15)", color: "#c0392b", border: "1px solid #c0392b" }}>
+                        hidden
+                      </span>
+                    )}
                   </div>
                   {entity.domains?.length > 0 && (
                     <div style={{ marginTop: "4px", fontSize: "0.65rem", color: "#999" }}>
@@ -161,8 +167,9 @@ export default function MapView({ entities, events }: { entities: any[]; events:
               center={[event.lat, event.lng]}
               radius={4 + Math.max(0, event.significance - 3)}
               pathOptions={{
-                color: "rgba(255,255,255,0.3)",
-                weight: 1,
+                color: event.isPublic === false ? "#c0392b" : "rgba(255,255,255,0.3)",
+                weight: event.isPublic === false ? 2.5 : 1,
+                dashArray: event.isPublic === false ? "3,2" : undefined,
                 fillColor: "#C0392B",
                 fillOpacity: 0.75,
               }}
@@ -178,15 +185,22 @@ export default function MapView({ entities, events }: { entities: any[]; events:
                       {event.description.slice(0, 200)}{event.description.length > 200 ? "…" : ""}
                     </p>
                   )}
-                  <span style={{
-                    fontSize: "0.65rem",
-                    padding: "1px 5px",
-                    borderRadius: "3px",
-                    background: `${SOURCE_COLORS[event.sourceTier]}22`,
-                    color: SOURCE_COLORS[event.sourceTier] ?? "#888",
-                  }}>
-                    {event.sourceTier}
-                  </span>
+                  <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                    <span style={{
+                      fontSize: "0.65rem",
+                      padding: "1px 5px",
+                      borderRadius: "3px",
+                      background: `${SOURCE_COLORS[event.sourceTier]}22`,
+                      color: SOURCE_COLORS[event.sourceTier] ?? "#888",
+                    }}>
+                      {event.sourceTier}
+                    </span>
+                    {event.isPublic === false && (
+                      <span style={{ fontSize: "0.65rem", padding: "1px 5px", borderRadius: "3px", background: "rgba(192,57,43,0.15)", color: "#c0392b", border: "1px solid #c0392b" }}>
+                        hidden
+                      </span>
+                    )}
+                  </div>
                 </div>
               </Popup>
             </CircleMarker>

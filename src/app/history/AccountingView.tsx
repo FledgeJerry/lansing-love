@@ -21,7 +21,7 @@ const FLOW_TYPE_LABELS: Record<string, string> = {
 function formatCents(cents: string | null): string {
   if (!cents || cents === "0") return "$0";
   const n = Number(cents);
-  if (n >= 100_000_000_00) return `$${(n / 100_000_000_00).toFixed(1)}B`;
+  if (n >= 100_000_000_000) return `$${(n / 100_000_000_000).toFixed(1)}B`;
   if (n >= 1_000_000_00) return `$${(n / 1_000_000_00).toFixed(1)}M`;
   if (n >= 1_000_00) return `$${(n / 1_000_00).toFixed(0)}K`;
   return `$${(n / 100).toFixed(0)}`;
@@ -120,6 +120,11 @@ export default function AccountingView({ dollarFlows }: { dollarFlows: any[] }) 
               <tr key={flow.id} style={{ borderBottom: "1px solid var(--color-border)" }}>
                 <td style={tdStyle}>{formatDate(flow.flowDate)}</td>
                 <td style={{ ...tdStyle, maxWidth: "300px" }}>
+                  {flow.isPublic === false && (
+                    <span style={{ fontSize: "0.6rem", padding: "1px 4px", borderRadius: "3px", background: "rgba(0,0,0,0.3)", color: "#c0392b", border: "1px solid #c0392b", marginRight: "5px" }}>
+                      hidden
+                    </span>
+                  )}
                   <a
                     href={flow.sourceUrl ?? undefined}
                     target="_blank"

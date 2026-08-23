@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import HistoryTabs from "./HistoryTabs";
 
 export const dynamic = "force-dynamic";
@@ -16,9 +17,13 @@ export const metadata: Metadata = {
 };
 
 export default async function HistoryPage() {
-  const [entities, events, relationships, contextLayers, dollarFlows] = await Promise.all([
-    prisma.entity.findMany({ orderBy: { name: "asc" } }),
+  const session = await auth();
+  const isAdmin = session?.user?.role === "ADMIN";
+
+  const [entities, eventsRaw, relationshipsRaw, contextLayers, dollarFlows] = await Promise.all([
+    prisma.entity.findMany({ where: isAdmin ? {} : { isPublic: true }, orderBy: { name: "asc" } }),
     prisma.historyEvent.findMany({
+      where: isAdmin ? {} : { isPublic: true },
       orderBy: { eventDate: "asc" },
       include: {
         eventContexts: { include: { context: true } },
@@ -33,8 +38,22 @@ export default async function HistoryPage() {
       orderBy: { weight: "desc" },
     }),
     prisma.contextLayer.findMany({ orderBy: { startDate: "asc" } }),
-    prisma.dollarFlow.findMany({ orderBy: { flowDate: "asc" } }),
+    prisma.dollarFlow.findMany({ where: isAdmin ? {} : { isPublic: true }, orderBy: { flowDate: "asc" } }),
   ]);
+
+  // Not-public entities can still leak in via embedded includes above (entityEvents.entity,
+  // fromEntity/toEntity) even though the top-level entities/relationships queries don't
+  // return them directly — strip those out server-side, before anything is serialized to
+  // the client, rather than relying on the view components to not render them. Admins get
+  // the unfiltered graph (with isPublic carried through) so /history can offer them a
+  // show-hidden toggle; everyone else never receives private data over the wire at all.
+  const events = eventsRaw.map((e) => ({
+    ...e,
+    entityEvents: isAdmin ? e.entityEvents : e.entityEvents.filter((ee) => ee.entity.isPublic),
+  }));
+  const relationships = isAdmin
+    ? relationshipsRaw
+    : relationshipsRaw.filter((r) => (r.fromEntity?.isPublic ?? true) && (r.toEntity?.isPublic ?? true));
 
   // Serialize: convert Decimal → number, BigInt → string, Date → ISO string
   const serializedEntities = entities.map((e) => ({
@@ -72,6 +91,7 @@ export default async function HistoryPage() {
         id: ee.entity.id,
         name: ee.entity.name,
         entityType: ee.entity.entityType,
+        isPublic: ee.entity.isPublic,
       },
     })),
   }));
@@ -86,11 +106,13 @@ export default async function HistoryPage() {
       id: r.fromEntity.id,
       name: r.fromEntity.name,
       entityType: r.fromEntity.entityType,
+      isPublic: r.fromEntity.isPublic,
     } : null,
     toEntity: r.toEntity ? {
       id: r.toEntity.id,
       name: r.toEntity.name,
       entityType: r.toEntity.entityType,
+      isPublic: r.toEntity.isPublic,
     } : null,
   }));
 
@@ -128,6 +150,7 @@ export default async function HistoryPage() {
         relationships={serializedRelationships}
         contextLayers={serializedLayers}
         dollarFlows={serializedFlows}
+        isAdmin={isAdmin}
       />
     </div>
   );

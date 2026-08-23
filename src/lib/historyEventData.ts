@@ -1,0 +1,28 @@
+export function buildEventData(body: Record<string, unknown>) {
+  return {
+    title: body.title as string,
+    description: (body.description as string) || null,
+    eventType: body.eventType as string,
+    eventDate: body.eventDate ? new Date(body.eventDate as string) : null,
+    eventDateEnd: body.eventDateEnd ? new Date(body.eventDateEnd as string) : null,
+    datePrecision: (body.datePrecision as string) ?? "day",
+    address: (body.address as string) || null,
+    city: (body.city as string) || null,
+    state: (body.state as string) || null,
+    lat: body.lat != null ? (body.lat as number) : null,
+    lng: body.lng != null ? (body.lng as number) : null,
+    dollarAmount: body.dollarAmountCents != null ? BigInt(body.dollarAmountCents as number) : null,
+    dollarNote: (body.dollarNote as string) || null,
+    sourceTier: (body.sourceTier as string) ?? "RC",
+    sourceNote: (body.sourceNote as string) || null,
+    sourceUrl: (body.sourceUrl as string) || null,
+    domains: (body.domains as string[]) ?? [],
+    timelineVisible: (body.timelineVisible as boolean) ?? true,
+    mapVisible: (body.mapVisible as boolean) ?? true,
+    significance: (body.significance as number) ?? 3,
+    bookChapter: (body.bookChapter as string) || null,
+    familyStory: (body.familyStory as boolean) ?? false,
+    era: (body.era as string) || null,
+    isPublic: (body.isPublic as boolean) ?? true,
+  };
+}

@@ -324,6 +324,9 @@ model Entity {
   mapPin         Boolean @default(true)
   familyStory    Boolean @default(false)
 
+  // Not-public entries are admin-only — excluded from every public query and total
+  isPublic    Boolean @default(true)
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -380,6 +383,9 @@ model HistoryEvent {
   bookChapter  String?
   familyStory  Boolean @default(false)
   era          String? // colonial | industrial_rise | labor | highway | deindustrial | repackaging | current
+
+  // Not-public entries are admin-only — excluded from every public query and total
+  isPublic    Boolean @default(true)
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -535,6 +541,9 @@ model DollarFlow {
   sourceTier    String   @default("RC")
   sourceNote    String?
   sourceUrl     String?
+
+  // Not-public entries are admin-only — excluded from every public query and total
+  isPublic      Boolean  @default(true)
 
   createdAt     DateTime @default(now())
 

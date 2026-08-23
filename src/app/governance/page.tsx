@@ -243,10 +243,10 @@ export default function GovernancePage() {
           {[
             { label: "Dark money",            desc: "Seventeen 501(c)(4) nonprofits operating from a single address, all incorporated by one attorney. A utility moving tens of millions through anonymous nonprofits that fund other nonprofits.", link: null },
             { label: "PAC capture",           desc: "Most council members funded by a small set of PACs that then appear before them on votes.", link: null },
-            { label: "Conflicts of interest", desc: "An ethics body that declined to opine on a sitting member's documented conflict. The Housing Commission sold public units to a private firm while accumulating $30M+ in public funds.", link: "/governance/issues/lansing-housing-commission" },
+            { label: "Conflicts of interest", desc: "An ethics body that declined to opine on a sitting member's documented conflict. The Housing Commission sold public units to a private firm while accumulating $30M+ in public funds.", link: "/governance/cases/lansing-housing-commission" },
             { label: "Manufactured consent",  desc: "Astroturf campaigns presented as public input at council hearings.", link: null },
-            { label: "Appointed non-experts", desc: "Boards that require expertise filled by appointment, not qualification. The Housing Commission board approved a $17.7M sale with no resident vote.", link: "/governance/issues/lansing-housing-commission" },
-            { label: "Opacity",               desc: "Hard to see who decided what, and why. FOIA requests blocked with $807.60 fees. Decisions made before public hearings, not during them.", link: "/governance/issues/lansing-housing-commission" },
+            { label: "Appointed non-experts", desc: "Boards that require expertise filled by appointment, not qualification. The Housing Commission board approved a $17.7M sale with no resident vote.", link: "/governance/cases/lansing-housing-commission" },
+            { label: "Opacity",               desc: "Hard to see who decided what, and why. FOIA requests blocked with $807.60 fees. Decisions made before public hearings, not during them.", link: "/governance/cases/lansing-housing-commission" },
           ].map(({ label, desc, link }) => (
             <div key={label} className="card" style={{ padding: "1.25rem", borderLeft: "3px solid rgba(192,57,43,0.5)" }}>
               <p style={{ fontWeight: 600, color: "var(--color-limestone)", marginBottom: "0.35rem", fontSize: "0.9rem" }}>{label}</p>
@@ -260,13 +260,13 @@ export default function GovernancePage() {
           <p style={{ fontSize: "0.8rem", color: "var(--color-steel-muted)", marginBottom: "0.5rem" }}>
             51 families evicted. $17.7M in public housing sold for $87,600/unit while construction cost $357,000/unit. 85+ children displaced mid-school-year. All seven cooperative principles violated.
           </p>
-          <Link href="/governance/issues/lansing-housing-commission" style={{ fontSize: "0.8rem", color: "var(--color-dome-gold)" }}>Read the full analysis →</Link>
+          <Link href="/governance/cases/lansing-housing-commission" style={{ fontSize: "0.8rem", color: "var(--color-dome-gold)" }}>Read the full analysis →</Link>
         </div>
         <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", marginTop: "1rem", maxWidth: "640px" }}>
           Documented through public reporting by{" "}
           <a href="https://rhinocerosmedia.org" target="_blank" rel="noopener noreferrer">Rhinoceros Media</a>
           {" "}and the city&apos;s own public records.{" "}
-          <Link href="/governance/issues" style={{ color: "var(--color-dome-gold)" }}>See all Full Accounting cases →</Link>
+          <Link href="/governance/cases" style={{ color: "var(--color-dome-gold)" }}>See all Full Accounting cases →</Link>
           <br />
           <Link href="/patterns" style={{ color: "var(--color-dome-gold)" }}>Pattern Language — 28 patterns for what comes next →</Link>
         </p>

@@ -8,7 +8,7 @@ function buildSystemPrompt(base: string, cases: any[], patterns: any[], boards: 
   const casesContext = cases.length
     ? cases.map((c) => {
         const stats = (c.stats as { value: string; label: string }[] | null)?.[0];
-        return `- **${c.boardName}** (${c.category}, ${c.date}): ${c.summary}${stats ? ` Key stat: ${stats.value} ${stats.label}.` : ""} Scores: transparency=${c.scoreTransparency}, conflicts=${c.scoreConflicts}, mission=${c.scoreMission}, democratic-control=${c.scoreDemocraticControl}, oversight=${c.scoreOversight}. Players: ${(c.players as string[]).slice(0, 4).join(", ")}. → /governance/issues/${c.slug}`;
+        return `- **${c.boardName}** (${c.category}, ${c.date}): ${c.summary}${stats ? ` Key stat: ${stats.value} ${stats.label}.` : ""} Scores: transparency=${c.scoreTransparency}, conflicts=${c.scoreConflicts}, mission=${c.scoreMission}, democratic-control=${c.scoreDemocraticControl}, oversight=${c.scoreOversight}. Players: ${(c.players as string[]).slice(0, 4).join(", ")}. → /governance/cases/${c.slug}`;
       }).join("\n")
     : "No cases loaded.";
 

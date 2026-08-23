@@ -74,7 +74,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", marginBottom: "1.5rem" }}>
         <Link href="/governance" style={{ color: "var(--color-steel-muted)" }}>Governance</Link>
         <span style={{ margin: "0 0.4rem", opacity: 0.4 }}>→</span>
-        <Link href="/governance/issues" style={{ color: "var(--color-steel-muted)" }}>Issues</Link>
+        <Link href="/governance/cases" style={{ color: "var(--color-steel-muted)" }}>Cases</Link>
         <span style={{ margin: "0 0.4rem", opacity: 0.4 }}>→</span>
         {cs.boardName}
       </p>
@@ -269,7 +269,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       )}
 
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-        <Link href="/governance/issues" className="btn btn--ghost btn--sm">← All issues</Link>
+        <Link href="/governance/cases" className="btn btn--ghost btn--sm">← All issues</Link>
         <Link href="/patterns" className="btn btn--ghost btn--sm">Pattern Language →</Link>
         <Link href="/predictions" className="btn btn--secondary btn--sm">Track related votes →</Link>
       </div>

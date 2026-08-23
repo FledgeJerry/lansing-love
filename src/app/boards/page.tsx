@@ -169,7 +169,7 @@ export default async function BoardsPage() {
 
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", borderTop: "1px solid rgba(244,241,232,0.08)", paddingTop: "1.5rem", marginTop: "2rem" }}>
         <Link href="/governance" className="btn btn--ghost btn--sm">← Governance</Link>
-        <Link href="/governance/issues" className="btn btn--ghost btn--sm">Board case studies →</Link>
+        <Link href="/governance/cases" className="btn btn--ghost btn--sm">Board case studies →</Link>
         <Link href="/neighborhoods" className="btn btn--ghost btn--sm">Neighborhood orgs →</Link>
       </div>
 

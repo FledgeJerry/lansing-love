@@ -56,7 +56,7 @@ export default async function PatternsIndexPage() {
         </p>
         <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", maxWidth: "640px" }}>
           Patterns marked <span style={{ color: STATUS_COLOR.partial }}>partially tested</span> or <span style={{ color: STATUS_COLOR.untested }}>untested</span> are honest gaps — places where the framework makes a claim that doesn&apos;t yet have a real working instance behind it. Cross-references link to{" "}
-          <Link href="/governance/issues" style={{ color: "var(--color-dome-gold)" }}>Full Accounting cases</Link>{" "}
+          <Link href="/governance/cases" style={{ color: "var(--color-dome-gold)" }}>Full Accounting cases</Link>{" "}
           that provide the evidentiary base for each pattern.
         </p>
       </section>
@@ -125,7 +125,7 @@ export default async function PatternsIndexPage() {
           Each pattern links to the historical cases that provide its evidentiary base. The Full Accounting documents what happened; the Pattern Language explains why it keeps happening and what the structural fix looks like.
         </p>
         <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-          <Link href="/governance/issues" className="btn btn--secondary btn--sm">Full Accounting cases →</Link>
+          <Link href="/governance/cases" className="btn btn--secondary btn--sm">Full Accounting cases →</Link>
           <Link href="/governance" className="btn btn--ghost btn--sm">← Governance</Link>
         </div>
       </section>

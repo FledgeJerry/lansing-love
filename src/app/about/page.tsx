@@ -45,7 +45,7 @@ export default function AboutPage() {
             },
             {
               label: "Board & Commission Accountability",
-              href: "/governance/issues",
+              href: "/governance/cases",
               desc: "Documented case studies of governance failures across Lansing's appointed boards — Housing Commission, Land Bank, Chamber PAC, BWL, Planning, Board of Ethics, Flock surveillance. Sourced from Rhinoceros Media public records reporting.",
             },
             {
@@ -111,6 +111,10 @@ export default function AboutPage() {
           </p>
         </div>
       </section>
+
+      <p style={{ fontSize: "0.85rem", color: "var(--color-text-muted)", marginBottom: "1.5rem" }}>
+        Looking for a specific page? See the <Link href="/site-index" style={{ color: "var(--color-dome-gold)" }}>full site index</Link>.
+      </p>
 
       <p style={{ fontSize: "0.85rem", color: "var(--color-text-muted)", borderTop: "1px solid var(--color-border)", paddingTop: "1.5rem" }}>
         Built with care in Lansing, Michigan ·{" "}

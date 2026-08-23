@@ -46,7 +46,7 @@ export default async function CaseStudiesAdminPage() {
                 </div>
               </div>
               <div style={{ display: "flex", gap: "0.5rem" }}>
-                <Link href={`/governance/issues/${s.slug}`} className="btn btn--ghost btn--sm" style={{ fontSize: "0.75rem" }}>View →</Link>
+                <Link href={`/governance/cases/${s.slug}`} className="btn btn--ghost btn--sm" style={{ fontSize: "0.75rem" }}>View →</Link>
                 <Link href={`/admin/case-studies/${s.id}/edit`} className="btn btn--ghost btn--sm" style={{ fontSize: "0.75rem" }}>Edit</Link>
               </div>
             </div>

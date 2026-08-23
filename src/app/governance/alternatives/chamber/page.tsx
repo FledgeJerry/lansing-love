@@ -68,7 +68,7 @@ export default function ChamberAlternativePage() {
           Evidence base: six investigative briefs built entirely from public records — Michigan campaign finance
           filings, IRS Form 990 tax returns, Michigan business entity registrations, and county property records.
           Every factual claim is independently verifiable.{" "}
-          <Link href="/governance/issues/lansing-chamber-pac" style={{ color: "var(--color-dome-gold)" }}>
+          <Link href="/governance/cases/lansing-chamber-pac" style={{ color: "var(--color-dome-gold)" }}>
             See the full case study →
           </Link>
         </p>
@@ -379,8 +379,8 @@ export default function ChamberAlternativePage() {
 
       {/* Footer nav */}
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", paddingTop: "1rem", borderTop: "1px solid rgba(244,241,232,0.08)" }}>
-        <Link href="/governance/issues/lansing-chamber-pac" className="btn btn--secondary btn--sm">Full Chamber case study →</Link>
-        <Link href="/governance/issues" className="btn btn--ghost btn--sm">All board cases →</Link>
+        <Link href="/governance/cases/lansing-chamber-pac" className="btn btn--secondary btn--sm">Full Chamber case study →</Link>
+        <Link href="/governance/cases" className="btn btn--ghost btn--sm">All board cases →</Link>
         <Link href="/governance" className="btn btn--ghost btn--sm">Governance →</Link>
       </div>
 

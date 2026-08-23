@@ -99,7 +99,7 @@ export default async function SearchPage({ searchParams }: Props) {
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
             {cases.map((c) => (
-              <Link key={c.slug} href={`/governance/issues/${c.slug}`} style={{ textDecoration: "none" }}>
+              <Link key={c.slug} href={`/governance/cases/${c.slug}`} style={{ textDecoration: "none" }}>
                 <div style={{ padding: "0.85rem 1.1rem", borderRadius: "8px", background: "rgba(154,176,200,0.06)", border: "1px solid rgba(154,176,200,0.1)", transition: "border-color 0.15s" }}>
                   <div style={{ display: "flex", gap: "0.5rem", alignItems: "baseline", marginBottom: "0.2rem" }}>
                     <span style={{ fontWeight: 600, fontSize: "0.92rem", color: "var(--color-limestone)" }}>{c.boardName}</span>

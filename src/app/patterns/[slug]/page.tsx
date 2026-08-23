@@ -156,7 +156,7 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
             {relatedCases.map(c => {
               const firstStat = (c.stats as { value: string; label: string }[] | null)?.[0];
               return (
-                <Link key={c.slug} href={`/governance/issues/${c.slug}`} style={{ textDecoration: "none" }}>
+                <Link key={c.slug} href={`/governance/cases/${c.slug}`} style={{ textDecoration: "none" }}>
                   <div className="card" style={{ padding: "1rem 1.25rem", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem", borderLeft: "3px solid rgba(192,57,43,0.35)" }}>
                     <div>
                       <p style={{ fontWeight: 600, color: "var(--color-limestone)", fontSize: "0.88rem", margin: 0 }}>{c.boardName}</p>
@@ -220,7 +220,7 @@ export default async function PatternPage({ params }: { params: Promise<{ slug: 
       {/* Nav */}
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1.5rem" }}>
         <Link href="/patterns" className="btn btn--ghost btn--sm">← All patterns</Link>
-        <Link href="/governance/issues" className="btn btn--secondary btn--sm">Full Accounting cases →</Link>
+        <Link href="/governance/cases" className="btn btn--secondary btn--sm">Full Accounting cases →</Link>
       </div>
     </div>
   );

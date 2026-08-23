@@ -6,9 +6,9 @@ import { type Score, SCORE_COLORS, SCORE_LABELS } from "@/lib/caseStudyTypes";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Issues — Lansing Institutional Accountability",
+  title: "Cases — Lansing Institutional Accountability",
   description: "The full accounting: who received the benefit, who bore the cost, across Lansing institutions from 1901 to present. Sourced from Rhinoceros Media and public records.",
-  alternates: { canonical: "/governance/issues" },
+  alternates: { canonical: "/governance/cases" },
 };
 
 const DIMENSIONS = ["Transparency", "Conflicts", "Mission", "Dem. control", "Oversight"] as const;
@@ -19,7 +19,7 @@ function Dot({ score }: { score: Score }) {
   );
 }
 
-export default async function IssuesIndexPage() {
+export default async function CasesIndexPage() {
   const boards = await prisma.boardCaseStudy.findMany({
     where: { published: true },
     orderBy: { createdAt: "asc" },
@@ -45,7 +45,7 @@ export default async function IssuesIndexPage() {
       <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", marginBottom: "1.5rem" }}>
         <Link href="/governance" style={{ color: "var(--color-steel-muted)" }}>Governance</Link>
         <span style={{ margin: "0 0.4rem", opacity: 0.4 }}>→</span>
-        Issues
+        Cases
       </p>
 
       <section style={{ marginBottom: "2.5rem" }}>
@@ -68,7 +68,7 @@ export default async function IssuesIndexPage() {
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.8rem" }}>
             <thead>
               <tr style={{ borderBottom: "1px solid rgba(244,241,232,0.1)" }}>
-                <th style={{ padding: "0.5rem 0.75rem", textAlign: "left", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)" }}>Issue</th>
+                <th style={{ padding: "0.5rem 0.75rem", textAlign: "left", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)" }}>Case</th>
                 <th style={{ padding: "0.5rem 0.75rem", textAlign: "left", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-steel-muted)" }}>Players</th>
                 {DIMENSIONS.map(d => (
                   <th key={d} style={{ padding: "0.5rem 0.5rem", textAlign: "center", fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--color-steel-muted)", whiteSpace: "nowrap" }}>{d}</th>
@@ -109,7 +109,7 @@ export default async function IssuesIndexPage() {
                       </td>
                     ))}
                     <td style={{ padding: "0.6rem 0.75rem", textAlign: "right" }}>
-                      <Link href={`/governance/issues/${board.slug}`} style={{ fontSize: "0.75rem", color: "var(--color-dome-gold)", whiteSpace: "nowrap" }}>Read →</Link>
+                      <Link href={`/governance/cases/${board.slug}`} style={{ fontSize: "0.75rem", color: "var(--color-dome-gold)", whiteSpace: "nowrap" }}>Read →</Link>
                     </td>
                   </tr>
                 );

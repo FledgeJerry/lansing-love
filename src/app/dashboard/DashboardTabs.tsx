@@ -919,7 +919,7 @@ function ZonePolicy() {
           {[
             { label: "Board Composition Database",            note: "44 boards, all members, expired terms flagged — boards where members are serving 5–13 years past expiration are surfaced.", link: "/boards",                       linkLabel: "View /boards →" },
             { label: "Neighborhood Organizations Directory",  note: "59 registered neighborhood organizations — the existing infrastructure for neighborhood councils with real authority.",  link: "/neighborhoods",                linkLabel: "View /neighborhoods →" },
-            { label: "Board accountability case studies",     note: "7 sourced case studies: LHC, Land Bank, Flock, Chamber PAC, Board of Ethics, BWL, Development & Planning.",           link: "/governance/issues",            linkLabel: "View all →" },
+            { label: "Board accountability case studies",     note: "7 sourced case studies: LHC, Land Bank, Flock, Chamber PAC, Board of Ethics, BWL, Development & Planning.",           link: "/governance/cases",            linkLabel: "View all →" },
             { label: "Chamber accountability + alternative",  note: "8 documented findings. 7 complaint filings. Cooperative alternative plan with legal structure and governance provisions.", link: "/governance/alternatives/chamber", linkLabel: "View plan →" },
           ].map(({ label, note, link, linkLabel }) => (
             <div key={label} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", background: "rgba(74,155,142,0.04)", border: "1px solid rgba(74,155,142,0.15)", borderRadius: "8px", padding: "0.875rem 1rem" }}>
@@ -960,7 +960,7 @@ function ZonePolicy() {
               status: "pending" as const,
               label: "Conflict-of-interest recusal required on record for appointed boards",
               note: "Currently at board members' discretion. Board of Ethics case study shows what happens without enforcement.",
-              link: "/governance/issues/board-of-ethics", linkLabel: "Case study →",
+              link: "/governance/cases/board-of-ethics", linkLabel: "Case study →",
             },
           ].map(({ status, label, note, link, linkLabel }) => (
             <div key={label} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", background: "rgba(255,255,255,0.02)", border: `1px solid ${status === "clarification" ? "rgba(167,139,250,0.2)" : "rgba(244,241,232,0.08)"}`, borderRadius: "8px", padding: "0.875rem 1rem" }}>
@@ -986,7 +986,7 @@ function ZonePolicy() {
               status: "tracking" as const,
               label: "BWL board reform — elected seats, enforced terms",
               note: "9 BWL employees donated $6K to LRC-PAC in 48 hours; CFO on Chamber board testified for Deep Green. All seats mayoral-appointed. Charter reform is the fix.",
-              link: "/governance/issues/bwl", linkLabel: "Case study →",
+              link: "/governance/cases/bwl", linkLabel: "Case study →",
             },
             {
               status: "pending" as const,
@@ -997,7 +997,7 @@ function ZonePolicy() {
               status: "pending" as const,
               label: "Stakeholder and expert seats on development and housing boards",
               note: "People affected by decisions, and people who understand them, seated as decision-makers — not just advisors the mayor can ignore.",
-              link: "/governance/issues/development-planning", linkLabel: "Case study →",
+              link: "/governance/cases/development-planning", linkLabel: "Case study →",
             },
           ].map(({ status, label, note, link, linkLabel }) => (
             <div key={label} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(244,241,232,0.08)", borderRadius: "8px", padding: "0.875rem 1rem" }}>

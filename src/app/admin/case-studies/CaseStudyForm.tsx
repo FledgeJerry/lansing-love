@@ -20,6 +20,7 @@ const emptyForm = (): FormData => ({
   recommendations: [""],
   sources: [""],
   sourceUrls: [""],
+  neighborhoods: [""],
   scoreTransparency: "insufficient" as Score,
   scoreConflicts: "insufficient" as Score,
   scoreMission: "insufficient" as Score,
@@ -340,6 +341,18 @@ export default function CaseStudyForm({ initial, id }: Props) {
           </div>
         ))}
         <button type="button" onClick={() => addRow<string>("sources", "")} className="btn btn--ghost btn--sm">+ Add source</button>
+      </fieldset>
+
+      {/* Neighborhoods */}
+      <fieldset style={fieldset}>
+        <legend style={legend}>Neighborhoods involved</legend>
+        {form.neighborhoods.map((n, i) => (
+          <div key={i} style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <input value={n} onChange={e => setArr<string>("neighborhoods", i, () => e.target.value)} style={{ ...input, flex: 1 }} placeholder="e.g. Moores Park…" />
+            <button type="button" onClick={() => removeRow("neighborhoods", i)} style={{ padding: "0 0.75rem", background: "none", border: "1px solid rgba(192,57,43,0.4)", borderRadius: "6px", color: "#c0392b", cursor: "pointer" }}>×</button>
+          </div>
+        ))}
+        <button type="button" onClick={() => addRow<string>("neighborhoods", "")} className="btn btn--ghost btn--sm">+ Add neighborhood</button>
       </fieldset>
 
       {/* Save */}

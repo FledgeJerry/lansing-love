@@ -188,6 +188,8 @@ model BoardCaseStudy {
 
   // key entities, boards, commissions, and players involved
   players String[] @default([])
+  // Lansing neighborhoods this case's addresses/impact fall within
+  neighborhoods String[] @default([])
 
   scoreTransparency      String @default("insufficient")
   scoreConflicts         String @default("insufficient")

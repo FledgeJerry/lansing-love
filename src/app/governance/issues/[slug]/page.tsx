@@ -32,6 +32,7 @@ async function getCaseStudy(slug: string): Promise<CaseStudyData | null> {
     recommendations: cast(row.recommendations, []),
     sources:      cast(row.sources,     []),
     sourceUrls:   cast(row.sourceUrls,  []),
+    neighborhoods: row.neighborhoods,
     scoreTransparency:      row.scoreTransparency      as Score,
     scoreConflicts:         row.scoreConflicts         as Score,
     scoreMission:           row.scoreMission           as Score,
@@ -85,6 +86,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", marginBottom: "1rem" }}>
           <span style={{ fontSize: "0.78rem", color: "var(--color-text-muted)" }}>{cs.date}</span>
           <span className="badge badge--muted">{cs.category}</span>
+          {cs.neighborhoods.map(n => (
+            <span key={n} className="badge badge--muted" style={{ borderColor: "rgba(232,200,74,0.3)", color: "var(--color-dome-gold)" }}>{n}</span>
+          ))}
         </div>
         {/* Scorecard mini */}
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>

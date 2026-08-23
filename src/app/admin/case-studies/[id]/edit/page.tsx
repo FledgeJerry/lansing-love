@@ -25,6 +25,7 @@ export default async function EditCaseStudyPage({ params }: { params: Promise<{ 
     recommendations: cast(row.recommendations, []),
     sources:         cast(row.sources, []),
     sourceUrls:      cast(row.sourceUrls, []),
+    neighborhoods:   row.neighborhoods,
     scoreTransparency:      row.scoreTransparency      as Score,
     scoreConflicts:         row.scoreConflicts         as Score,
     scoreMission:           row.scoreMission           as Score,

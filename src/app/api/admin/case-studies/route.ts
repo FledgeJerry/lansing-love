@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
       recommendations:       body.recommendations ?? [],
       sources:               body.sources ?? [],
       sourceUrls:            body.sourceUrls ?? [],
+      neighborhoods:         body.neighborhoods ?? [],
       scoreTransparency:      body.scoreTransparency      ?? "insufficient",
       scoreConflicts:         body.scoreConflicts         ?? "insufficient",
       scoreMission:           body.scoreMission           ?? "insufficient",

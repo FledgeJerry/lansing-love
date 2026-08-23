@@ -23,6 +23,7 @@ export interface CaseStudyData {
   recommendations: string[];
   sources:      string[];
   sourceUrls:   string[];
+  neighborhoods: string[];
   scoreTransparency:      Score;
   scoreConflicts:         Score;
   scoreMission:           Score;

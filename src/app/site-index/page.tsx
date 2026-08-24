@@ -15,6 +15,7 @@ const SECTIONS: { label: string; pages: { href: string; title: string; desc?: st
       { href: "/governance", title: "Governance", desc: "Boards, commissions, departments, BWL, contracts." },
       { href: "/governance/dashboard", title: "Why the Dashboard" },
       { href: "/governance/roadmap", title: "The Roadmap" },
+      { href: "/governance/actions", title: "Actions", desc: "Every recommendation and milestone from the Cases, Patterns, and Roadmap, in one filterable list." },
     ],
   },
   {
@@ -26,7 +27,7 @@ const SECTIONS: { label: string; pages: { href: string; title: string; desc?: st
   {
     label: "Cases — The Full Accounting",
     pages: [
-      { href: "/governance/cases", title: "Cases", desc: "Who got the benefit, who paid the cost — 14 documented cases of Lansing institutional accountability." },
+      { href: "/governance/cases", title: "Cases", desc: "Who got the benefit, who paid the cost — 16 documented cases of Lansing institutional accountability." },
       { href: "/governance/charter", title: "Charter" },
       { href: "/governance/alternatives/chamber", title: "How to Build an Alternative to a Chamber of Commerce" },
       { href: "/governance/policy/participatory-budgeting", title: "Participatory Budgeting in Lansing" },

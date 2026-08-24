@@ -225,6 +225,9 @@ export default function RoadmapPage() {
             </tbody>
           </table>
         </div>
+        <Link href="/governance/actions" style={{ fontSize: "0.8rem", color: "var(--color-dome-gold)", display: "inline-block", marginTop: "1rem" }}>
+          Track these milestones with status and due dates →
+        </Link>
       </section>
 
       {/* CTA */}

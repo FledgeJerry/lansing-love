@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { cast, SCORE_COLORS, SCORE_LABELS, type CaseStudyData, type Score, type Principle, type OwnershipQ, type BottomLine, type Section } from "@/lib/caseStudyTypes";
+import { ACTION_STATUS_LABELS, ACTION_STATUS_COLORS } from "@/lib/actionItemTypes";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,13 @@ async function getRelatedPatterns(caseSlug: string) {
     where: { caseRefs: { has: caseSlug }, published: true },
     select: { slug: true, number: true, name: true, scale: true },
     orderBy: { number: "asc" },
+  });
+}
+
+async function getCaseActions(caseSlug: string) {
+  return prisma.actionItem.findMany({
+    where: { sourceType: "case", sourceSlug: caseSlug },
+    orderBy: [{ status: "asc" }, { dueDate: "asc" }, { sortOrder: "asc" }],
   });
 }
 
@@ -56,7 +64,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [cs, relatedPatterns] = await Promise.all([getCaseStudy(slug), getRelatedPatterns(slug)]);
+  const [cs, relatedPatterns, actions] = await Promise.all([getCaseStudy(slug), getRelatedPatterns(slug), getCaseActions(slug)]);
   if (!cs) notFound();
 
   const scorecard = [
@@ -218,17 +226,31 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         </section>
       ))}
 
-      {/* Recommendations */}
-      {cs.recommendations.length > 0 && (
+      {/* Actions (formerly "recommendations" — now tracked with status/due date/owner) */}
+      {actions.length > 0 && (
         <section style={{ marginBottom: "3rem" }}>
           <hr className="divider" />
-          <span className="eyebrow">Recommendations</span>
+          <span className="eyebrow">Actions</span>
           <h2 style={{ marginBottom: "1rem" }}>What accountability looks like</h2>
-          <div style={{ maxWidth: "640px" }}>
-            <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem", paddingLeft: "1.25rem" }}>
-              {cs.recommendations.map((r, i) => <li key={i} style={{ fontSize: "0.85rem" }}>{r}</li>)}
-            </ul>
+          <div style={{ maxWidth: "680px", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+            {actions.map((a) => {
+              const color = ACTION_STATUS_COLORS[a.status as keyof typeof ACTION_STATUS_COLORS] ?? "#888";
+              return (
+                <div key={a.id} style={{ display: "flex", gap: "0.6rem", alignItems: "flex-start" }}>
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0, marginTop: "0.4rem" }} />
+                  <div>
+                    <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--color-text-secondary)" }}>{a.title}</p>
+                    <div style={{ display: "flex", gap: "0.6rem", marginTop: "0.2rem" }}>
+                      <span style={{ fontSize: "0.68rem", color }}>{ACTION_STATUS_LABELS[a.status as keyof typeof ACTION_STATUS_LABELS] ?? a.status}</span>
+                      {a.responsible && <span style={{ fontSize: "0.68rem", color: "var(--color-text-muted)" }}>{a.responsible}</span>}
+                      {a.dueDate && <span style={{ fontSize: "0.68rem", color: "var(--color-text-muted)" }}>due {a.dueDate.toISOString().slice(0, 10)}</span>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
+          <Link href="/governance/actions" style={{ fontSize: "0.75rem", color: "var(--color-dome-gold)", display: "inline-block", marginTop: "1rem" }}>See all actions →</Link>
         </section>
       )}
 

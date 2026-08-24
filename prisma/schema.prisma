@@ -201,6 +201,36 @@ model BoardCaseStudy {
   updatedAt DateTime @updatedAt
 }
 
+// Cross-site action tracker — consolidates recommendations/milestones from
+// case studies, patterns, and the roadmap into one filterable, manageable list.
+model ActionItem {
+  id          String    @id @default(cuid())
+  title       String    @db.Text
+  description String?   @db.Text
+
+  status      String    @default("open") // open | in_progress | done | blocked
+  horizon     String?   // immediate | near_term | structural — optional, matches Plan Forward language
+
+  // Domain tags — same vocabulary as Entity/HistoryEvent.domains for cross-site filtering
+  subjects    String[]  @default([])
+
+  dueDate     DateTime?
+  responsible String?   // free text — matches the "players" pattern elsewhere, not a relation
+
+  // Where this action came from — optional, actions can also stand alone
+  sourceType  String?   // case | pattern | roadmap
+  sourceSlug  String?   // BoardCaseStudy.slug or Pattern.slug
+  sourcePhase String?   // roadmap phase label, if sourceType = "roadmap"
+
+  closedAt    DateTime?
+  closedNote  String?
+
+  sortOrder   Int       @default(0)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 // Lansing appointed boards and commissions directory
 model Board {
   id        String        @id @default(cuid())

@@ -321,7 +321,14 @@ export default function CaseStudyForm({ initial, id }: Props) {
 
       {/* Recommendations */}
       <fieldset style={fieldset}>
-        <legend style={legend}>Recommendations</legend>
+        <legend style={legend}>Recommendations (draft only)</legend>
+        <p style={{ fontSize: "0.78rem", color: "var(--color-steel-muted)", marginBottom: "0.75rem" }}>
+          The public case page no longer renders this list — it shows tracked Actions instead (with status, due date, and an owner).
+          Use this field as scratch space when drafting or AI-analyzing a case, then create the real items in{" "}
+          <a href={form.slug ? `/admin/actions/new?sourceType=case&sourceSlug=${form.slug}` : "/admin/actions"} target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-dome-gold)" }}>
+            the Actions manager
+          </a>.
+        </p>
         {form.recommendations.map((r, i) => (
           <div key={i} style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
             <input value={r} onChange={e => setArr<string>("recommendations", i, () => e.target.value)} style={{ ...input, flex: 1 }} placeholder="Specific recommendation…" />

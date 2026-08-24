@@ -4,6 +4,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import SessionProvider from "@/components/SessionProvider";
 import AskLansing from "@/components/AskLansing";
+import FeedbackWidget from "@/components/FeedbackWidget";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-sans",
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </p>
           </footer>
           <AskLansing />
+          <FeedbackWidget />
         </SessionProvider>
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 type Status = "idle" | "open" | "sending" | "sent" | "error";
 
@@ -9,6 +10,7 @@ export default function FeedbackWidget() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const pathname = usePathname();
 
   function open() { setStatus("open"); }
   function close() {
@@ -44,6 +46,10 @@ export default function FeedbackWidget() {
   }
 
   const panelOpen = status === "open" || status === "sending" || status === "sent" || status === "error";
+
+  // Same reasoning as AskLansing — this is a public-facing widget, admin
+  // pages have their own Save/Cancel buttons the fixed FAB would sit on top of.
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <>

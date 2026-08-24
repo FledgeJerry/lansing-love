@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -30,6 +30,7 @@ export default function AskLansing() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 80);
@@ -69,6 +70,12 @@ export default function AskLansing() {
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); }
   }
+
+  // Fixed-position widgets have nowhere to go on admin pages — they end up
+  // parked on top of form Save buttons. Admin is Jerry's own tool, not a
+  // visitor-facing surface, so there's no reason to show a chat/feedback
+  // widget there anyway.
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <>

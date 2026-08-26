@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <footer className="site-footer">
             <p style={{ fontSize: "0.8rem", color: "var(--color-text-muted)", margin: 0 }}>
-              lansing.love — a civic prediction project ·{" "}
+              lansing.love — tracking who benefits, who pays, and what to do about it ·{" "}
               <a href="/about">about</a>
             </p>
           </footer>

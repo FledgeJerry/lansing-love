@@ -227,6 +227,8 @@ export default async function HomePage() {
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2rem 1rem 4rem" }}>
+      <AliceSnapshot live={aliceCensus} />
+
       <div style={{ marginBottom: "2.5rem" }}>
         <h1 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.35rem", color: "var(--color-steel-muted)" }}>
           Cooperative Governance
@@ -256,8 +258,6 @@ export default async function HomePage() {
           <p style={{ fontWeight: 600, color: "var(--color-limestone, #E8E4DA)" }}>The loop only breaks when the community has a binding seat at the table before the deal is signed.</p>
         </div>
       </section>
-
-      <AliceSnapshot live={aliceCensus} />
 
       <DashboardTabs
         isAdmin={isAdmin}

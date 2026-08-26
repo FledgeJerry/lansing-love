@@ -68,10 +68,6 @@ export default function Nav() {
   return (
     <>
       <nav className="site-nav">
-        <Link href="/" className="site-nav__logo">
-          lansing<span>.</span>love
-        </Link>
-
         <ul className="site-nav__links">
           {links}
         </ul>

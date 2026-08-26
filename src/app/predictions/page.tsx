@@ -44,11 +44,6 @@ export default async function Home() {
 
   return (
     <div>
-      <img
-        src="/lansing-love-banner.svg"
-        alt="lansing.love — civic accountability, cooperative governance, community owned"
-        style={{ width: "100%", display: "block", borderRadius: "8px", marginBottom: "2rem" }}
-      />
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem", marginBottom: "2rem" }}>
         <div>
           <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)", marginBottom: "0.25rem" }}>Lansing Predictions</h1>

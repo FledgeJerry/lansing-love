@@ -5,6 +5,8 @@ import Nav from "@/components/Nav";
 import SessionProvider from "@/components/SessionProvider";
 import AskLansing from "@/components/AskLansing";
 import FeedbackWidget from "@/components/FeedbackWidget";
+import SiteHeaderBanner from "@/components/SiteHeaderBanner";
+import HideOnAdmin from "@/components/HideOnAdmin";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-sans",
@@ -59,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }) }}
         />
         <SessionProvider>
+          <HideOnAdmin><SiteHeaderBanner /></HideOnAdmin>
           <Nav />
           <main style={{ flex: 1, maxWidth: "900px", margin: "0 auto", width: "100%", padding: "2rem 1.5rem" }}>
             {children}

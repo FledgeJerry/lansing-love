@@ -41,12 +41,12 @@ export default async function HistoryTimelineStrip() {
         right: "50%",
         marginLeft: "-50vw",
         marginRight: "-50vw",
-        marginBottom: "2rem",
+        marginBottom: 0,
         overflow: "hidden",
         background: "var(--color-surface)",
         borderTop: "1px solid var(--color-border)",
         borderBottom: "1px solid var(--color-border)",
-        padding: "0.85rem 0",
+        padding: "1rem 0",
       }}
     >
       <div className="timeline-strip-track" style={{ display: "flex", width: "max-content" }}>
@@ -62,17 +62,17 @@ export default async function HistoryTimelineStrip() {
               flexShrink: 0,
             }}
           >
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: item.color, flexShrink: 0, alignSelf: "center" }} />
-            <span style={{ fontSize: "0.72rem", fontWeight: 700, color: "var(--color-dome-gold)", fontVariantNumeric: "tabular-nums" }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: item.color, flexShrink: 0, alignSelf: "center" }} />
+            <span style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--color-dome-gold)", fontVariantNumeric: "tabular-nums" }}>
               {item.year}
             </span>
-            <span style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)" }}>{item.title}</span>
+            <span style={{ fontSize: "0.95rem", color: "var(--color-text-secondary)" }}>{item.title}</span>
           </div>
         ))}
       </div>
       <style>{`
         .timeline-strip-track {
-          animation: timeline-strip-scroll 90s linear infinite;
+          animation: timeline-strip-scroll 260s linear infinite;
         }
         .timeline-strip-track:hover {
           animation-play-state: paused;

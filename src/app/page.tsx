@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import DashboardTabs from "./dashboard/DashboardTabs";
 import AliceSnapshot from "./dashboard/AliceSnapshot";
 import type { TractProps } from "@/components/TractChoroplethMap";
-import HistoryTimelineStrip from "@/components/HistoryTimelineStrip";
 
 export const dynamic = "force-dynamic";
 
@@ -228,13 +227,7 @@ export default async function HomePage() {
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2rem 1rem 4rem" }}>
-      <HistoryTimelineStrip />
       <div style={{ marginBottom: "2.5rem" }}>
-        <img
-          src="/lansing-love-banner.svg"
-          alt="lansing.love — civic accountability, cooperative governance, community owned"
-          style={{ width: "100%", display: "block", borderRadius: "8px", marginBottom: "1rem" }}
-        />
         <h1 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.35rem", color: "var(--color-steel-muted)" }}>
           Cooperative Governance
         </h1>

@@ -8,6 +8,22 @@ action content. Code changes are still covered by normal git history; this file 
 
 ---
 
+## 2026-08-26 (cont'd, 4) — Case 13 added: The Assessor and Board of Review
+
+- Added Case 13 ("The Assessor and Board of Review — A Self-Review Loop") as the 13th
+  `BoardCaseStudy` — full text supplied by Jerry from the sandbox session. Structural finding
+  about the mayoral dual-appointment of the Assessor and the Board of Review; deliberately names
+  no individual as having acted improperly. **Preserve that framing in any future edit** — don't
+  let it get sharpened into an accusation against the current Assessor, Mayor, or Board of Review.
+- Cross-referenced from Pattern 18 (Binding Seat at the Table) and Pattern 22 (The Watch List)
+  via `Pattern.caseRefs`.
+- With this, the four-case sandbox reconciliation plus Case 13 are all merged. Still outstanding:
+  Andrew Muylle/Faye Norris context (Case 10), Polycentricity.docx publication, the Deep Green
+  43-vs-6 citation.
+- Script: `scripts/add-case13-assessor-board-of-review.ts`.
+
+---
+
 ## 2026-08-26 (cont'd, 3) — 428 W. Lenawee cluster + full entity geocoding pass
 
 - **428 W. Lenawee**: confirmed via WLNS reporting that this is the Law Office of Reid Felsing,

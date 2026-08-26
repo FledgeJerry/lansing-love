@@ -8,6 +8,26 @@ action content. Code changes are still covered by normal git history; this file 
 
 ---
 
+## 2026-08-26 (cont'd) — Three gap-fill merges from the sandbox diff
+
+- **Case 10**: merged the Lansing Eastern High School material into the "physical evidence is
+  being erased" bullet (2016 $2.475M sale, 2025 demolition for the UM-Sparrow psychiatric
+  hospital, the 2013 Bernero "done deal" timing finding, the Coalition to Preserve Eastern/Linda
+  Peckham preservation fight, an open unconfirmed-union research thread separate from Case 12's
+  confirmed Local 333). Added Rawley Van Fossen and Ryan Kost to Case 10's players (both already
+  existed as entities from other cases). Created 5 new entities: Linda Peckham, Virg Bernero,
+  Peter Spadafore, Margaret Dimond, Ann Marie Creed.
+- **Case 12**: added the Garza April 20 (absent for the referral vote) / May 18 (present and
+  chairing, moratorium not on the agenda) attendance detail to the existing conflict-of-interest
+  finding.
+- **Case 0**: added the explicit CPI methodology citation (×33 multiplier, in2013dollars.com +
+  BLS CPI-U from 1913 forward) for the $300K→$9.9M Morrill Act figure.
+- **Deliberately not added**: Andrew Muylle and Faye Norris, named in the sandbox's "new entities
+  this introduces" list but with no role or context given anywhere in the actual provided text —
+  flagged back rather than fabricated, per the no-fabrication rule. Waiting on Jerry.
+- Script: `scripts/merge-eastern-garza-cpi-gaps.ts`, idempotent (checks for the new text before
+  appending, safe to re-run).
+
 ## 2026-08-26 — Diff request against the sandbox version
 
 - Exported full content for Case 0, 10, 11, 12 (`scripts/export-cases-for-diff.ts`) for a

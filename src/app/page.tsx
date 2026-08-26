@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import DashboardTabs from "./dashboard/DashboardTabs";
 import AliceSnapshot from "./dashboard/AliceSnapshot";
 import type { TractProps } from "@/components/TractChoroplethMap";
+import HistoryTimelineStrip from "@/components/HistoryTimelineStrip";
 
 export const dynamic = "force-dynamic";
 
@@ -227,6 +228,7 @@ export default async function HomePage() {
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2rem 1rem 4rem" }}>
+      <HistoryTimelineStrip />
       <div style={{ marginBottom: "2.5rem" }}>
         <span className="eyebrow">Lansing Cooperative Governance</span>
         <h1 style={{ fontSize: "clamp(1.6rem, 4vw, 2.4rem)", marginBottom: "0.5rem", lineHeight: 1.2 }}>

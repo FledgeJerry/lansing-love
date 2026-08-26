@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ACTION_STATUSES, ACTION_STATUS_LABELS, ACTION_STATUS_COLORS, ACTION_HORIZON_LABELS, ACTION_SUBJECTS } from "@/lib/actionItemTypes";
+import ActionStatusChart from "@/components/charts/ActionStatusChart";
 
 const selectStyle: React.CSSProperties = {
   background: "var(--color-surface-raised)",
@@ -37,10 +38,15 @@ export default function ActionsView({ actions }: { actions: any[] }) {
 
   return (
     <div>
-      <div style={{ display: "flex", gap: "1.5rem", marginBottom: "1.5rem", flexWrap: "wrap" }}>
-        <Stat value={String(openCount)} label="Open" />
-        <Stat value={String(overdueCount)} label="Overdue" color={overdueCount > 0 ? "#c0392b" : undefined} />
-        <Stat value={String(actions.filter((a) => a.status === "done").length)} label="Done" />
+      <div style={{ display: "flex", gap: "2rem", marginBottom: "1.5rem", flexWrap: "wrap", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+          <Stat value={String(openCount)} label="Open" />
+          <Stat value={String(overdueCount)} label="Overdue" color={overdueCount > 0 ? "#c0392b" : undefined} />
+          <Stat value={String(actions.filter((a) => a.status === "done").length)} label="Done" />
+        </div>
+        <div style={{ width: "min(280px, 100%)" }}>
+          <ActionStatusChart actions={actions} />
+        </div>
       </div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1.5rem", padding: "0.75rem 1rem", background: "var(--color-surface)", borderRadius: "8px" }}>

@@ -104,8 +104,10 @@ export default async function CasesIndexPage() {
                       </div>
                     </td>
                     {scores.map((s, i) => (
-                      <td key={i} style={{ padding: "0.6rem 0.5rem", textAlign: "center" }}>
-                        <Dot score={s} />
+                      <td key={i} style={{ padding: "0.4rem", textAlign: "center" }}>
+                        <div title={SCORE_LABELS[s]} style={{ background: `${SCORE_COLORS[s]}33`, border: `1px solid ${SCORE_COLORS[s]}66`, borderRadius: "4px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <Dot score={s} />
+                        </div>
                       </td>
                     ))}
                     <td style={{ padding: "0.6rem 0.75rem", textAlign: "right" }}>

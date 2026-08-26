@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import LedgerOverTimeChart from "@/components/charts/LedgerOverTimeChart";
 
 const FLOW_TYPE_LABELS: Record<string, string> = {
   public_investment: "Public Investment",
@@ -78,6 +79,8 @@ export default function AccountingView({ dollarFlows }: { dollarFlows: any[] }) 
           </div>
         </div>
       </div>
+
+      <LedgerOverTimeChart dollarFlows={dollarFlows} />
 
       {/* Filter */}
       <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>

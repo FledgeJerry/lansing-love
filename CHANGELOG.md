@@ -8,6 +8,29 @@ action content. Code changes are still covered by normal git history; this file 
 
 ---
 
+## 2026-08-26 (cont'd, 3) — 428 W. Lenawee cluster + full entity geocoding pass
+
+- **428 W. Lenawee**: confirmed via WLNS reporting that this is the Law Office of Reid Felsing,
+  PLC — a campaign-finance law firm serving as registered filing address for multiple PACs.
+  Added as its own entity, plus Lansing's Future PAC, Michigan Vindicated, and a third committee
+  found independently while researching (Vote Yes Lansing 2025 Ballot Committee), all at that
+  address. **Confirmed LRC-PAC itself is NOT registered there** — its own address (500 E.
+  Michigan Ave) is unchanged; the only link is a $5,000 LRC-PAC donation to Lansing's Future PAC
+  (April 19, 2024), a financial relationship, not a shared-address one.
+- **Geocoding**: every `Entity` row with an address but no coordinates now has them (7 total,
+  confirmed against production first) — Jerry's birthplace and childhood family home, Norris
+  Grocery, Everett High School, Comfort Street Landfill, Haag Road, Sadie Court. Jerry confirmed
+  historical family addresses are fine to geocode/publish (none are current addresses). House-
+  number matches marked `geocoded`; street-only matches (no house number ever recorded) marked
+  `approximate`.
+- Checked `/history` for the Treaty of Saginaw / Morrill Act narrative material the sandbox
+  Timeline document added — confirmed missing from `HistoryEvent` on production. Case 0 already
+  covers this in benefit/cost form via `BoardCaseStudy`; the Timeline-style narrative version is
+  still queued, waiting on the sandbox text.
+- Scripts: `scripts/add-428-lenawee-entities.ts`, `scripts/geocode-remaining-entities.ts`.
+
+---
+
 ## 2026-08-26 (cont'd) — Three gap-fill merges from the sandbox diff
 
 - **Case 10**: merged the Lansing Eastern High School material into the "physical evidence is

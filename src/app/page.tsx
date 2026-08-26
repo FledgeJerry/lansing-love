@@ -230,8 +230,12 @@ export default async function HomePage() {
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "2rem 1rem 4rem" }}>
       <HistoryTimelineStrip />
       <div style={{ marginBottom: "2.5rem" }}>
-        <span className="eyebrow">Lansing Cooperative Governance</span>
-        <h1 style={{ fontSize: "clamp(1.6rem, 4vw, 2.4rem)", marginBottom: "0.5rem", lineHeight: 1.2 }}>
+        <img
+          src="/lansing-love-banner.svg"
+          alt="lansing.love — civic accountability, cooperative governance, community owned"
+          style={{ width: "100%", display: "block", borderRadius: "8px", marginBottom: "1rem" }}
+        />
+        <h1 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.35rem", color: "var(--color-steel-muted)" }}>
           Cooperative Governance
         </h1>
         <p style={{ color: "var(--color-steel-muted)", fontSize: "0.95rem", maxWidth: "680px" }}>

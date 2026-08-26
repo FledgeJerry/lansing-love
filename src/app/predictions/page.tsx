@@ -46,8 +46,8 @@ export default async function Home() {
     <div>
       <img
         src="/lansing-love-banner.svg"
-        alt="Lansing Love"
-        style={{ width: "100%", display: "block", marginBottom: "2rem" }}
+        alt="lansing.love — civic accountability, cooperative governance, community owned"
+        style={{ width: "100%", display: "block", borderRadius: "8px", marginBottom: "2rem" }}
       />
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem", marginBottom: "2rem" }}>
         <div>

@@ -8,6 +8,26 @@ action content. Code changes are still covered by normal git history; this file 
 
 ---
 
+## 2026-08-26 (cont'd, 5) — Treaty of Saginaw / Morrill Act added to `/history`
+
+- Added two `HistoryEvent` rows: the 1819 Treaty of Saginaw and the 1855–1862 Michigan
+  Agricultural College/Morrill Act land-grant story — the same civic material Case 0 already
+  covers in `BoardCaseStudy` benefit/cost form, now also in the Timeline/Map's narrative form.
+  Content adapted from Case 0's own already-sourced text, not written fresh.
+  Confirmed chronological order: Dewees/Valley Forge (1777) → **Treaty of Saginaw (1819)** →
+  Biddle City (1835, already existed) → statehood (1847) → Michigan Agricultural College (1855).
+- Linked to the existing Case 0 entities (Anishinaabeg, Saginaw Band of Chippewa, MSU/Michigan
+  Agricultural College, Bingham, Morrill) via `EntityEvent`.
+- **Confirmed `/history`'s actual scope while doing this** — it was an open question whether the
+  Timeline should include Jerry's personal family genealogy alongside civic content at all.
+  Checked directly: 37 of 114 entities and 38 of 61 events (now 63) were already tagged
+  `familyStory: true` before this change, including the very first chronological entry (Dewees,
+  1777). The site is a deliberately blended family + civic timeline by design, not civic-only —
+  this isn't an open scope question, it's already-built architecture.
+- Script: `scripts/add-saginaw-morrill-history-events.ts`.
+
+---
+
 ## 2026-08-26 (cont'd, 4) — Case 13 added: The Assessor and Board of Review
 
 - Added Case 13 ("The Assessor and Board of Review — A Self-Review Loop") as the 13th

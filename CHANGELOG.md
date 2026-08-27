@@ -1,5 +1,39 @@
 # Content Changelog
 
+## 2026-08-27 (4) — Round-2 diff's ~19 missing entries added: 17 events, 6 entities
+
+Closes out the round-2 `docs/lansing-merged-timeline-MASTER.md` diff entirely. Standard
+default-include applies (real date + real sourcing → in); nothing here was ambiguous enough to
+flag and exclude. 167 → 184 `HistoryEvent` rows.
+
+- **Eastern High School, three generations** (4 events): Jerry's 1984 graduation alongside Grandma
+  Brett (1950) and grandson Christopher Norris (2023, different building — the current Eastern
+  relocated to Marshall/Saginaw, funded by the 2016 bond); Sparrow's 2015-2016 site acquisition;
+  McLaren's 2024 Collins Road campus opening (Greenlawn campus vacated) alongside Sparrow's
+  psychiatric-facility planning start; the 2025 demolition + UM Health Plan wind-down. New entity:
+  Grandma Brett. Reused existing Christopher Norris (id 19) and Virg Bernero (id 107) entities.
+- **UM-Sparrow merger, granular sub-dates** (3 events): the Dec. 2022 affiliation agreement, the
+  April 2023 $7B merger completion (with the nurse unionization detail carried over from the
+  existing top-level 2023 event), the April 2024 rename. New entities: Sparrow Health System,
+  University of Michigan Health.
+- **Charter revision, full arc** (3 events): the 2024 Charter Commission election (36 candidates,
+  the "200+ appointments" WKAR quote), the Nov. 2025 voter approval (independent auditor, 3-year
+  strategic plan, transparency dashboard, 2029 "Super-Election" five-ward expansion), the Jan. 1
+  2026 effective date with Schor's third-term swearing-in. New entity: Lansing Charter Commission
+  (2024).
+- **NOVA/ModPod, earlier phases** (2 events): the Aug. 2025 initiative launch ($640K, DRMM as sole
+  applicant), the Nov.-Dec. 2025 site-selection meetings (48 properties narrowed to 5303 S. Cedar
+  St). Reused existing Kimberly Coleman (id 79) and Detroit Rescue Mission Ministries (id 86).
+- **Deep Green / Flock, complete thread** (5 events): the 2025 proposal + camera deployment, the
+  Feb. 10 2026 hearing (200+ opposed, the Chamber-affiliated astroturf detail), the April 2026
+  withdrawal, the July 13 moratorium (7-1, Garza's dissent), the Aug. 24 Flock-termination
+  resolution (7-1, Spadafore's dissent). New entities: Flock Safety. Reused existing Deep Green
+  (id 98), Jeremy Garza (id 97), Ryan Kost (id 39), Peter Spadafore (id 108).
+- Script: `scripts/add-round2-missing-entries.ts`, idempotent (confirmed via a clean second run —
+  all 17 events skipped as already existing, no duplicates).
+- With this batch, the entire round-2 diff — 5 conflicts, 2 scope questions, ~19 missing entries —
+  is fully closed. No open items remain from either diff round.
+
 ## 2026-08-27 (3) — Round-2 diff fully closed: Ottawa St, Dubai, LHC dates corrected
 
 - **Ottawa Street Station**: confirmed the DB's 1908 build date was correct all along — my own

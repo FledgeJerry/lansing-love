@@ -8,6 +8,49 @@ action content. Code changes are still covered by normal git history; this file 
 
 ---
 
+## 2026-08-27 — Full `docs/source-timeline.md` reconciliation: 56 events added
+
+Following the three-way diff (28 matches, 5 conflicts, ~55 missing) and Jerry's default-include
+decision on the two scope questions. 63 → 119 `HistoryEvent` rows.
+
+- **Environmental Governors + Line 5 + property tax** (11 events): Milliken/Engler/Snyder/Whitmer
+  governor transitions and their signature environmental actions, the Line 5 easement
+  revocation/defiance, the July 15 2026 EGLE tunnel-permit/data-center-pledge same-day pair
+  (cross-referenced in each other's description text), and the 1994 Proposal A vote — the
+  load-bearing date underneath the Case 13 property tax findings. 4 new entities: Milliken,
+  Engler, Snyder, Whitmer, Enbridge.
+- **Deep Roots + early 20th century civic** (10 events): DeWeese family arrival (~1690), William
+  Dewees Jr. born, the Arnold family settling Beaver Island (dated correctly this time — see the
+  2026-08-26 entry above), REO Motor Car Co., the first Ottawa Street station, Lansing's first
+  boundary expansion, the Bath School massacre, the Depression on the factory floor, Boji Tower,
+  the Kerns Hotel fire, and the Art Deco Ottawa Street Power Station.
+- **Norris family life events** (21 events): Keith and Thelma's births, Monty delivering groceries
+  with Gregory Eaton, the Armstrong/Julia Street moves, Monty's 1972 instruction to 6-year-old
+  Jerry, Kendon Elementary, the Lansing busing fight (*NAACP v. Lansing Board of Education*,
+  *Milliken v. Bradley*), Atwood/Gardner, the Eastern transfer via Joel Ferguson's Sadie Court
+  apartment, Jerry's Michigan graduation and ISO 9000 auditor years, Ottawa Street's
+  decommissioning, Jackson Field, the Hollister Blue Ribbon Committee, Raven and Rain's births,
+  Kevin Jones's 1999 death, and Yoor Mom Skateboards.
+- **Remaining civic/legal/corporate** (13 events): the 1958 I-496 route decision, North District
+  annexation, I-496's 1970 completion, the "framework clicks" polycentric-governance moment
+  (2009, marked approximate — the source itself says the exact date is Jerry's to place),
+  Right to Work's actual 2012 passage, Rotary Park/City Market's 2019 turnover, the 2021 Detroit
+  Rising lease with its purchase option, UM-Sparrow's 2023 nurse unionization, the 2025 I-496
+  cap-study grant, the 2026 AF Group sale, Capital City Wrecking Company (1928–2000, exact LARA
+  dates both ends), and *Bolt v. City of Lansing* (1998).
+- **Intentionally not added, flagged instead of guessed:** the 1982 "Right to Work seeds planted"
+  scene-setting (too vague — the real 2012 passage is covered); the Pleasant Lake/Grandma Brett
+  family story (no date anywhere in the source beyond "as a child").
+- The reference-only sections (water systems geography, granular property-tax stats beyond
+  Proposal A, the one-paragraph governors overview, the 2026 governor's race candidate list)
+  were deliberately left as reference material, not forced into dated events, per Jerry's own
+  scoping note that these read as analysis built on top of the events, not events themselves.
+- Scripts: `scripts/add-governors-line5-property-tax-events.ts`,
+  `scripts/add-deep-roots-early-civic-events.ts`, `scripts/add-norris-family-life-events.ts`,
+  `scripts/add-remaining-civic-legal-events.ts`.
+
+---
+
 ## 2026-08-26 (cont'd, 5) — Treaty of Saginaw / Morrill Act added to `/history`
 
 - Added two `HistoryEvent` rows: the 1819 Treaty of Saginaw and the 1855–1862 Michigan

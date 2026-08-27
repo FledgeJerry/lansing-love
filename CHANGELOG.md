@@ -1,5 +1,21 @@
 # Content Changelog
 
+## 2026-08-27 (5) — Fixed: 42 pre-1993 mayors invisible on /history by default
+
+Jerry reported the 46 mayors weren't appearing on the live Timeline tab despite Claude Code
+confirming clean creation. The hypothesis relayed (entity created without a HistoryEvent row) was
+wrong — verified against production output: every mayor got both an entity AND an event, none
+skipped. Real cause: `TimelineView.tsx`'s default "min significance" filter is 3, and the 42
+pre-1993 mayors were deliberately given `significance: 1` to reflect their thin single-Wikipedia
+sourcing — significance was accidentally doing double duty as both narrative-weight and the page's
+default visibility gate. Fixed per Jerry's call: raised to 3 (matching the 4 modern mayors), so all
+46 now show on the Timeline tab by default. The sourcing caveat is unaffected — it already lived in
+`sourceNote`, which is the correct field for it. Mayors still don't appear in the scrolling ticker
+(hard-filtered to `>= 4`), which is expected and fine — that's a highlights reel, not the full
+timeline. Also fixed `add-mayors-and-ballot-measures.ts` itself so a future re-run produces the
+right value from the start.
+Script: `scripts/fix-mayor-significance.ts` (targeted `updateMany`, confirmed 42 rows affected).
+
 ## 2026-08-27 (4) — Round-2 diff's ~19 missing entries added: 17 events, 6 entities
 
 Closes out the round-2 `docs/lansing-merged-timeline-MASTER.md` diff entirely. Standard

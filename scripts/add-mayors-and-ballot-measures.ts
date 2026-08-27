@@ -143,7 +143,11 @@ async function main() {
       eventDate: new Date(`${m.startYear}-01-01`),
       datePrecision: m.verified ? "day" : "year",
       era: eraForYear(m.startYear),
-      significance: m.verified ? 3 : 1,
+      // Deliberately not lowered for the single-sourced pre-1993 mayors —
+      // significance is the page's default visibility filter (min 3 on
+      // /history's Timeline tab), not a sourcing-confidence field. The
+      // caveat itself lives in sourceNote below, where it belongs.
+      significance: 3,
       timelineVisible: true, mapVisible: false,
       sourceTier: m.verified ? "S" : "RC",
       sourceNote: m.verified ? "Wikipedia \"List of mayors of Lansing, Michigan\"; cross-referenced against this project's other sourced material on Hollister/Benavides/Bernero/Schor specifically." : UNCROSSCHECKED_NOTE,

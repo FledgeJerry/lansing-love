@@ -71,9 +71,12 @@ Ransom Olds builds his car plant on the Grand River. Jobs draw thousands of fami
 ### 1905 — REO Motor Car Company established
 Ransom Olds founds a second company at 1445 S. Washington Avenue after leaving his first. REO manufactures automobiles and trucks until 1975. By 1907, REO has gross sales of $4.5 million and is one of the four wealthiest auto manufacturers in the U.S. The REO Speed Wagon — introduced 1915 — becomes one of the most versatile vehicles in American transportation. The factory floor that will eventually employ Keith Norris is being built.
 
-### 1908 — Michigan Accident Fund created; Ottawa Street Station built
-The state legislature creates the Michigan Accident Fund — a public workers' compensation institution, one of the nation's first. A public body, funded as a state agency. It will remain public for 82 years.
+### 1912 — Michigan Accident Fund created
+The state legislature passes the Workmen's Compensation Act (Public Act 10, 1912), creating the Michigan Accident Fund — a public workers' compensation institution, one of the nation's first, and only the second such "Accident Fund" structure in the country after Washington State. Authorized to begin writing coverage Sept. 1, 1912; receives its first policy applications Nov. 25, 1912. A public body, funded as a state agency. It will remain public for 82 years.
 
+*Corrected dating: this entry was previously dated 1908, an error — the Michigan Accident Fund was created by the 1912 Workmen's Compensation Act, confirmed across multiple independent sources including the company's own 100th-anniversary materials.*
+
+### ~1919-1922 — Ottawa Street Station built
 Michigan Power Company builds the first Ottawa Street power station on the Grand River. The city acquires it in 1919 after WWI financial strain.
 
 ### 1912 — Lansing becomes state capital of a growing industrial state
@@ -264,7 +267,7 @@ The Lansing School Board voluntarily adopts a desegregation plan in 1972. Right 
 ### September 1976 — Jerry bused to Vivian Riddle Elementary
 Under the court-ordered desegregation program, Jerry Norris — age 10, fifth grade — is bused approximately five miles from Julia Street to **Vivian Riddle Elementary**. He leaves the school 30 feet from his house and rides a bus to a school on the other side of the city. This is the policy designed to fix what I-496 and redlining created. It is imperfect. It is necessary. It is what the system can offer instead of the structural changes that would have made it unnecessary.
 
-### 1977 — Expelled from Riddle
+### 1978 — Expelled from Riddle
 Two gangs are planning a riot at Vivian Riddle. Jerry Norris, 11 years old, reads the room correctly and brings a knife to school for protection. The adults running the school did not prevent the threat. Jerry responds to the threat the only way available to him. He is expelled.
 
 The family moves immediately to **Haag Road** — Section 8 townhouse. Jerry transfers to **Atwood Elementary**, the neighborhood school for the new address.
@@ -321,6 +324,17 @@ Jerry attends Lansing Eastern. The wrestling program is everything the coaches s
 Jerry is also, still, the kid who gets sent to a different school for math. At Eastern, as at every school before it, the container is not adequate to what he carries.
 
 Monty's 1972 instruction is eight years old. Jerry is getting closer.
+
+### 1984 — Jerry graduates Lansing Eastern
+Jerry Norris graduates from Lansing Eastern High School — the building on Pennsylvania Avenue, one block north of Michigan Avenue, the original 1928 structure. This is one thread in a three-generation family relationship with this specific institution, which by 2025 will no longer physically exist:
+
+- **Grandma Brett** — graduated Eastern in **1950**, confirmed.
+- **Jerry Norris** — graduates **1984**, confirmed. Same Pennsylvania Avenue building Grandma Brett attended 34 years earlier.
+- **Chris Norris** (Jerry's grandson, one of Daniella's four children) — graduated Eastern in **2023**, confirmed. This means Chris graduated from an entirely different physical building than Jerry or Grandma Brett ever attended — the current Eastern, relocated to Marshall Street at Saginaw, connected to the former Pattengill Middle School, funded by the $120 million bond voters approved in 2016 (see Case 10 in the Full Accounting). The Pennsylvania Avenue building Jerry and Grandma Brett knew was sold to Sparrow in that same unanimous 2016 vote and demolished in early 2025.
+
+Three generations, one institution, two entirely different buildings — and the transition between them is the same transition documented as a civic accountability failure elsewhere in this project. Worth its own moment in the book: what it means for an institution to outlive its own building, and for a family to have attended both versions without anyone planning it that way.
+
+*Also worth noting: Eastern has the second-largest alumni association in the United States, per the school's own history — an institution people remain connected to for life, which makes the multi-generational thread here less unusual than it might first appear, and probably true of many other Lansing families too.*
 
 ### 1982 — Right to Work seeds planted; UAW faces new pressure
 The union Keith Norris joined after the war — built in Lansing in 1937 by Lester Washburn and 12,000 workers who shut down the city — faces growing political pressure in Lansing. The same legislature that governs from the Capitol the Lansing Labor Holiday surrounded in 1937 is now increasingly hostile to organized labor. The seeds of what will become Right to Work are being planted.
@@ -503,13 +517,19 @@ Three models inform it:
 
 **The opposite of ISO — chaos.** ISO 9000 is control, standardization, elimination of variance. Jerry was one of the youngest certified auditors in the world. He was elite at the thing he decided was wrong. Communities in crisis don't need control. They need radical inclusion, saying yes before you know what the idea is, before you know who's asking. The Fledge is the anti-ISO. Deliberately.
 
+### 2015–2016 — Sparrow acquires Eastern High School's site
+Sparrow submits a purchase bid in 2015 for Lansing Eastern High School's 18-acre Pennsylvania Avenue site — the same building Jerry graduated from in 1984. In January 2016, the Lansing School Board votes unanimously to sell for $2.475 million; voters approve a $120 million bond the same year that funds a modernized replacement Eastern inside the former Pattengill Middle School. The sharper finding: in 2013, three years before any vote, then-Mayor Virg Bernero called the sale a "done deal" while still publicly floating a preservation alternative for the building's auditorium. See Case 10 in the Full Accounting for the full account, including the Coalition to Preserve Eastern High School's later fight over the 2024–2025 demolition.
+
 ### 2018 — The Fledge moves to 1300 Eureka Street
 Jerry sees the building — built 1926 by Church of Christ, became Church of Nazarene 1960 — and makes an offer to the real estate agent within steps of the entrance. "Eureka moment." People thought he was crazy. First day on porch waving at passersby who respond "Fuck you and fuck you!" He keeps waving. "Today if I don't wave at them they're mad at me."
 
-### 2019 — The Fledge shot up; 19 of 22
+### 2019 — The Fledge shot up
 The Fledge is shot up in 2019.
 
-And in one year — the year to be confirmed, approximately this period — **19 of the 22 kids shot and killed in Lansing** are Fledge community members. Friends. People who came through the door. People the organization exists to serve.
+### 2021 — 19 of 22
+*This was previously conflated with the 2019 shooting above as one dated entry, with the year hedged as "to be confirmed." Corrected: these are two separate facts. The Fledge itself was shot up in 2019. The statistic below is from 2021.*
+
+In one year — 2021 — **19 of the 22 kids shot and killed in Lansing** are Fledge community members. Friends. People who came through the door. People the organization exists to serve.
 
 The Fledge is not insulated from the violence it exists to address. It is inside it. This is what it means to do this work in a city with this history — the history doesn't stay outside the building. It follows people in.
 
@@ -535,9 +555,20 @@ Five records requests. $4,430 in fees. Zero documents.
 SK files 113 eviction cases against the families who lived in the homes.
 
 ### 2023 — UM Health acquires Sparrow; workers organize
-University of Michigan Health acquires Sparrow Health System in Lansing. Within two years, 2,000 nurses and caregivers vote 98.7% to authorize a strike. Federal unfair labor practice charges are filed. The union ratifies a new contract in January 2025 — 95% approval. In January 2026, 213 advanced practice providers vote 86% to unionize.
+December 2022: UM Regents and Sparrow's board approve an affiliation agreement. April 2023: the $7 billion merger completes — Sparrow's CEO calls it a "member substitution agreement," no purchase price disclosed. April 2024: renamed University of Michigan Health-Sparrow. UM pledges $800 million in capital investment over eight years.
+
+Separately, University of Michigan Health acquires Sparrow Health System in Lansing. Within two years, 2,000 nurses and caregivers vote 98.7% to authorize a strike. Federal unfair labor practice charges are filed. The union ratifies a new contract in January 2025 — 95% approval. In January 2026, 213 advanced practice providers vote 86% to unionize.
 
 The same capital-versus-labor asymmetry. The same dynamic. The shop floor organizing itself, again, in Lansing, 88 years after Lester Washburn's Lansing Labor Holiday.
+
+### 2024 — McLaren's new campus opens; both hospital systems begin erasing their old buildings
+McLaren's new $600M replacement hospital opens on Collins Road near MSU; the historic Greenlawn campus — including the 1930 building built as the original county TB sanitorium — is vacated and demolition begins. On the Sparrow side, planning begins for a new $83–97 million, 64-bed psychiatric facility on the Eastern High School site; a preservation coalition forms to fight for at least the building's west wing and auditorium.
+
+### 2025 — Eastern High School demolished; UM Health Plan wound down
+Early 2025: Lansing Eastern High School is demolished, the preservation coalition's fight over, City Council having declined to pursue historic designation "under pressure from both UM-Sparrow and trade unions." Separately: UM Health Plan (formerly Sparrow's Physicians Health Plan), covering 64,000 Lansing-area members, is wound down after UM fails to find a buyer.
+
+### 2026, February — Kim Coleman resigns as HRCS Director
+Kim Coleman, who had led the NOVA/ModPod initiative's planning since August 2025, announces her resignation Feb. 2 — effective Feb. 13 — roughly six months into the project's most consequential planning year. She is retained specifically to continue coordinating NOVA in a non-director capacity; Deputy Director Delvata Moses becomes interim HRCS Director. See Case 11 for the full account, including Coleman's predecessor Joan Jackson Johnson's 2020 departure amid a HUD audit finding.
 
 ### 2025, March 8 — Monty Norris dies on Drummond Island
 **Monty L. Norris** dies at age 78 on Drummond Island — the family's place of return across three generations. The island where Keith and Thelma summered. The island Monty retired to.
@@ -548,6 +579,42 @@ He carried his grandmother Lucy's murder. He carried what the highway did to the
 
 He deserves his own chapter.
 
+### 2024 — Lansing's Charter Commission elected
+36 candidates run for seats on the Charter Commission tasked with revising Lansing's city charter. One candidate tells WKAR directly that the Mayor appoints "all 200+ individuals" across the city's boards and commissions, and campaigns on splitting that appointment power with City Council — a reform that does not make it into the final revision. See Case 13 (the Assessor/Board of Review self-review loop) for the structural finding this candidate statement helps document.
+
+### 2025, November — Voters approve the charter revision
+The revision passes: an independent internal auditor, a mandatory three-year strategic plan with measurable goals, a public financial transparency dashboard, procurement reform, and a five-ward expansion effective 2029 that will put the Mayor, all nine Council seats, and the Clerk on one ballot simultaneously for the first time — the "Super-Election." Board and commission appointment authority — the Mayor's concentrated power documented in Case 13 — is not restructured.
+
+### 2026, January 1 — New charter takes effect; Schor sworn in for third term
+Andy Schor begins his third term as the first mayor to govern under the revised charter. The independent auditor position sits vacant for months afterward; the mandatory strategic plan's one-year deadline runs to roughly January 2027.
+
+### 2025, August — NOVA/ModPod initiative begins
+City Council approves $640,000 for 50 modular pod units, framed publicly as offering "wrap-around services to include job assistance, housing support, health care and mental and substance use counseling." HRCS Director Kim Coleman leads planning. Detroit Rescue Mission Ministries — founded 1909, Detroit — later emerges as the sole applicant for the operations contract.
+
+### 2025, November–December — NOVA site selection meetings
+Public meetings at Letts and Foster Community Centers narrow 48 candidate properties to 5, then to the Ingham County Human Services building parking lot at 5303 S. Cedar St, after parks are removed from consideration due to neighborhood opposition.
+
+### 2026, July — Council approves $1.93M for NOVA site prep; cost figures keep changing
+$1,925,900 approved for site preparation and construction, plus $952,335/year projected operating costs — up from an initial $750,000 estimate. A separate April 2026 budget discussion puts the first-year all-in total closer to $2.9 million. Ingham County contributes $600,000 through its Housing Trust. No fixed installation timeline exists as of this writing.
+
+### 2026, August 18 — NOVA community meeting; the transition-plan gap
+At a community update meeting at Foster Community Center, Jerry Norris asks what happens to residents after their stay ends. The answer: a website landlords can register properties on. One HRCS Advisory Board member compares the transition to "going off to college." When asked directly, the panel affirms housing is a human right. See Case 11 for the full account, including Kim Coleman's paraphrased defense of DRMM's sole-bidder qualification.
+
+### 2025 — Deep Green proposes a downtown data center; Flock cameras deployed with no public process
+UK-based Deep Green proposes a $120 million, 24-megawatt data center at Kalamazoo and Cedar Streets. Separately, the Lansing Police Department deploys 20+ automated license plate reader cameras (Flock Safety) citywide in September, with zero Council vote, zero Board of Police Commissioners review, and zero written policy — funded partly through a 2023 grant originally intended to reduce motor vehicle theft. First public discussion of the cameras: seven months later.
+
+### 2026, February 10 — Deep Green hearing draws 200+ opposed
+Roughly 200 residents pack Lansing City Hall to capacity; nearly 90 give public comment, most opposed. A PR operation using template letters and an astroturf coalition ("Michigan for Responsible Data Centers") competes with the real turnout — 58% of formal written support letters are later found to be Chamber-affiliated.
+
+### 2026, April — Deep Green withdraws its proposal
+The rezoning application is withdrawn with no public explanation given.
+
+### 2026, July 13 — Data center moratorium passes 7–1
+City Council passes a 182-day moratorium on new data center permits, effective July 27, expiring Jan. 25, 2027. Jeremy Garza — VP of UA Plumbers and Pipefitters Local 333, the union that publicly backed Deep Green — casts the lone dissenting vote. The moratorium does not close the underlying loophole: a data center remains a by-right use on privately owned heavy-industrial land, requiring no Council vote, no Planning Commission review, and no public hearing. The ordinance that would close that loophole stalls in the committee Garza chairs.
+
+### 2026, August 24 — Council votes 7–1 to request Flock contract termination
+A non-binding resolution, sponsored by Ryan Kost, directs Mayor Schor and LPD to terminate the Flock contracts and pause future AI-camera agreements pending a privacy policy. Council President Peter Spadafore casts the lone dissent, citing a rushed process. Schor's office is non-committal the next day. Eight other Michigan communities have canceled or rejected Flock contracts in the past year.
+
 ### 2025, January — $1M federal grant to study I-496 cap
 Lansing is awarded a $1 million federal grant to develop a plan to cap portions of I-496 between MLK Jr. Boulevard and Walnut Street. The grant does not cover construction costs. Sixty-two years after construction began on the highway that displaced 600 families, the government funds a study of whether to cover it.
 
@@ -557,6 +624,9 @@ City Council votes 6-1 to place the sale of the former City Market land to Detro
 Ryan Kost: the only dissenting vote. Six of the eight council members have taken LRC-PAC money.
 
 A WPA-built public commons from 1938 is one ballot question away from full private ownership — at an eight-year-old price, on a lease that had a purchase option written into it in 2021 that nobody discussed publicly.
+
+### 2026, August 4 — Voters reject the Lansing Shuffle sale, 53–47%
+The sale a PAC-funded council had voted 6-1 to enable is rejected at the ballot. Detroit Rising co-owner Jon Hartzell says he intends to push to put it back on a future ballot. This is one of the only outright wins documented anywhere in this project's accounting — a PAC-funded council could get the sale to a vote; it could not buy the vote itself. See Case 6 in the Full Accounting and Pattern 0 (Substantive Democracy) in the pattern language, which names this vote as its clearest documented positive instance.
 
 ### 2026, February — AF Group sold to global investment vehicle
 Blue Cross Blue Shield of Michigan announces the sale of AF Group to **Enstar Group**, backed by **Sixth Street**, a global investment firm headquartered in Bermuda. The full arc: **Michigan public institution (1912) → Michigan private insurer (1990) → global investment vehicle (2026).** 114 years from public creation to international financial asset.
@@ -742,5 +812,26 @@ Primary: August 4, 2026.
 Jerry was scheduled to tell the water/Pleasant Lake/Line 5 story at Michigan Stories at The Fledge. Did not tell it — the room organically themed around homelessness, so Jerry told the story of the warming shelter being shut down by the city instead. The water story and its full arc (Pleasant Lake headwaters → Lansing → Line 5 → Straits) is documented above and in the Michigan Stories narrative developed this session. Ready for a future telling or NPR submission.
 
 ---
+
+## NOVEMBER 2026 BALLOT MEASURES — Two Statewide Questions Directly Relevant to This Project
+
+### Michiganders for Money Out of Politics (MMOP)
+Qualified for the November 3, 2026 statewide ballot. Would ban regulated utilities — DTE Energy and Consumers Energy explicitly named in state coverage — and any corporation holding government contracts over $250,000/year from contributing to state officeholders and political party committees, and would impose new disclosure requirements on dark-money political ads. Directly targets the mechanism documented in this project's Case 9 (Chamber/PAC Electoral Loop) and the Consumers Energy dark-money network tied to Reid Felsing. See the "Money Out of Politics" video planning document for the full evidentiary case built around this vote.
+
+### Michigan Constitutional Convention Question
+Appears automatically on the November 3, 2026 ballot per Article XII, Section 3 of the Michigan Constitution, which requires the question be put to voters every 16 years regardless of any other action. If approved: 148 delegates elected on partisan ballots, convention convenes October 5, 2027. Directly relevant to this project's strategic horizon — the same mechanism that could advance cooperative and local-democracy goals statewide could also be captured by opposing interests, the same tension documented throughout this project's own polycentric governance framework.
+
+---
+
+## LANSING MAYORS — FULL LIST, 1859–PRESENT
+
+*Compact reference list, matching the format already used for the Michigan Governors section above. Mayors with independent civic significance to this project (Hollister, Bernero, Schor) already appear as full individual entries in the main chronological narrative; this list exists for completeness and to make gaps easy to spot. Lansing was incorporated as a city February 15, 1859.*
+
+Hiram H. Smith (1859) · John A. Kerr (1860) · William H. Chapman (1861–62) · Dr. Ira H. Bartholomew (1863–65) · Dr. William H. Haze (1866) · George W. Peck (1867) · Cyrus Hewitt (1868–69) · Dr. Solomon W. Wright (1870) · John Robson (1871, 1881) · John S. Tooker (1872–73, 1876) · Daniel W. Buck (1874–75, 1886) · Orlando Mack Barnes (1877, 1882–83) · Joseph E. Warner (1878) · William Van Buren (1879–80) · William Donovan (1884–85) · Jacob F. Schultz (1887) · John Crotty (1888) · James M. Turner (1889, 1895) · Frank B. Johnson (1890–91) · Arthur O. Bement (1892–93) · Alroy A. Wilbur (1894) · Russell C. Ostrander (1896) · Charles J. Davis (1897–99) · James F. Hammell (1900–03) · Hugh Lyons (1904–07) · John S. Bennett (1908–11) · J. Gottlieb Reutter (1912–17) · Jacob W. Ferle (1918–19, 1922) · Benjamin A. Kyes (1920–21) · Silas F. Main (1922–23) · Alfred H. Doughty (1923–26) · Laird J. Troyer (1927–30) · Peter F. Gray (1931–32) · Max A. Templeton (1933–41) · Arthur E. Stoppel (1941) · Sam Street Hughes (1941–43) · Ralph Crego (Aug. 1943 – April 1961) · Willard I. Bowerman Jr. (1961–65) · Max E. Murninghan (1965–69) · Gerald W. Graves (1969–81) · Terry John McKane (1981–92) · Jim Crawford (1992–93) · **David Hollister (1993 – Jan. 28, 2003, resigned to join Granholm administration)** · **Tony Benavides (Jan. 28, 2003 – Jan. 1, 2006; won the 2003 special election by 258 votes out of 23,000+ cast)** · **Virg Bernero (Jan. 1, 2006 – Jan. 1, 2018; three terms, declined a fourth)** · **Andy Schor (Jan. 1, 2018 – present; re-elected 2021 and 2025, sworn in for a third term Jan. 1, 2026 under the newly effective charter)**
+
+*Note on the pre-1993 list: these are names and dates only, pulled from a single consolidated source (Wikipedia's "List of mayors of Lansing, Michigan," itself sourced to the Historical Society of Greater Lansing). None of the pre-1993 mayors have been independently cross-checked against a second source or researched for any civic significance to this project — they're included per the project's default-include philosophy, to be corrected or expanded if anyone ever finds reason to.*
+
+---
+
 
 *Companion documents: `lansing-raised-me-MASTER.md` (memoir chapters + story bible), `lansing-full-accounting-MASTER.md` (benefit/cost analysis, governance mechanism, plan forward)*

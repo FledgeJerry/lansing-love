@@ -1,5 +1,33 @@
 # Content Changelog
 
+## 2026-08-27 (2) — Round-2 diff resolutions: Riddle date fix, ballot measures, 46 mayors
+
+Closing out the two remaining conflicts + two scope questions from the round-2
+`docs/source-timeline.md` diff, per Jerry's "Round 2 Diff — Resolutions and Scope Decisions"
+message, before moving to the ~19 still-missing entries.
+
+- **Fixed**: "Jerry expelled from Riddle" (id 25) — `eventDate` corrected 1977 → 1978, confirmed
+  by Jerry as his own lived history (previously applied to local dev only via manual SQL during
+  the round-2 review; now scripted and idempotent).
+- **Added** the two Nov. 3, 2026 statewide ballot measures (Michiganders for Money Out of
+  Politics; the constitutional convention question) as `HistoryEvent` rows dated 2026-11-03, with
+  explicit "SCHEDULED, outcome not yet known" language in the description — no schema flag exists
+  for scheduled-vs-occurred, so this is a text-note approach per Jerry's fallback instruction.
+- **Added all 46 Lansing mayors** (1859–present) as Entity + HistoryEvent pairs. Reused the
+  existing David Hollister (id 29) and Virg Bernero (id 107) entities rather than duplicating;
+  created new entities for Tony Benavides and Andy Schor. The 42 pre-1993 mayors carry the sandbox
+  doc's own single-source caveat (Wikipedia, not independently cross-checked) forward verbatim in
+  `sourceNote`; the 4 post-1993 mayors (Hollister/Benavides/Bernero/Schor) don't, since they're
+  independently multi-source verified elsewhere in this project. Non-consecutive-term mayors
+  (Robson, Tooker, Buck, Barnes, Turner, Ferle) got one entity/event each, dated to their first
+  term's start year, with full term history in the description rather than duplicate rows.
+- **Still open, not touched this pass**: the Dubai commute date (2000 vs. 2002) and the LHC
+  dispositions date-range scope question — both still waiting on Jerry's call. The Ottawa Street
+  Station build-date conflict — reported back to Jerry as needing genuine primary-source research,
+  since the DB's 1908 has no better standing than his own "~1919-1922" guess.
+- Script: `scripts/add-mayors-and-ballot-measures.ts`, idempotent (checks for existing entity by
+  name / event by title before creating, safe to re-run).
+
 Case, pattern, and entity content in this project lives in the production Postgres database on
 the Pi, not in this repo — it's edited via `/admin/*` UI or one-off scripts under `scripts/`, so
 it carries none of git's normal audit trail. This file is that trail: one entry per session where

@@ -1,5 +1,37 @@
 # Content Changelog
 
+## 2026-08-27 (3) — Round-2 diff fully closed: Ottawa St, Dubai, LHC dates corrected
+
+- **Ottawa Street Station**: confirmed the DB's 1908 build date was correct all along — my own
+  "~1919-1922" guess (made splitting the old combined Accident Fund entry) was the error,
+  conflating "when the city acquired it" (1919) with "when it was built" (1908). Added the
+  E. Bement & Sons property detail and the city's Board of Water Works and Electric Lighting
+  purchase context, both from the corrected reference doc.
+- **Ottawa St Art Deco building** (id 85): corrected from a single "1939-1940" range to its real
+  two-phase construction, 1937-1946 — south half complete 1939, north half 1946 (delayed by WWII
+  material shortages). Added the Burns and Roe engineering credit.
+- **Dubai commute** (id 34): tightened `datePrecision` from "approximate" to "month" per Jerry's
+  direct confirmation of Spring 2002 (the sandbox doc's own "~2000" was the less precise value).
+  **Flagged, not removed**: the 98/180 trip-count and 600/year→5 death-reduction figures on this
+  event already carry a citation — sourceTier S, sourceNote "Radiical Systems case study April
+  2024" — that predates this reconciliation project and isn't in the sandbox doc. Reported back to
+  Jerry to confirm the citation rather than assuming it's right or stripping it as unsourced.
+- **LHC dispositions** (id 49): retitled and redated from "833 to 66 units" / 2018-2026 to
+  "833 to 66 units (2020-2026)" / 2020-2026, matching the sandbox doc's Case 7 retitle — RAD
+  conversions beginning ~2020 (South Washington Park, Mount Vernon Park) through the SK Investment
+  Group sale (Oct.-Dec. 2021 proposals, 2022 HUD approval/closing) and ongoing through 2026. 2018
+  had no documented basis on either side.
+- Reference docs renamed to match the sandbox chat's actual filenames going forward:
+  `docs/source-timeline.md` → `docs/lansing-merged-timeline-MASTER.md`; added
+  `docs/lansing-full-accounting-MASTER.md` and refreshed `docs/CHANGELOG.md` (both dropped in by
+  Jerry with a stray trailing space in the filename before `.md` — corrected mechanically, not a
+  content decision).
+- Script: `scripts/fix-round2-remaining-conflicts.ts`, idempotent (checks current field values
+  before writing, safe to re-run — confirmed via a second local run producing no-op "already
+  correct" on 2 of 4 items after the first run applied them).
+- With this, every item from the round-2 diff (2 conflicts + 2 scope questions from the prior
+  batch, plus these 4) is closed. Next: the ~19 still-missing entries, grouped by thread.
+
 ## 2026-08-27 (2) — Round-2 diff resolutions: Riddle date fix, ballot measures, 46 mayors
 
 Closing out the two remaining conflicts + two scope questions from the round-2

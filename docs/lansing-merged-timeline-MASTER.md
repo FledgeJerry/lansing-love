@@ -76,8 +76,10 @@ The state legislature passes the Workmen's Compensation Act (Public Act 10, 1912
 
 *Corrected dating: this entry was previously dated 1908, an error — the Michigan Accident Fund was created by the 1912 Workmen's Compensation Act, confirmed across multiple independent sources including the company's own 100th-anniversary materials.*
 
-### ~1919-1922 — Ottawa Street Station built
-Michigan Power Company builds the first Ottawa Street power station on the Grand River. The city acquires it in 1919 after WWI financial strain.
+### 1908 — The first Ottawa Street Power Station built
+*Corrected: this entry was previously misdated "~1919-1922" during an earlier split from the old combined Accident Fund entry — an error on this project's part, not the database's. Confirmed via City Pulse and the Lansing Board of Water and Light's own historical materials: Michigan Power Company builds the original Ottawa Street Power Station in 1908, on property that had belonged to E. Bement & Sons. This is a different, earlier structure than the Art Deco building most people picture today — that one is a later demolition-and-rebuild on the same site, completed in 1939-1946 (see below).*
+
+Michigan Power Company builds the first Ottawa Street power station on the Grand River. The city acquires it in 1919 after WWI financial strain — Michigan Power Company was on the verge of closing, and the city's Board of Water Works and Electric Lighting purchased the property and assumed operations. This original plant is later torn down and rebuilt for greater electric generation capacity — the Art Deco structure completed in 1939 (south half) and 1946 (north half, delayed by wartime material shortages).
 
 ### 1912 — Lansing becomes state capital of a growing industrial state
 The city is now home to REO, Oldsmobile, and a growing supplier ecosystem. The factory floor is the center of Lansing's economic and social life.
@@ -133,8 +135,10 @@ There is now a Michigan Registered Historic Site marker at the intersection of C
 ### 1938 — WPA workers build the Lansing City Market
 Federal Works Progress Administration workers — government labor during the Depression — build the Lansing City Market on the Grand River off Cedar Street. A genuine public food commons. Built by public hands. Owned by the public. No cooperative structure, no community land trust, no protection for its commons function against future disposal. Eighty-one years from now it will be a shuffleboard bar.
 
-### 1939–1940 — Ottawa Street Power Station completed
-The Art Deco Ottawa Street Power Station opens. Designed by Edwyn Bowd. Polychromatic brick, 176 feet over the Grand River, a step-back ziggurat form with a color gradient from black granite at the base to yellow at the top — representing the stages of coal combustion. One of the most beautiful industrial buildings in Michigan. Publicly owned. No resident seat on its governance board. It will be publicly owned for 52 years and then sold.
+### 1937–1946 — The Art Deco Ottawa Street Power Station built
+*Corrected: this entry previously said "1939-1940," which doesn't match any sourced date. Construction begins 1937; delayed by WWII material shortages, the building is completed in two phases.*
+
+The Art Deco Ottawa Street Power Station rises on the same site as the demolished 1908 original. Designed by Edwyn Bowd (Bowd-Munson Company), engineering by Burns and Roe. Polychromatic brick, 176 feet over the Grand River, a step-back ziggurat form with a color gradient from black granite at the base to yellow at the top — representing the stages of coal combustion. The southern half is completed in 1939; the northern half, delayed by wartime shortages, in 1946. One of the most beautiful industrial buildings in Michigan. Publicly owned. No resident seat on its governance board. It will be publicly owned for roughly 52 years and then sold.
 
 ---
 
@@ -440,7 +444,9 @@ He is 37 years old. The bullet hole is still above locker 02-069 at Everett High
 
 ## PART SEVEN: The Gulf, the Loss, and the Return (2000–2017)
 
-### ~2000 — Jerry begins commuting to Dubai
+### 2002, Spring — Jerry begins commuting to Dubai
+*Corrected: previously dated "~2000," an approximation. Confirmed by Jerry directly: spring 2002.*
+
 Jerry Norris begins a 12-year commute to the Gulf. He will spend the equivalent of three years on the ground in **Dubai, Doha, Bahrain, Saudi Arabia, and India**. He is hired to advise governments on **how to protect the public, including workers**.
 
 He leaves Lansing regularly — for weeks, for months — and returns to find it changing. The GM plant still open. Then closing. The City Market still open. Then closing. The riverfront being rebranded. The housing commission beginning to wind down its stock.

@@ -4,6 +4,36 @@
 
 ---
 
+## 2026-08-26 (cont'd, 13) — Dubai and LHC dates confirmed by Jerry; all round-2 conflicts closed
+
+**Dubai commute start date:** confirmed by Jerry directly as spring 2002 (not the sandbox's approximate "~2000"). Fixed in `lansing-merged-timeline-MASTER.md`. The "98/180 trip" and "death-reduction figure" details mentioned in Claude Code's diff were not found anywhere in the sandbox source and remain unconfirmed — not added, not resolved, just noted as still open if they matter later.
+
+**LHC dispositions date range:** Jerry confirmed he isn't sure what 2018 was meant to reference either, and agreed with the researched alternative. Case 7 retitled "(2020-2026)" in `lansing-full-accounting-MASTER.md`, matching the actually-documented start (RAD conversion construction ~2020) rather than an unanchored 2018. Also fixed a recommendation line that referenced auditing "since 2018."
+
+**This closes every open conflict from the round-2 diff.** Nothing outstanding except the ~19 missing entries, which Claude Code is now clear to send in full.
+
+# Changelog
+### Lansing Raised Me / Full Accounting / Polycentric Governance project
+### One entry per working session. Newest first.
+
+---
+
+## 2026-08-26 (cont'd, 12) — Ottawa Street Station date resolved: DB was right, sandbox was wrong
+
+**Resolved via two independent sources** (City Pulse, BWL's own historical facilities page): there were two different Ottawa Street power stations on the same site. Michigan Power Company built the *original* plant in 1908; the city acquired it in 1919 during a WWI-era financial crisis; that plant was later demolished and rebuilt into the Art Deco building everyone recognizes today, completed in two phases (south half 1939, north half 1946, delayed by WWII material shortages). The DB's "1908" was correct. My own "~1919-1922" guess, made when I split the old combined Accident Fund entry, conflated "when acquired" with "when built" — a real error, now fixed.
+
+**Fixed in `lansing-merged-timeline-MASTER.md`:** two entries corrected — "1908 - The first Ottawa Street Power Station built" (with the acquisition/demolition/rebuild arc explained) and "1937-1946 - The Art Deco Ottawa Street Power Station built" (previously wrongly dated "1939-1940," which didn't match any sourced date).
+
+**Still open, need input:**
+- **Dubai commute start date (2000 vs. 2002)** — this is Jerry's own personal history, not something I can verify independently. Needs his direct answer, plus confirmation on whether the "98/180 trip" and "death-reduction figure" details are real and citable or should be dropped.
+- **LHC dispositions date range (2018-2026)** — researched this and could not find a specific event anchoring 2018 as a start date. What IS well documented: RAD conversion construction begins ~2020 (South Washington Park, Mount Vernon Park), and the SK Investment Group sale process runs Oct.-Dec. 2021 (proposals sought) through HUD approval and closing in 2022. Flagged back to Claude Code/Jerry rather than guessing — the case's title date range may need adjusting to reflect what's actually documented, unless a specific 2018 anchor exists that this search didn't surface.
+
+# Changelog
+### Lansing Raised Me / Full Accounting / Polycentric Governance project
+### One entry per working session. Newest first.
+
+---
+
 ## 2026-08-26 (cont'd, 11) — 2021-2026 gap filled
 
 **Added to `lansing-merged-timeline-MASTER.md`:** the full 2021-2026 civic-history gap identified earlier this session, all pulled from already-sourced material in the Full Accounting (Cases 10-13) rather than new research: the Eastern High School sale (2015-2016) and demolition (2025), the fuller UM-Sparrow merger arc (Dec. 2022 through the 2025 UM Health Plan wind-down), Kim Coleman's Feb. 2026 resignation, the full charter revision arc (2024 Charter Commission election through Jan. 1, 2026 effective date), the complete NOVA/ModPod thread (Aug. 2025 through the Aug. 18, 2026 community meeting), the complete Deep Green/Flock surveillance thread (2025 deployment through the Aug. 24, 2026 council resolution), and — closing the specific gap that started this whole conversation — the actual Aug. 4, 2026 Shuffle vote result (53-47% rejection), which had been missing even though the April 2026 ballot-referral entry existed.
